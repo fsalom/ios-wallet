@@ -12,6 +12,7 @@
 		C16D040F2B18BFB60014F906 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040E2B18BFB60014F906 /* Item.swift */; };
 		C16D04112B18BFB70014F906 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C16D04102B18BFB70014F906 /* Assets.xcassets */; };
 		C16D04142B18BFB70014F906 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C16D04132B18BFB70014F906 /* Preview Assets.xcassets */; };
+		C16D041F2B18EF190014F906 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D041E2B18EF190014F906 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		C16D040E2B18BFB60014F906 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C16D04102B18BFB70014F906 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C16D04132B18BFB70014F906 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		C16D041E2B18EF190014F906 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 		C16D04092B18BFB60014F906 /* wallety */ = {
 			isa = PBXGroup;
 			children = (
+				C16D041A2B18EEF10014F906 /* Presentation */,
 				C16D040A2B18BFB60014F906 /* walletyApp.swift */,
 				C16D040C2B18BFB60014F906 /* ContentView.swift */,
 				C16D040E2B18BFB60014F906 /* Item.swift */,
@@ -68,6 +71,38 @@
 				C16D04132B18BFB70014F906 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		C16D041A2B18EEF10014F906 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				C16D041C2B18EEFC0014F906 /* Modules */,
+				C16D041B2B18EEF70014F906 /* App */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		C16D041B2B18EEF70014F906 /* App */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		C16D041C2B18EEFC0014F906 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				C16D041D2B18EF030014F906 /* Home */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		C16D041D2B18EF030014F906 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				C16D041E2B18EF190014F906 /* HomeView.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -141,6 +176,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */,
+				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
 				C16D040F2B18BFB60014F906 /* Item.swift in Sources */,
 				C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */,
 			);
