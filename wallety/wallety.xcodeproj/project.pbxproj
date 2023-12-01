@@ -36,6 +36,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C10EAC0A2B19D8C0006C1A0D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C16D04102B18BFB70014F906 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C16D03FE2B18BFB60014F906 = {
 			isa = PBXGroup;
 			children = (
@@ -55,11 +63,10 @@
 		C16D04092B18BFB60014F906 /* wallety */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC0A2B19D8C0006C1A0D /* Resources */,
 				C16D041A2B18EEF10014F906 /* Presentation */,
-				C16D040A2B18BFB60014F906 /* walletyApp.swift */,
 				C16D040C2B18BFB60014F906 /* ContentView.swift */,
 				C16D040E2B18BFB60014F906 /* Item.swift */,
-				C16D04102B18BFB70014F906 /* Assets.xcassets */,
 				C16D04122B18BFB70014F906 /* Preview Content */,
 			);
 			path = wallety;
@@ -85,6 +92,7 @@
 		C16D041B2B18EEF70014F906 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				C16D040A2B18BFB60014F906 /* walletyApp.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";

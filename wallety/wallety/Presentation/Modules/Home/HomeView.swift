@@ -9,13 +9,17 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        HomeProfileView().padding(.horizontal, 20)
-        ScrollView(.vertical, showsIndicators: false) {
-            CurrentAmountView().padding(.horizontal, 20)
-            HorizontalListFavoriteAssetsView()
-            Text("Assets").padding(.horizontal, 20)
-            ListAssetsView().padding(.horizontal, 20)
-        }
+
+            ScrollView(.vertical, showsIndicators: false) {
+                HomeProfileView().padding(.horizontal, 20)
+                CurrentAmountView().padding(.horizontal, 20)
+                HorizontalListFavoriteAssetsView()
+                Text("Assets").padding(.horizontal, 20)
+                ListAssetsView().padding(.horizontal, 20)
+            }.background(
+                LinearGradient(gradient: Gradient(colors: [Color(.background), .white]), startPoint: .top, endPoint: .bottom)
+            )
+
     }
 }
 
@@ -80,7 +84,7 @@ struct ListAssetsView: View {
                     })
                 }
                 .padding(10)
-                .background(Color.gray)
+                .background(Color.white)
                 .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
 
             }
