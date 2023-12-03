@@ -36,7 +36,7 @@ struct Home: View {
             VStack {
                 HeaderView()
                 HorizontalListFavoriteAssetsView()
-                ListAssetsView()
+                ListAssetsView().padding(.horizontal, 20)
             }
         }.scrollIndicators(.hidden)
     }
@@ -54,9 +54,6 @@ struct Home: View {
                 VStack(spacing: 0, content: {
                     GeometryReader(content: { geometry in
                         let rect = geometry.frame(in: .global)
-                        let halfScaledHeight = (rect.height * 0.3) * 0.5
-                        let midY = rect.midY
-                        let resizedOffsetY = 0
                         HStack {
                             Image(.profile)
                                 .resizable()
@@ -68,12 +65,13 @@ struct Home: View {
                                 Text("Fernando Salom")
                                     .fontWeight(.bold)
                             }).padding(5)
-                                .opacity(1.0 - (progress * 2.0))
+                                .opacity(1.0 - (progress * 2.5))
                             Spacer()
                         }.padding(.horizontal, 20)
                     })
                     Text("42.123,34€")
                         .font(.largeTitle)
+                        .fontWeight(.bold)
                         .scaleEffect(1 - (progress * 0.40))
                         .offset(y: progress)
                         .padding(.bottom, 15)
@@ -169,8 +167,9 @@ struct HorizontalListFavoriteAssetsView: View {
                     .background(Color.white)
                     .clipShape(
                         RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                    .shadow(radius: 1)
                 }
-            })
+            }).padding(2)
         }.contentMargins(.horizontal, 20, for: .scrollContent)
     }
 }
