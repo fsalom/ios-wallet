@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */; };
+		C10EAC162B1D21ED006C1A0D /* AssetUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC152B1D21ED006C1A0D /* AssetUseCaseProtocol.swift */; };
+		C10EAC182B1D2202006C1A0D /* AssetUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC172B1D2202006C1A0D /* AssetUseCase.swift */; };
 		C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040A2B18BFB60014F906 /* walletyApp.swift */; };
 		C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040C2B18BFB60014F906 /* ContentView.swift */; };
 		C16D040F2B18BFB60014F906 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040E2B18BFB60014F906 /* Item.swift */; };
@@ -18,6 +20,8 @@
 
 /* Begin PBXFileReference section */
 		C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
+		C10EAC152B1D21ED006C1A0D /* AssetUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetUseCaseProtocol.swift; sourceTree = "<group>"; };
+		C10EAC172B1D2202006C1A0D /* AssetUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetUseCase.swift; sourceTree = "<group>"; };
 		C16D04072B18BFB60014F906 /* wallety.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallety.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16D040A2B18BFB60014F906 /* walletyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletyApp.swift; sourceTree = "<group>"; };
 		C16D040C2B18BFB60014F906 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,6 +72,7 @@
 		C10EAC0D2B1B2641006C1A0D /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC192B1D2245006C1A0D /* Coin */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -82,6 +87,7 @@
 		C10EAC0F2B1B2653006C1A0D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				C16D040E2B18BFB60014F906 /* Item.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -96,6 +102,8 @@
 		C10EAC112B1B265F006C1A0D /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC152B1D21ED006C1A0D /* AssetUseCaseProtocol.swift */,
+				C10EAC172B1D2202006C1A0D /* AssetUseCase.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -106,6 +114,29 @@
 				C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */,
 			);
 			path = Helper;
+			sourceTree = "<group>";
+		};
+		C10EAC192B1D2245006C1A0D /* Coin */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC1B2B1D2261006C1A0D /* Local */,
+				C10EAC1A2B1D224F006C1A0D /* Remote */,
+			);
+			path = Coin;
+			sourceTree = "<group>";
+		};
+		C10EAC1A2B1D224F006C1A0D /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Remote;
+			sourceTree = "<group>";
+		};
+		C10EAC1B2B1D2261006C1A0D /* Local */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Local;
 			sourceTree = "<group>";
 		};
 		C16D03FE2B18BFB60014F906 = {
@@ -132,7 +163,6 @@
 				C10EAC0B2B1B262C006C1A0D /* Domain */,
 				C16D041A2B18EEF10014F906 /* Presentation */,
 				C16D040C2B18BFB60014F906 /* ContentView.swift */,
-				C16D040E2B18BFB60014F906 /* Item.swift */,
 				C10EAC0A2B19D8C0006C1A0D /* Resources */,
 				C16D04122B18BFB70014F906 /* Preview Content */,
 			);
@@ -251,9 +281,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */,
+				C10EAC182B1D2202006C1A0D /* AssetUseCase.swift in Sources */,
 				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
 				C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */,
 				C16D040F2B18BFB60014F906 /* Item.swift in Sources */,
+				C10EAC162B1D21ED006C1A0D /* AssetUseCaseProtocol.swift in Sources */,
 				C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
