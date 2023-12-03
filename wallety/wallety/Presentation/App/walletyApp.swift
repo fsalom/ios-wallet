@@ -23,11 +23,9 @@ struct walletyApp: App {
         }
     }()
 
-    var body: some Scene {
+    var body: some Scene {        
         WindowGroup {
-            NavigationStack {
-                HomeView()
-            }
+            HomeView()
         }
         .modelContainer(sharedModelContainer)
     }

@@ -9,13 +9,102 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            HomeProfileView().padding(.horizontal, 20)
-            CurrentAmountView().padding(.horizontal, 20)
-            HorizontalListFavoriteAssetsView()
-            Text("Assets").padding(.horizontal, 20)
-            ListAssetsView().padding(.horizontal, 20)
-        }.background(Color(.background))
+
+        GeometryReader{
+            let size = $0.size
+            let safeArea = $0.safeAreaInsets
+            Home(size: size, safeArea: safeArea)
+                .ignoresSafeArea(.all, edges: .top)
+        }.background(Color.background)
+/*
+        HomeProfileView().padding(.horizontal, 20)
+        CurrentAmountView().padding(.horizontal, 20)
+        HorizontalListFavoriteAssetsView()
+        Text("Assets").padding(.horizontal, 20)
+        ListAssetsView().padding(.horizontal, 20)
+*/
+    }
+}
+
+struct Home: View {
+    let size: CGSize
+    let safeArea: EdgeInsets
+    @State private var offsetY: CGFloat = 0
+
+    var body: some View {
+        ScrollView(.vertical) {
+            VStack {
+                HeaderView()
+                HorizontalListFavoriteAssetsView()
+                ListAssetsView()
+            }
+        }.scrollIndicators(.hidden)
+    }
+
+    @ViewBuilder
+    func HeaderView() -> some View {
+        GeometryReader {
+            let size = $0.size
+            let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
+            let maxHeight = headerHeight()
+            let progress = max(min((-minY / maxHeight), 1), 0)
+
+            ZStack {
+                Rectangle().fill(Color.background)
+                VStack(spacing: 0, content: {
+                    GeometryReader(content: { geometry in
+                        let rect = geometry.frame(in: .global)
+                        let halfScaledHeight = (rect.height * 0.3) * 0.5
+                        let midY = rect.midY
+                        let resizedOffsetY = 0
+                        HStack {
+                            Image(.profile)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                            VStack(alignment: .leading, spacing: 5, content: {
+                                Text("Hola 👋")
+                                Text("Fernando Salom")
+                                    .fontWeight(.bold)
+                            }).padding(5)
+                                .opacity(1.0 - (progress * 2.0))
+                            Spacer()
+                        }.padding(.horizontal, 20)
+                    })
+                    Text("42.123,34€")
+                        .font(.largeTitle)
+                        .scaleEffect(1 - (progress * 0.40))
+                        .offset(y: progress)
+                        .padding(.bottom, 15)
+                    Divider()
+                        .padding(0)
+                        .opacity(progress < 1 ? 0 : 1)
+                })
+                .padding(.top, safeArea.top)
+            }
+            .frame(maxHeight: .infinity)
+            .frame(height: headerHeight(with: size.height, and: progress),
+                   alignment: .top)
+            .offset(y: -minY)
+        }
+        .frame(height: headerHeight())
+        .zIndex(1000)
+
+
+    }
+
+    func headerHeight(with height: CGFloat? = 0,
+                      and progress: CGFloat? = 1) -> CGFloat {
+        guard let height, let progress else { return 250 - minimumHeaderHeight }
+        var currentHeight = 250 - (height * progress)
+        currentHeight = currentHeight < minimumHeaderHeight ? minimumHeaderHeight : currentHeight
+        print(currentHeight)
+        return currentHeight
+    }
+
+    var minimumHeaderHeight: CGFloat {
+        65 + safeArea.top
     }
 }
 
@@ -27,8 +116,6 @@ struct HomeProfileView: View {
                 .frame(width: 60, height: 60)
                 .background(Color.gray)
                 .clipShape(Circle())
-
-
 
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Hola 👋")

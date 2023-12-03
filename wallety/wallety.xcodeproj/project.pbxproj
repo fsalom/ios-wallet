@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */; };
 		C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040A2B18BFB60014F906 /* walletyApp.swift */; };
 		C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040C2B18BFB60014F906 /* ContentView.swift */; };
 		C16D040F2B18BFB60014F906 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040E2B18BFB60014F906 /* Item.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		C16D04072B18BFB60014F906 /* wallety.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallety.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16D040A2B18BFB60014F906 /* walletyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletyApp.swift; sourceTree = "<group>"; };
 		C16D040C2B18BFB60014F906 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -44,6 +46,68 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		C10EAC0B2B1B262C006C1A0D /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC112B1B265F006C1A0D /* UseCases */,
+				C10EAC102B1B2658006C1A0D /* Respositories */,
+				C10EAC0F2B1B2653006C1A0D /* Entities */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		C10EAC0C2B1B2631006C1A0D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC0E2B1B2647006C1A0D /* Repositories */,
+				C10EAC0D2B1B2641006C1A0D /* DataSources */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		C10EAC0D2B1B2641006C1A0D /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		C10EAC0E2B1B2647006C1A0D /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		C10EAC0F2B1B2653006C1A0D /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		C10EAC102B1B2658006C1A0D /* Respositories */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Respositories;
+			sourceTree = "<group>";
+		};
+		C10EAC112B1B265F006C1A0D /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		C10EAC122B1B94DF006C1A0D /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		C16D03FE2B18BFB60014F906 = {
 			isa = PBXGroup;
 			children = (
@@ -63,10 +127,13 @@
 		C16D04092B18BFB60014F906 /* wallety */ = {
 			isa = PBXGroup;
 			children = (
-				C10EAC0A2B19D8C0006C1A0D /* Resources */,
+				C10EAC122B1B94DF006C1A0D /* Helper */,
+				C10EAC0C2B1B2631006C1A0D /* Data */,
+				C10EAC0B2B1B262C006C1A0D /* Domain */,
 				C16D041A2B18EEF10014F906 /* Presentation */,
 				C16D040C2B18BFB60014F906 /* ContentView.swift */,
 				C16D040E2B18BFB60014F906 /* Item.swift */,
+				C10EAC0A2B19D8C0006C1A0D /* Resources */,
 				C16D04122B18BFB70014F906 /* Preview Content */,
 			);
 			path = wallety;
@@ -185,6 +252,7 @@
 			files = (
 				C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */,
 				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
+				C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */,
 				C16D040F2B18BFB60014F906 /* Item.swift in Sources */,
 				C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */,
 			);
