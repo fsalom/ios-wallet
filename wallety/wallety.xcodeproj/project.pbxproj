@@ -10,6 +10,9 @@
 		C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */; };
 		C10EAC162B1D21ED006C1A0D /* AssetUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC152B1D21ED006C1A0D /* AssetUseCaseProtocol.swift */; };
 		C10EAC182B1D2202006C1A0D /* AssetUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC172B1D2202006C1A0D /* AssetUseCase.swift */; };
+		C10EAC1D2B1D22AB006C1A0D /* LocalCoinDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC1C2B1D22AB006C1A0D /* LocalCoinDataSourceProtocol.swift */; };
+		C10EAC1F2B1D22C2006C1A0D /* RemoteCoinDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC1E2B1D22C2006C1A0D /* RemoteCoinDataSourceProtocol.swift */; };
+		C10EAC222B1D2369006C1A0D /* RemoteCoincapDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC212B1D2369006C1A0D /* RemoteCoincapDataSource.swift */; };
 		C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040A2B18BFB60014F906 /* walletyApp.swift */; };
 		C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040C2B18BFB60014F906 /* ContentView.swift */; };
 		C16D040F2B18BFB60014F906 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040E2B18BFB60014F906 /* Item.swift */; };
@@ -22,6 +25,9 @@
 		C10EAC132B1B94EC006C1A0D /* ScrollDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollDetector.swift; sourceTree = "<group>"; };
 		C10EAC152B1D21ED006C1A0D /* AssetUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetUseCaseProtocol.swift; sourceTree = "<group>"; };
 		C10EAC172B1D2202006C1A0D /* AssetUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetUseCase.swift; sourceTree = "<group>"; };
+		C10EAC1C2B1D22AB006C1A0D /* LocalCoinDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCoinDataSourceProtocol.swift; sourceTree = "<group>"; };
+		C10EAC1E2B1D22C2006C1A0D /* RemoteCoinDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCoinDataSourceProtocol.swift; sourceTree = "<group>"; };
+		C10EAC212B1D2369006C1A0D /* RemoteCoincapDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCoincapDataSource.swift; sourceTree = "<group>"; };
 		C16D04072B18BFB60014F906 /* wallety.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallety.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16D040A2B18BFB60014F906 /* walletyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletyApp.swift; sourceTree = "<group>"; };
 		C16D040C2B18BFB60014F906 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -128,6 +134,8 @@
 		C10EAC1A2B1D224F006C1A0D /* Remote */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC202B1D22DF006C1A0D /* coincap */,
+				C10EAC1E2B1D22C2006C1A0D /* RemoteCoinDataSourceProtocol.swift */,
 			);
 			path = Remote;
 			sourceTree = "<group>";
@@ -135,8 +143,17 @@
 		C10EAC1B2B1D2261006C1A0D /* Local */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC1C2B1D22AB006C1A0D /* LocalCoinDataSourceProtocol.swift */,
 			);
 			path = Local;
+			sourceTree = "<group>";
+		};
+		C10EAC202B1D22DF006C1A0D /* coincap */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC212B1D2369006C1A0D /* RemoteCoincapDataSource.swift */,
+			);
+			path = coincap;
 			sourceTree = "<group>";
 		};
 		C16D03FE2B18BFB60014F906 = {
@@ -282,7 +299,10 @@
 			files = (
 				C16D040D2B18BFB60014F906 /* ContentView.swift in Sources */,
 				C10EAC182B1D2202006C1A0D /* AssetUseCase.swift in Sources */,
+				C10EAC222B1D2369006C1A0D /* RemoteCoincapDataSource.swift in Sources */,
+				C10EAC1F2B1D22C2006C1A0D /* RemoteCoinDataSourceProtocol.swift in Sources */,
 				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
+				C10EAC1D2B1D22AB006C1A0D /* LocalCoinDataSourceProtocol.swift in Sources */,
 				C10EAC142B1B94EC006C1A0D /* ScrollDetector.swift in Sources */,
 				C16D040F2B18BFB60014F906 /* Item.swift in Sources */,
 				C10EAC162B1D21ED006C1A0D /* AssetUseCaseProtocol.swift in Sources */,
