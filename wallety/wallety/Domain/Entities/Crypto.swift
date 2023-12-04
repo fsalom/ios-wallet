@@ -13,6 +13,9 @@ class Crypto: Identifiable {
     var symbol: String
     var name: String
     var priceUsd: Float
+    var imageUrl: URL {
+        return URL(string: "https://assets.coincap.io/assets/icons/\(symbol.lowercased())@2x.png")!
+    }
 
     init(id: String, symbol: String, name: String, priceUsd: Float) {
         self.reference = id
