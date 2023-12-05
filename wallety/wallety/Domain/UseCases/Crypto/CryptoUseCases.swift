@@ -17,4 +17,8 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     func getTopCryptos() async throws -> [Crypto] {
         try await repository.getTopCrypto()
     }
+
+    func getMyCryptos() async throws -> [Crypto] {
+        try await repository.getTopCrypto()
+    }
 }
