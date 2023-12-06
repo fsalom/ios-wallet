@@ -3,7 +3,7 @@ import SwiftUI
 enum TabbedItems: Int, CaseIterable{
     case home = 0
     case favorite
-    case chat
+    case portfolio
     case profile
 
     var title: String{
@@ -12,8 +12,8 @@ enum TabbedItems: Int, CaseIterable{
             return "Home"
         case .favorite:
             return "Favorite"
-        case .chat:
-            return "Chat"
+        case .portfolio:
+            return "Portfolio"
         case .profile:
             return "Profile"
         }
@@ -25,8 +25,8 @@ enum TabbedItems: Int, CaseIterable{
             return "house"
         case .favorite:
             return "star"
-        case .chat:
-            return "gearshape"
+        case .portfolio:
+            return "folder"
         case .profile:
             return "person"
         }
@@ -48,7 +48,7 @@ struct MainTabbedView: View {
                     TopCryptosBuilder().build()
                         .tag(1)
 
-                    HomeBuilder().build()
+                    MyPortfolioBuilder().build()
                         .tag(2)
 
                     TopCryptosBuilder().build()
