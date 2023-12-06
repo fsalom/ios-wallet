@@ -8,8 +8,9 @@
 class TopCryptosBuilder {
     func build() -> TopCryptosView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
-
-        let repository = CryptoRepository(remoteDataSource: networkDataSource)
+        let localDataSource = CryptoDBDataSource(swiftDataManager: SwiftDataManager())
+        let repository = CryptoRepository(localDataSource: localDataSource,
+                                          remoteDataSource: networkDataSource)
         let useCase = CryptoUseCases(repository: repository)
 
         let viewModel = TopCryptosViewModel(useCase: useCase)

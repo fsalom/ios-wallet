@@ -25,7 +25,7 @@ struct TopCryptosView: View {
     @ViewBuilder
     func CryptoRow(with crypto: Crypto) -> some View {
         HStack {
-            AsyncImage(url: URL(string: crypto.imageUrl)) { image in
+            AsyncImage(url: crypto.imageUrl) { image in
                 image.resizable()
                     .frame(width: 40, height: 40)
                     .background(Color.white)
@@ -54,16 +54,6 @@ struct TopCryptosView: View {
     }
 }
 
-
-
-class MockUseCase: CryptoUseCasesProtocol{
-    func getTopCryptos() async throws -> [Crypto] {
-        [Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00)
-        ]
-    }
-}
 #Preview {
-    TopCryptosView(VM: TopCryptosViewModel(useCase: MockUseCase()))
+    TopCryptosView(VM: TopCryptosViewModel(useCase: CryptoMockUseCases()))
 }
