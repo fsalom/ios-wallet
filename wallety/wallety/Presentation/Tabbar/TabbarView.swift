@@ -86,6 +86,7 @@ extension MainTabbedView{
             Image(systemName: imageName)
                 .resizable()
                 .renderingMode(.template)
+                .aspectRatio(contentMode: .fit)
                 .foregroundColor(isActive ? .black : .gray)
                 .frame(width: 20, height: 20)
 
