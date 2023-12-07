@@ -10,7 +10,7 @@ import Foundation
 class MyPortfolioBuilder {
     func build() -> MyPortfolioView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
-        let localDataSource = CryptoDBDataSource(swiftDataManager: SwiftDataManager())
+        let localDataSource = CryptoDBDataSource(swiftDataManager: SwiftDataManager.shared)
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource)
         let useCase = CryptoUseCases(repository: repository)
