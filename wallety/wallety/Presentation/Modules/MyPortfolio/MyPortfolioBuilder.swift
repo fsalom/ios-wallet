@@ -6,11 +6,12 @@
 //
 
 import Foundation
+import SwiftData
 
 class MyPortfolioBuilder {
-    func build() -> MyPortfolioView {
+    func build(with container: ModelContainer) -> MyPortfolioView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
-        let localDataSource = CryptoDBDataSource(swiftDataManager: SwiftDataManager.shared)
+        let localDataSource = CryptoDBDataSource(with: container)
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource)
         let useCase = CryptoUseCases(repository: repository)

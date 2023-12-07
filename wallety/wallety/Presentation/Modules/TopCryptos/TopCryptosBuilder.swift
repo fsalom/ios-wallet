@@ -4,11 +4,12 @@
 //
 //  Created by Fernando Salom Carratala on 4/12/23.
 //
+import SwiftData
 
 class TopCryptosBuilder {
-    func build() -> TopCryptosView {
+    func build(with container: ModelContainer) -> TopCryptosView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
-        let localDataSource = CryptoDBDataSource(swiftDataManager: SwiftDataManager.shared)
+        let localDataSource = CryptoDBDataSource(with: container)
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource)
         let useCase = CryptoUseCases(repository: repository)

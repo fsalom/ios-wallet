@@ -34,7 +34,7 @@ enum TabbedItems: Int, CaseIterable{
 }
 
 struct MainTabbedView: View {
-
+    @Environment(\.modelContext) private var context
     @State var selectedTab = 0
 
     var body: some View {
@@ -42,16 +42,16 @@ struct MainTabbedView: View {
         ZStack(alignment: .bottom){
             TabView(selection: $selectedTab) {
                 Group {
-                    HomeBuilder().build()
+                    HomeBuilder().build(with: context.container)
                         .tag(0)
 
-                    TopCryptosBuilder().build()
+                    TopCryptosBuilder().build(with: context.container)
                         .tag(1)
 
-                    MyPortfolioBuilder().build()
+                    MyPortfolioBuilder().build(with: context.container)
                         .tag(2)
 
-                    TopCryptosBuilder().build()
+                    TopCryptosBuilder().build(with: context.container)
                         .tag(3)
                 }.toolbarBackground(.hidden, for: .tabBar)
             }
@@ -60,11 +60,11 @@ struct MainTabbedView: View {
                 HStack{
                     ForEach((TabbedItems.allCases), id: \.self){ item in
                         Button{
-                            withAnimation {
-                                selectedTab = item.rawValue
-                            }
+                            selectedTab = item.rawValue
                         } label: {
-                            CustomTabItem(imageName: item.iconName, title: item.title, isActive: (selectedTab == item.rawValue))
+                            CustomTabItem(imageName: item.iconName,
+                                          title: item.title,
+                                          isActive: (selectedTab == item.rawValue))
                         }
                     }
                 }
