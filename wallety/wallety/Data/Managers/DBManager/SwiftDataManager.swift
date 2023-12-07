@@ -8,38 +8,30 @@
 import Foundation
 import SwiftData
 
-class SwiftDataManager {
-    var container: ModelContainer = {
-        let schema = Schema([
-            CryptoDBO.self,
-            CryptoPortfolioDBO.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+class SwiftDataManager{
+    static let shared = SwiftDataManager()
+    var container: ModelContainer!
+    var context: ModelContext!
 
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
+    init(){
+        do{
+            container = try ModelContainer(for: CryptoDBO.self, CryptoPortfolioDBO.self)
+            guard let container else {
+                fatalError("ERROR with model container")
+            }
+            context = ModelContext(container)
+            print(sqliteCommand)
         }
-    }()
-
-    func getT<T>(item: T) -> T where T : PersistentModel  {
-        item
+        catch{
+            print(error)
+        }
     }
 
-    func fetchAll<T>(_ item: T.Type) async throws -> [T] where T : PersistentModel{
-        try await container.mainContext.fetch(FetchDescriptor<T>())
-    }
-
-    func fetch<T>(item: T) async throws -> T? where T : PersistentModel {
-        try await container.mainContext.fetch(FetchDescriptor<T>(), batchSize: 1).first
-    }
-
-    func insert<T>(item: T) async where T : PersistentModel {
-        await container.mainContext.insert(item)
-    }
-
-    func save() async throws {
-        try await container.mainContext.save()
+    var sqliteCommand: String {
+        if let url = container?.configurations.first?.url.path(percentEncoded: false) {
+            "🗄️ sqlite3 \"\(url)\""
+        } else {
+            "🗄️ No SQLite database found."
+        }
     }
 }
