@@ -6,11 +6,16 @@ final class CryptoPortfolioDBO {
     @Attribute(.unique) var id: UUID = UUID()
     var quantity: Float
     var priceUsd: Float
-    var crypto: CryptoDBO?
+    var name: String
+    var symbol: String
 
-    init(quantity: Float, crypto: CryptoDBO, priceUsd: Float) {
+    init(quantity: Float,
+         priceUsd: Float,
+         name: String,
+         symbol: String) {
         self.quantity = quantity
         self.priceUsd = priceUsd
-        self.crypto = crypto
+        self.name = name
+        self.symbol = symbol
     }
 }

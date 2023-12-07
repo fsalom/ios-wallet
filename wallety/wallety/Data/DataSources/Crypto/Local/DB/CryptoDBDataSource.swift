@@ -9,43 +9,44 @@ import Foundation
 import SwiftData
 
 class CryptoDBDataSource: LocalCryptoDataSourceProtocol {
-    var swiftDataManager: SwiftDataManager
+    
+    private var context: ModelContext
 
-    init(swiftDataManager: SwiftDataManager) {
-        self.swiftDataManager = swiftDataManager
+    init(with container: ModelContainer) {
+        context = ModelContext(container)
     }
 
     func save(these cryptos: [CryptoDBO]) async throws {
         for crypto in cryptos {
-            swiftDataManager.context?.insert(crypto)
-            try swiftDataManager.context?.save()
+            context.insert(crypto)
         }
+        try context.save()
     }
 
     func save(this crypto: CryptoDBO)  async throws {
-        swiftDataManager.context?.insert(crypto)
-        try swiftDataManager.context?.save()
+        context.insert(crypto)
+        try context.save()
     }
 
     func getCryptos() async throws -> [CryptoDBO] {
-        try swiftDataManager.context?.fetch(FetchDescriptor<CryptoDBO>()) ?? []
+        try context.fetch(FetchDescriptor<CryptoDBO>())
     }
 
     func getCrypto(with symbol: String) async throws -> CryptoDBO? {
-        try swiftDataManager.context?.fetch(FetchDescriptor<CryptoDBO>(
+        try context.fetch(FetchDescriptor<CryptoDBO>(
             predicate: #Predicate {
                 $0.symbol == symbol
             })
         ).first
     }
 
-    func getMyCryptoPortfolio() async throws -> [CryptoPortfolioDBO] {
-        try swiftDataManager.context?.fetch(FetchDescriptor<CryptoPortfolioDBO>()) ?? []
+    func getCryptoPortfolio() async throws -> [CryptoPortfolioDBO] {
+        try context.fetch(FetchDescriptor<CryptoPortfolioDBO>())
     }
 
     func addToMyPortfolio(this crypto: CryptoDBO, with quantity: Float) async throws {
-        let cryptoPorfolioDBO = CryptoPortfolioDBO(quantity: quantity, crypto: crypto, priceUsd: 0)
-        swiftDataManager.context?.insert(cryptoPorfolioDBO)
-        try swiftDataManager.context?.save()
+        let cryptoPorfolioDBO = CryptoPortfolioDBO(quantity: quantity, priceUsd: crypto.priceUsd, name: crypto.name, symbol: crypto.symbol)
+        context.insert(cryptoPorfolioDBO)
+        try context.save()
     }
 }
