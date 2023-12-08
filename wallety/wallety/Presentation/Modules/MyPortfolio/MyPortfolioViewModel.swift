@@ -17,12 +17,17 @@ class MyPortfolioViewModel: ObservableObject {
         self.useCase = useCase
     }
 
-    @MainActor
-    func load() async {
-        do {
-            self.cryptos = try await useCase.getMyCryptosPortfolio()
-        } catch {
-            self.error = "_ERROR_"
+    func load() {
+        Task {
+            do {
+                let (isUpdated, cryptos) = try await self.useCase.getIsUpdatedAndCryptosPortfolio()
+                if isUpdated { return }
+                await MainActor.run {
+                    self.cryptos = cryptos
+                }
+            } catch {
+                self.error = "_ERROR_"
+            }
         }
     }
 }

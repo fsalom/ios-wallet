@@ -1,5 +1,5 @@
 //
-//  TopCryptosViewModel.swift
+//  HomeViewModel.swift
 //  wallety
 //
 //  Created by Fernando Salom Carratala on 4/12/23.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-class TopCryptosViewModel: ObservableObject {
+class HomeViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
     @Published var error: String = ""
 
