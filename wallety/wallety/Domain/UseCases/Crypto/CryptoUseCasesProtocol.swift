@@ -8,5 +8,7 @@
 import Foundation
 
 protocol CryptoUseCasesProtocol {
-    func getTopCryptos() async throws -> [Crypto]
+    func getIsUpdatedAndCryptos() async throws -> (Bool, [Crypto])
+    func getIsUpdatedAndCryptosPortfolio() async throws -> (Bool, [CryptoPortfolio])
+    func addToMyPorfolio(this crypto: Crypto, with quantity: Float) async throws
 }

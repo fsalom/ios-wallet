@@ -14,11 +14,26 @@ class CryptoUseCases: CryptoUseCasesProtocol {
         self.repository = repository
     }
 
-    func getTopCryptos() async throws -> [Crypto] {
-        try await repository.getTopCrypto()
+    func getIsUpdatedAndCryptos() async throws -> (Bool, [Crypto]) {
+        try await repository.getIsUpdatedAndCryptos()
     }
 
-    func getMyCryptos() async throws -> [Crypto] {
-        try await repository.getTopCrypto()
+    func getIsUpdatedAndCryptosPortfolio() async throws -> (Bool, [CryptoPortfolio]) {
+        let (isUpdated, cryptosPortfolio) = try await repository.getIsUpdatedAndCryptosPortfolio()
+        var myCryptosPortolio: [CryptoPortfolio] = []
+        for portfolio in cryptosPortfolio {
+            guard let index = myCryptosPortolio.firstIndex(
+                where: {$0.crypto.symbol == portfolio.crypto.symbol}
+            ) else {
+                myCryptosPortolio.append(portfolio)
+                continue
+            }
+            myCryptosPortolio[index].quantity += portfolio.quantity
+        }
+        return (isUpdated, myCryptosPortolio)
+    }
+
+    func addToMyPorfolio(this crypto: Crypto, with quantity: Float) async throws {
+        try await repository.addToMyPorfolio(this: crypto, with: quantity)
     }
 }
