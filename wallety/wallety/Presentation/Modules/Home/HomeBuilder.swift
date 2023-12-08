@@ -14,7 +14,8 @@ class HomeBuilder {
         let localDataSource = CryptoDBDataSource(with: container)
         let repository = CryptoRepository(
             localDataSource: localDataSource,
-            remoteDataSource: networkDataSource)
+            remoteDataSource: networkDataSource,
+            cacheManager: UserDefaultsManager())
         let useCase = CryptoUseCases(repository: repository)
 
         let viewModel = HomeViewModel(useCase: useCase)

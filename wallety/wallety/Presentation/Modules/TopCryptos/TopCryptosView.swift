@@ -16,8 +16,8 @@ struct TopCryptosView: View {
                 ForEach(VM.cryptos) { crypto in
                     CryptoRow(with: crypto)
                 }
-            }).task {
-                await VM.load()
+            }).onAppear {
+                VM.load()
             }
         }
     }
