@@ -40,20 +40,30 @@ struct MainTabbedView: View {
     var body: some View {
 
         ZStack(alignment: .bottom){
-            TabView(selection: $selectedTab) {
-                Group {
-                    HomeBuilder().build(with: context.container)
-                        .tag(0)
-
-                    TopCryptosBuilder().build(with: context.container)
-                        .tag(1)
-
+            switch selectedTab {
+            case 0:
+                NavigationStack {
+                    Container.shared.getHomeView(with: context.container)
+                        .opacity(selectedTab == 0 ? 1 : 0)
+                }
+            case 1:
+                NavigationStack {
+                    Container.shared.getTopCryptosView(with: context.container)
+                        .opacity(selectedTab == 1 ? 1 : 0)
+                }
+            case 2:
+                NavigationStack {
                     MyPortfolioBuilder().build(with: context.container)
-                        .tag(2)
-
-                    TopCryptosBuilder().build(with: context.container)
-                        .tag(3)
-                }.toolbarBackground(.hidden, for: .tabBar)
+                        .opacity(selectedTab == 2 ? 1 : 0)
+                }
+            case 3:
+                NavigationStack {
+                    Container.shared.getTopCryptosView(with: context.container)
+                        .opacity(selectedTab == 3 ? 1 : 0)
+                }
+            default:
+                Container.shared.getHomeView(with: context.container)
+                    .opacity(selectedTab == 0 ? 1 : 0)
             }
 
             ZStack{

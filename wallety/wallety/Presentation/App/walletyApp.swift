@@ -26,8 +26,8 @@ struct walletyApp: App {
 
     var body: some Scene {
         WindowGroup {
+            //DefaultTabbarView()
             MainTabbedView()
-            //HomeView()
         }
         .modelContainer(container)
 
