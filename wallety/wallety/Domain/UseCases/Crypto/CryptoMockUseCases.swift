@@ -8,23 +8,29 @@
 import Foundation
 
 class CryptoMockUseCases: CryptoUseCasesProtocol {
-    func getTopCryptos() async throws -> [Crypto] {
-        [Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-          Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-          Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00)
-        ]
+    func getIsUpdatedAndCryptos() async throws -> (Bool, [Crypto]) {
+        (false,
+         [Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
+          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
+          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
+          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
+          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
+          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00)
+         ])
     }
 
-    func getMyCryptos() async throws -> [Crypto] {
-        [Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-          Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00),
-         Crypto(id: "", symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00)
-        ]
+    func getIsUpdatedAndCryptosPortfolio() async throws -> (Bool, [CryptoPortfolio]) {
+        let crypto = Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00)
+
+        return (false,
+                [CryptoPortfolio(crypto: crypto, quantity: 1.2),
+                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
+                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
+                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
+                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
+                 CryptoPortfolio(crypto: crypto, quantity: 1.2)])
+    }
+
+    func addToMyPorfolio(this crypto: Crypto, with quantity: Float) async throws {
     }
 }
