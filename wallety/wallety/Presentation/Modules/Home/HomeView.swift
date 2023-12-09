@@ -8,39 +8,29 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject var VM: HomeViewModel
+    
+    let safeArea: EdgeInsets = EdgeInsets()
+    
     var body: some View {
-
-        GeometryReader{
-            let size = $0.size
-            let safeArea = $0.safeAreaInsets
-            Home(size: size, safeArea: safeArea)
-                .ignoresSafeArea(.all, edges: .top)
-        }.background(Color.background)
-/*
-        HomeProfileView().padding(.horizontal, 20)
-        CurrentAmountView().padding(.horizontal, 20)
-        HorizontalListFavoriteAssetsView()
-        Text("Assets").padding(.horizontal, 20)
-        ListAssetsView().padding(.horizontal, 20)
-*/
+        NavigationStack {
+            GeometryReader{
+                let safeArea = $0.safeAreaInsets
+                ScrollView(.vertical) {
+                    VStack {
+                        HeaderView()
+                        HorizontalListFavoriteAssetsView()
+                        ListCryptoView(cryptos: VM.cryptos).padding(.horizontal, 20)
+                    }
+                }.scrollIndicators(.hidden)
+                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
+            }.background(Color.background)
+                .onAppear() {
+                    VM.load()
+                }
+        }
     }
-}
-
-struct Home: View {
-    let size: CGSize
-    let safeArea: EdgeInsets
-    @State private var offsetY: CGFloat = 0
-
-    var body: some View {
-        ScrollView(.vertical) {
-            VStack {
-                HeaderView()
-                HorizontalListFavoriteAssetsView()
-                ListAssetsView().padding(.horizontal, 20)
-            }
-        }.scrollIndicators(.hidden)
-    }
-
+    
     @ViewBuilder
     func HeaderView() -> some View {
         GeometryReader {
@@ -48,26 +38,12 @@ struct Home: View {
             let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
             let maxHeight = headerHeight()
             let progress = max(min((-minY / maxHeight), 1), 0)
-
+            
             ZStack {
                 Rectangle().fill(Color.background)
                 VStack(spacing: 0, content: {
-                    GeometryReader(content: { geometry in
-                        let rect = geometry.frame(in: .global)
-                        HStack {
-                            Image(.profile)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 50, height: 50)
-                                .clipShape(Circle())
-                            VStack(alignment: .leading, spacing: 5, content: {
-                                Text("Hola 👋")
-                                Text("Fernando Salom")
-                                    .fontWeight(.bold)
-                            }).padding(5)
-                                .opacity(1.0 - (progress * 2.5))
-                            Spacer()
-                        }.padding(.horizontal, 20)
+                    GeometryReader(content: { _ in
+                        HomeProfileView(progress: progress)
                     })
                     Text("42.123,34€")
                         .font(.largeTitle)
@@ -79,7 +55,6 @@ struct Home: View {
                         .padding(0)
                         .opacity(progress < 1 ? 0 : 1)
                 })
-                .padding(.top, safeArea.top)
             }
             .frame(maxHeight: .infinity)
             .frame(height: headerHeight(with: size.height, and: progress),
@@ -88,58 +63,40 @@ struct Home: View {
         }
         .frame(height: headerHeight())
         .zIndex(1000)
-
-
+        
+        
     }
-
+    
     func headerHeight(with height: CGFloat? = 0,
                       and progress: CGFloat? = 1) -> CGFloat {
         guard let height, let progress else { return 250 - minimumHeaderHeight }
         var currentHeight = 250 - (height * progress)
         currentHeight = currentHeight < minimumHeaderHeight ? minimumHeaderHeight : currentHeight
-        print(currentHeight)
         return currentHeight
     }
-
+    
     var minimumHeaderHeight: CGFloat {
         65 + safeArea.top
     }
 }
 
 struct HomeProfileView: View {
+    var progress: CGFloat
     var body: some View {
         HStack {
             Image(.profile)
                 .resizable()
-                .frame(width: 60, height: 60)
-                .background(Color.gray)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 50, height: 50)
                 .clipShape(Circle())
-
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Hola 👋")
                 Text("Fernando Salom")
                     .fontWeight(.bold)
             }).padding(5)
+                .opacity(1.0 - (progress * 2.5))
             Spacer()
-        }
-    }
-}
-
-struct CurrentAmountView: View {
-    var body: some View {
-        VStack() {
-            HStack(){
-                Text("39.284,02€")
-                    .font(.system(size: 50))
-                    .fontWeight(.bold)
-                Image(systemName: "arrow.up.forward")
-                    .colorInvert()
-                    .padding(5)
-                    .background(Color.black)
-                    .clipShape(RoundedRectangle(cornerSize: CGSize(width: 5, height: 5)))
-                Spacer()
-            }
-        }.frame(height: 150)
+        }.padding(.horizontal, 20)
     }
 }
 
@@ -174,38 +131,55 @@ struct HorizontalListFavoriteAssetsView: View {
     }
 }
 
-struct ListAssetsView: View {
+struct ListCryptoView: View {
+    @Environment(\.modelContext) private var context
+    
+    var cryptos: [Crypto]
     var body: some View {
         LazyVStack(spacing: 20, content: {
-            ForEach(1...10, id: \.self) { count in
-                HStack {
-                    Image(.bitcoin)
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .background(Color.white)
-                        .clipShape(Circle())
-
-
-                    VStack(alignment: .leading, content: {
-                        Text("Bitcoin")
-                            .fontWeight(.bold)
-                        Text("BTC")
-                    })
-                    Spacer()
-                    VStack(alignment: .trailing, content: {
-                        Text("36.541,00€")
-                            .fontWeight(.bold)
-                        Text("+12,23%")
-                    })
+            ForEach(cryptos) { crypto in
+                NavigationLink {
+                    CryptoDetailBuilder().build(with: crypto, and: context.container)
+                } label: {
+                    CryptoRow(with: crypto)
                 }
-                .padding(10)
-                .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
-
             }
         })
+    }
+    
+    @ViewBuilder
+    func CryptoRow(with crypto: Crypto) -> some View {
+        HStack {
+            AsyncImage(url: crypto.imageUrl) { image in
+                image.resizable()
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
+            }
+            
+            VStack(alignment: .leading, content: {
+                Text(crypto.name)
+                    .fontWeight(.bold)
+                Text(crypto.symbol)
+            })
+            Spacer()
+            VStack(alignment: .trailing, content: {
+                Text("$\(crypto.priceUsd)")
+                    .fontWeight(.bold)
+                Text("+12,23%")
+            })
+        }
+        .padding(10)
+        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+        .foregroundColor(.primary)
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(VM: HomeViewModel(useCase: CryptoMockUseCases()))
 }
