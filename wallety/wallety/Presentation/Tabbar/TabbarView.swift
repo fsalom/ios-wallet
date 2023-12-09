@@ -56,7 +56,7 @@ struct MainTabbedView: View {
                 }
             case 3:
                 NavigationStack {
-                    Container.shared.getTopCryptosView(with: context.container)
+                    ProfileView()
                         .opacity(selectedTab == 3 ? 1 : 0)
                 }
             default:
