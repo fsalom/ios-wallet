@@ -8,11 +8,12 @@
 import Foundation
 
 class CryptoPortfolio: Identifiable {
-    var id: String = UUID().uuidString
+    var id: UUID
     var crypto: Crypto
     var quantity: Float
 
-    init(crypto: Crypto, quantity: Float) {
+    init(id: UUID, crypto: Crypto, quantity: Float) {
+        self.id = id
         self.crypto = crypto
         self.quantity = quantity
     }
