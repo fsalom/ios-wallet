@@ -44,7 +44,7 @@ struct TopCryptosView: View {
             })
             Spacer()
             VStack(alignment: .trailing, content: {
-                Text("$\(crypto.priceUsd)")
+                Text("\(crypto.price)")
                     .fontWeight(.bold)
                 Text("+12,23%")
             })

@@ -11,7 +11,8 @@ class TopCryptosBuilder {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
         let localDataSource = CryptoDBDataSource(with: container)
         let repository = CryptoRepository(localDataSource: localDataSource,
-                                          remoteDataSource: networkDataSource)
+                                          remoteDataSource: networkDataSource,
+                                          cacheManager: UserDefaultsManager())
         let useCase = CryptoUseCases(repository: repository)
 
         let viewModel = TopCryptosViewModel(useCase: useCase)
