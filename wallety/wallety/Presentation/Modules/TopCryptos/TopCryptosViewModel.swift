@@ -10,6 +10,7 @@ import Foundation
 class TopCryptosViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
     @Published var error: String = ""
+    @Published var searchText: String = ""
 
     var useCase: CryptoUseCasesProtocol
 

@@ -19,7 +19,9 @@ struct TopCryptosView: View {
             }).onAppear {
                 VM.load()
             }
-        }
+            .padding(.horizontal, 20)
+        }.background(Color.background)
+            .searchable(text: $VM.searchText)
     }
 
     @ViewBuilder
@@ -31,10 +33,8 @@ struct TopCryptosView: View {
                     .background(Color.white)
                     .clipShape(Circle())
             } placeholder: {
-                Image(systemName: "star").resizable()
+                ProgressView()
                     .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
             }
 
             VStack(alignment: .leading, content: {

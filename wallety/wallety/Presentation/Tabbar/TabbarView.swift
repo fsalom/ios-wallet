@@ -42,10 +42,8 @@ struct MainTabbedView: View {
         ZStack(alignment: .bottom){
             switch selectedTab {
             case 0:
-                NavigationStack {
-                    Container.shared.getHomeView(with: context.container)
-                        .opacity(selectedTab == 0 ? 1 : 0)
-                }
+                Container.shared.getHomeView(with: context.container)
+                    .opacity(selectedTab == 0 ? 1 : 0)
             case 1:
                 NavigationStack {
                     Container.shared.getTopCryptosView(with: context.container)
@@ -80,9 +78,9 @@ struct MainTabbedView: View {
                 }
                 .padding(6)
             }
-            .frame(height: 70)
+            .frame(height: 60)
             .background(.white.opacity(1))
-            .cornerRadius(35)
+            .cornerRadius(30)
             .padding(.horizontal, 26)
             .shadow(radius: 1)
         }
@@ -102,9 +100,9 @@ extension MainTabbedView{
 
             Spacer()
         }
-        .frame(width: isActive ? 60 : 60, height: 60)
+        .frame(width: isActive ? 100 : 50, height: 50)
         .background(isActive ? .active.opacity(1) : .clear)
-        .cornerRadius(30)
+        .cornerRadius(25)
     }
 }
 

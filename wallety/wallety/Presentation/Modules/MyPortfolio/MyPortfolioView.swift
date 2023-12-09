@@ -16,8 +16,8 @@ struct MyPortfolioView: View {
                 ForEach(VM.cryptos) { crypto in
                     CryptoRow(with: crypto)
                 }
-            }).task {
-                await VM.load()
+            }).onAppear {
+                VM.load()
             }
         }
     }
@@ -44,7 +44,7 @@ struct MyPortfolioView: View {
             })
             Spacer()
             VStack(alignment: .trailing, content: {
-                Text("$\(portfolio.crypto.priceUsd)")
+                Text("$\(portfolio.crypto.priceUsd * portfolio.quantity)")
                     .fontWeight(.bold)
                 Text("\(portfolio.quantity)")
             })
