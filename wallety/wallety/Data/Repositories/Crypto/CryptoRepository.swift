@@ -20,6 +20,10 @@ class CryptoRepository: CryptoRepositoryProtocol {
         self.cacheManager = cacheManager
     }
 
+    func getCrypto(with symbol: String) async throws -> Crypto? {
+        try await localDataSource.getCrypto(with: symbol)?.toDomain()
+    }
+
     func getIsUpdatedAndCryptos() async throws -> (Bool, [Crypto]) {
         let isUpdated = !shouldUpdate(for: .top)
         let cryptosDBO = try await localDataSource.getCryptos()
@@ -27,9 +31,9 @@ class CryptoRepository: CryptoRepositoryProtocol {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
             try await save(these: cryptosDTO.map({$0.toDBO()}))
             setDate(for: .top)
-            return (true, cryptosDTO.map { $0.toDomain() })
+            return (false, cryptosDTO.map { $0.toDomain() })
         }
-        return (false, cryptosDBO.map({$0.toDomain()}))
+        return (isUpdated, cryptosDBO.map({$0.toDomain()}))
     }
 
     func getIsUpdatedAndCryptosPortfolio() async throws -> (Bool, [CryptoPortfolio]) {
@@ -38,15 +42,24 @@ class CryptoRepository: CryptoRepositoryProtocol {
                 try await localDataSource.getCryptoPortfolio().map({$0.toDomain()}))
     }
 
-    func addToMyPorfolio(this crypto: Crypto, with quantity: Float) async throws {
+    func addToMyPorfolio(this crypto: Crypto, with quantity: Float, and price: Float) async throws {
         guard let cryptoDBO = try await localDataSource.getCrypto(with: crypto.symbol) else {
             try await localDataSource.save(this: crypto.toDBO())
-            try await addToMyPorfolio(this: crypto, with: quantity)
+            try await addToMyPorfolio(this: crypto, with: quantity, and: price)
             return
         }
 
-        try await localDataSource.addToMyPortfolio(this: cryptoDBO, with: quantity)
+        try await localDataSource.addToMyPortfolio(this: cryptoDBO, with: quantity, and: price)
         setDate(for: .portfolio, isResetNeeded: true)
+    }
+
+    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolio] {
+        let cryptosPortfolio = try await localDataSource.getPortfolio(with: symbol)
+        return cryptosPortfolio.map { $0.toDomain() }
+    }
+
+    func delete(this portfolio: CryptoPortfolio) async throws {
+        try await localDataSource.delete(this: portfolio.id)
     }
 
     private func save(these cryptosDBO: [CryptoDBO]) async throws {
@@ -68,8 +81,8 @@ extension CryptoRepository {
 
         var seconds: Int {
             switch self {
-            case .top: return 3000
-            case .portfolio: return 3000
+            case .top: return 3
+            case .portfolio: return 3
             }
         }
     }
@@ -131,7 +144,8 @@ fileprivate extension Crypto {
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        return CryptoPortfolio(crypto: Crypto(
+        return CryptoPortfolio(id: id,
+                               crypto: Crypto(
             symbol: symbol,
             name: name,
             priceUsd: priceUsd),                               
