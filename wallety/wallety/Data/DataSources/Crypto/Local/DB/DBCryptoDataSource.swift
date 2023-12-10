@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-class CryptoDBDataSource: LocalCryptoDataSourceProtocol {
+class DBCryptoDataSource: LocalCryptoDataSourceProtocol {
     
     private var context: ModelContext
 
@@ -44,9 +44,23 @@ class CryptoDBDataSource: LocalCryptoDataSourceProtocol {
         try context.fetch(FetchDescriptor<CryptoPortfolioDBO>())
     }
 
-    func addToMyPortfolio(this crypto: CryptoDBO, with quantity: Float) async throws {
-        let cryptoPorfolioDBO = CryptoPortfolioDBO(quantity: quantity, priceUsd: crypto.priceUsd, name: crypto.name, symbol: crypto.symbol)
+    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolioDBO] {
+        try context.fetch(FetchDescriptor<CryptoPortfolioDBO>(
+            predicate: #Predicate {
+                $0.symbol == symbol
+            })
+        )
+    }
+
+    func addToMyPortfolio(this crypto: CryptoDBO, with quantity: Float, and price: Float) async throws {
+        let cryptoPorfolioDBO = CryptoPortfolioDBO(quantity: quantity, priceUsd: price, name: crypto.name, symbol: crypto.symbol)
         context.insert(cryptoPorfolioDBO)
-        try context.save()
+        try context.save()        
+    }
+
+    func delete(this id: UUID) async throws {
+        try context.delete(model: CryptoPortfolioDBO.self, where: #Predicate { portfolio in
+            portfolio.id == id
+        })
     }
 }

@@ -9,7 +9,7 @@ import SwiftData
 class TopCryptosBuilder {
     func build(with container: ModelContainer) -> TopCryptosView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
-        let localDataSource = CryptoDBDataSource(with: container)
+        let localDataSource = DBCryptoDataSource(with: container)
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource,
                                           cacheManager: UserDefaultsManager())
