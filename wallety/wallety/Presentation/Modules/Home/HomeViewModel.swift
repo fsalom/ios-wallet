@@ -9,6 +9,7 @@ import Foundation
 
 class HomeViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
+    @Published var total: String = "---"
     @Published var error: String = ""
 
     var useCase: CryptoUseCasesProtocol
@@ -21,9 +22,11 @@ class HomeViewModel: ObservableObject {
         Task {
             do {
                 let (isUpdated, cryptos) = try await self.useCase.getIsUpdatedAndCryptos()
+                let total = try await self.useCase.getTotal()
                 if isUpdated { return }
                 await MainActor.run {
                     self.cryptos = cryptos
+                    self.total = total
                 }
             } catch {
                 self.error = "_ERROR_"

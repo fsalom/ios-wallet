@@ -45,7 +45,7 @@ struct HomeView: View {
                     GeometryReader(content: { _ in
                         HomeProfileView(progress: progress)
                     })
-                    Text("42.123,34€")
+                    Text(VM.total)
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .scaleEffect(1 - (progress * 0.40))
@@ -169,7 +169,7 @@ struct ListCryptoView: View {
             })
             Spacer()
             VStack(alignment: .trailing, content: {
-                Text("$\(crypto.priceUsd)")
+                Text("\(crypto.price)")
                     .fontWeight(.bold)
                 Text("+12,23%")
             })
