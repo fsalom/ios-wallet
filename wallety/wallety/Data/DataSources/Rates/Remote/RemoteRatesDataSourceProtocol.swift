@@ -8,6 +8,6 @@
 import Foundation
 
 protocol RemoteRatesDataSourceProtocol {
-    func getRateUsd(with currency: String) async throws -> RateDTO
+    func getRateUsd(with currency: String) async throws -> RateDTO?
     func getRatesUsd() async throws -> [RateDTO]
 }

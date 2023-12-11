@@ -10,7 +10,7 @@ import Foundation
 struct RateDTO: Codable {
     var id: String
     var symbol: String
-    var currencySymbol: String
+    var currencySymbol: String?
     var type: String
     var rateUsd: String
 }
