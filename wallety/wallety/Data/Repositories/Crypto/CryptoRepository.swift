@@ -24,22 +24,21 @@ class CryptoRepository: CryptoRepositoryProtocol {
         try await localDataSource.getCrypto(with: symbol)?.toDomain()
     }
 
-    func getIsUpdatedAndCryptos() async throws -> (Bool, [Crypto]) {
+    func getCryptos() async throws -> [Crypto] {
         let isUpdated = !shouldUpdate(for: .top)
         let cryptosDBO = try await localDataSource.getCryptos()
         if cryptosDBO.isEmpty || !isUpdated {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
             try await save(these: cryptosDTO.map({$0.toDBO()}))
             setDate(for: .top)
-            return (false, cryptosDTO.map { $0.toDomain() })
+            return cryptosDTO.map { $0.toDomain() }
         }
-        return (isUpdated, cryptosDBO.map({$0.toDomain()}))
+        return cryptosDBO.map({$0.toDomain()})
     }
 
-    func getIsUpdatedAndCryptosPortfolio() async throws -> (Bool, [CryptoPortfolio]) {
-        let isUpdated = !shouldUpdate(for: .portfolio)
-        return (isUpdated,
-                try await localDataSource.getCryptoPortfolio().map({$0.toDomain()}))
+    func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
+
+        return try await localDataSource.getCryptoPortfolio().map({$0.toDomain()})
     }
 
     func addToMyPorfolio(this crypto: Crypto, with quantity: Float, and price: Float) async throws {
@@ -81,8 +80,8 @@ extension CryptoRepository {
 
         var seconds: Int {
             switch self {
-            case .top: return 3
-            case .portfolio: return 3
+            case .top: return 300
+            case .portfolio: return 300
             }
         }
     }

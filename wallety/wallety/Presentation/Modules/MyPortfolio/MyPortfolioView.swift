@@ -19,7 +19,8 @@ struct MyPortfolioView: View {
             }).onAppear {
                 VM.load()
             }
-        }
+            .padding(.horizontal, 20)
+        }.background(Color.background)
     }
 
     @ViewBuilder

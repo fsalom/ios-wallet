@@ -21,8 +21,7 @@ class TopCryptosViewModel: ObservableObject {
     func load() {
         Task {
             do {
-                let (isUpdated, cryptos) = try await self.useCase.getIsUpdatedAndCryptos()
-                if isUpdated { return }
+                let cryptos = try await self.useCase.getCryptos()
                 await MainActor.run {
                     self.cryptos = cryptos
                 }

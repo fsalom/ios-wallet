@@ -20,8 +20,7 @@ class MyPortfolioViewModel: ObservableObject {
     func load() {
         Task {
             do {
-                let (isUpdated, cryptos) = try await self.useCase.getIsUpdatedAndCryptosPortfolio()
-                if isUpdated { return }
+                let cryptos = try await self.useCase.getCryptosPortfolio()
                 await MainActor.run {
                     self.cryptos = cryptos
                 }
