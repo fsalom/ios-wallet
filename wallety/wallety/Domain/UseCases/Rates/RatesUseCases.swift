@@ -31,4 +31,8 @@ class RatesUseCases: RatesUseCasesProtocol {
     func getCurrentCurrency() async throws -> Rate {
         try await repository.getCurrentCurrency()
     }
+
+    func select(this currency: Rate) async throws {
+        try await repository.save(selected: currency)
+    }
 }

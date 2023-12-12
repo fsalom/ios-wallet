@@ -32,4 +32,16 @@ class DBRatesDataSource: LocalRatesDataSourceProtocol {
     func getRatesUsd() async throws -> [RateDBO] {
         try context.fetch(FetchDescriptor<RateDBO>())
     }
+
+    func save(selected rate: RateDBO) async throws {
+        context.insert(rate)
+    }
+
+    func getSelectedRate() async throws -> RateDBO? {
+        try context.fetch(FetchDescriptor<RateDBO>(
+            predicate: #Predicate {
+                $0.isSelected == true
+            })
+        ).first
+    }
 }

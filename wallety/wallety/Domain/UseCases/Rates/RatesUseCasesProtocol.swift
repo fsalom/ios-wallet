@@ -12,5 +12,6 @@ protocol RatesUseCasesProtocol {
     func getCurrency(with id: String) async throws -> Rate?
     func getCurrentCurrency() async throws -> Rate
     func getFilteredCurrenciesRates() async throws -> [Rate]
+    func select(this currency: Rate) async throws
 }
 

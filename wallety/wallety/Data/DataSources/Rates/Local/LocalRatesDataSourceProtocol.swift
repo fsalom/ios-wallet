@@ -11,4 +11,6 @@ protocol LocalRatesDataSourceProtocol {
     func getRateUsd(with id: String) async throws -> RateDBO?
     func getRatesUsd() async throws -> [RateDBO]
     func save(these rates: [RateDBO]) async throws
+    func save(selected rate: RateDBO) async throws
+    func getSelectedRate() async throws -> RateDBO?
 }
