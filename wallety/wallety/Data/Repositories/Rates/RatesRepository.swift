@@ -10,10 +10,14 @@ import Foundation
 class RatesRepository: RatesRepositoryProtocol {
     let localDataSource: LocalRatesDataSourceProtocol
     let remoteDataSource: RemoteRatesDataSourceProtocol
+    let cacheDataSource: CacheRatesDataSourceProtocol
 
-    init(localDataSource: LocalRatesDataSourceProtocol, remoteDataSource: RemoteRatesDataSourceProtocol) {
+    init(localDataSource: LocalRatesDataSourceProtocol,
+         remoteDataSource: RemoteRatesDataSourceProtocol,
+         cacheDataSource: CacheRatesDataSourceProtocol) {
         self.localDataSource = localDataSource
         self.remoteDataSource = remoteDataSource
+        self.cacheDataSource = cacheDataSource
     }
 
     func getRates() async throws -> [Rate] {
@@ -28,14 +32,14 @@ class RatesRepository: RatesRepositoryProtocol {
     }
 
     func getCurrentCurrency() async throws -> Rate {
-        guard let currentCurrency = try await localDataSource.getSelectedRate() else {
+        guard let currentCurrency = try await cacheDataSource.getSelectedRate() else {
             return Rate.default()
         }
         return currentCurrency.toDomain()
     }
 
     func save(selected currency: Rate) async throws {
-        try await localDataSource.save(selected: currency.toDBO())
+        try await cacheDataSource.save(selected: currency.toCacheDTO())
     }
 
     func save(these currencies: [Rate]) async throws {
@@ -51,6 +55,24 @@ fileprivate extension RateDTO {
              currencySymbol: currencySymbol ?? "-",
              symbol: symbol,
              rateUsd: Float(rateUsd) ?? 0.0)
+    }
+}
+
+fileprivate extension CacheRateDTO {
+    func toDomain() -> Rate {
+        Rate(uid: UUID().uuidString,
+             identifier: "from cache",
+             currencySymbol: currencySymbol ?? "-",
+             symbol: symbol,
+             rateUsd: Float(rateUsd) ?? 0.0)
+    }
+}
+
+fileprivate extension Rate {
+    func toCacheDTO() -> CacheRateDTO {
+        CacheRateDTO(symbol: symbol,
+                     currencySymbol: currencySymbol,
+                     rateUsd: "\(rateUsd)")
     }
 }
 
