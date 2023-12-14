@@ -55,5 +55,5 @@ struct TopCryptosView: View {
 }
 
 #Preview {
-    TopCryptosView(VM: TopCryptosViewModel(useCase: CryptoMockUseCases()))
+    TopCryptosView(VM: TopCryptosViewModel(cryptoUseCases: CryptoMockUseCases(), ratesUseCases: RatesMockUseCases()))
 }
