@@ -13,5 +13,7 @@ protocol LocalCryptoDataSourceProtocol {
     func getCryptos() async throws -> [CryptoDBO]
     func getCrypto(with symbol: String) async throws -> CryptoDBO?
     func getCryptoPortfolio() async throws -> [CryptoPortfolioDBO]
-    func addToMyPortfolio(this crypto: CryptoDBO, with quantity: Float) async throws
+    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolioDBO]
+    func addToMyPortfolio(this crypto: CryptoDBO, with quantity: Float, and price: Float) async throws
+    func delete(this id: UUID) async throws
 }
