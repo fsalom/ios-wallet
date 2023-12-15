@@ -8,6 +8,10 @@
 import Foundation
 
 class RatesMockUseCases: RatesUseCasesProtocol {
+    func select(this currency: Rate) async throws {
+        
+    }
+    
     func getFilteredCurrenciesRates() async throws -> [Rate] {
         []
     }
