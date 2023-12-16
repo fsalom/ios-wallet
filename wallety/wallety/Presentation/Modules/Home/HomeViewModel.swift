@@ -7,29 +7,108 @@
 
 import Foundation
 
+struct HomeData {
+    var cryptos: [Crypto]
+    var rates: [Rate]
+    var total: String
+    var currentCurrency: Rate
+}
+
 class HomeViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
+    @Published var rates: [Rate] = []
     @Published var total: String = "---"
     @Published var error: String = ""
+    @Published var currencySymbol: String = "-"
 
-    var useCase: CryptoUseCasesProtocol
+    var cryptoUseCases: CryptoUseCasesProtocol
+    var ratesUseCases: RatesUseCasesProtocol
+    private var currentCurrency: Rate {
+        didSet {
+            DispatchQueue.main.async {
+                self.currencySymbol = self.currentCurrency.currencySymbol
+            }
+        }
+    }
 
-    init(useCase: CryptoUseCasesProtocol) {
-        self.useCase = useCase
+    init(cryptoUseCases: CryptoUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol) {
+        self.cryptoUseCases = cryptoUseCases
+        self.ratesUseCases = ratesUseCases
+        self.currentCurrency = Rate.default()
     }
 
     func load() {
         Task {
             do {
-                let (isUpdated, cryptos) = try await self.useCase.getIsUpdatedAndCryptos()
-                let total = try await self.useCase.getTotal()
-                if isUpdated { return }
+                let data = try await loadData()
                 await MainActor.run {
-                    self.cryptos = cryptos
-                    self.total = total
+                    self.cryptos = data.cryptos
+                    self.rates = data.rates
+                    self.total = data.total
+                    self.currentCurrency = data.currentCurrency
                 }
             } catch {
                 self.error = "_ERROR_"
+            }
+        }
+    }
+
+    func loadData() async throws -> HomeData {
+        async let cryptos = try await getCryptos()
+        async let total = try await getTotal()
+        async let rates = try await getRates()
+        async let currentCurrency = try await getCurrentCurrency()
+        return try await HomeData(
+            cryptos: cryptos,
+            rates: rates,
+            total: total,
+            currentCurrency: currentCurrency)
+    }
+
+    func getCryptos() async throws -> [Crypto] {
+        let cryptos = try await self.cryptoUseCases.getCryptos()
+        return cryptos
+    }
+
+    func getRates() async throws -> [Rate] {
+        return try await self.ratesUseCases.getFilteredCurrenciesRates()
+    }
+
+    func getTotal() async throws -> String {
+        return try await self.cryptoUseCases.getTotal(with: currentCurrency)
+    }
+
+    func getCurrentCurrency() async throws -> Rate {
+        return try await self.ratesUseCases.getCurrentCurrency()
+    }
+
+    func select(this currency: Rate) {
+        currentCurrency = currency
+        updateCryptoCurrency()
+        save(this: currency)
+    }
+
+    private func save(this currency: Rate) {
+        Task {
+            do {
+                try await self.ratesUseCases.select(this: currency)
+            } catch {
+                self.error = "_ERROR_"
+            }
+        }
+    }
+
+    private func updateCryptoCurrency() {
+        Task {
+            let total = try await cryptoUseCases.getTotal(with: currentCurrency)
+            await MainActor.run {
+                var updatedCryptos: [Crypto] = []
+                self.cryptos.forEach { crypto in
+                    crypto.currency = currentCurrency
+                    updatedCryptos.append(crypto)
+                }
+                self.cryptos = updatedCryptos
+                self.total = total
             }
         }
     }

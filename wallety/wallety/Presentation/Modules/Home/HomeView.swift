@@ -9,13 +9,13 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
-    
+    @State private var showingPopover = false
+
     let safeArea: EdgeInsets = EdgeInsets()
-    
+
     var body: some View {
         NavigationStack {
-            GeometryReader{
-                let safeArea = $0.safeAreaInsets
+            GeometryReader { _ in
                 ScrollView(.vertical) {
                     VStack {
                         HeaderView()
@@ -24,13 +24,14 @@ struct HomeView: View {
                     }
                 }.scrollIndicators(.hidden)
                     .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
-            }.background(Color.background)
-                .onAppear() {
-                    VM.load()
-                }
+            }
+            .background(Color.background)
+            .onAppear() {
+                VM.load()
+            }
         }
     }
-    
+
     @ViewBuilder
     func HeaderView() -> some View {
         GeometryReader {
@@ -38,7 +39,7 @@ struct HomeView: View {
             let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
             let maxHeight = headerHeight()
             let progress = max(min((-minY / maxHeight), 1), 0)
-            
+
             ZStack {
                 Rectangle().fill(Color.background)
                 VStack(spacing: 0, content: {
@@ -63,26 +64,10 @@ struct HomeView: View {
         }
         .frame(height: headerHeight())
         .zIndex(1000)
-        
-        
     }
-    
-    func headerHeight(with height: CGFloat? = 0,
-                      and progress: CGFloat? = 1) -> CGFloat {
-        guard let height, let progress else { return 250 - minimumHeaderHeight }
-        var currentHeight = 250 - (height * progress)
-        currentHeight = currentHeight < minimumHeaderHeight ? minimumHeaderHeight : currentHeight
-        return currentHeight
-    }
-    
-    var minimumHeaderHeight: CGFloat {
-        65 + safeArea.top
-    }
-}
 
-struct HomeProfileView: View {
-    var progress: CGFloat
-    var body: some View {
+    @ViewBuilder
+    func HomeProfileView(progress: CGFloat) -> some View {
         HStack {
             Image(.profile)
                 .resizable()
@@ -96,9 +81,66 @@ struct HomeProfileView: View {
             }).padding(5)
                 .opacity(1.0 - (progress * 2.5))
             Spacer()
+            Button(VM.currencySymbol) {
+                showingPopover = true
+            }
+            .popover(isPresented: $showingPopover) {
+                ListCurrenciesView() .presentationDetents(
+                    [.medium, .large]
+                 )
+            }
+            .padding(10)
+            .background(Color.active)
+            .clipShape(Circle())
+            .fontWeight(.bold)
+
         }.padding(.horizontal, 20)
     }
+
+    @ViewBuilder
+    func ListCurrenciesView() -> some View {
+        ScrollView(.vertical, showsIndicators: false) {
+            LazyVStack(spacing: 10, content: {
+                ForEach(VM.rates) { currency in
+                    Button {
+                        showingPopover = false
+                        VM.select(this: currency)
+                    } label: {
+                        HStack(spacing: 10) {
+                            Text(currency.currencySymbol)
+                            .padding(10)
+                            .background(Color.active)
+                            .clipShape(Circle())
+                            VStack(alignment: .leading) {
+                                Text(currency.identifier).fontWeight(.bold)
+                                Text("1 \(currency.symbol) - USD \(currency.rateUsdFormatted)").font(.footnote)
+                            }
+                            Spacer()
+                        }
+                        .padding(10)
+                        .background(Color.white)
+                        .clipShape(
+                            RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                    }
+                }
+            }).padding(2)
+        }.contentMargins(.horizontal, 20, for: .scrollContent)
+    }
+
+    func headerHeight(with height: CGFloat? = 0,
+                      and progress: CGFloat? = 1) -> CGFloat {
+        guard let height, let progress else { return 250 - minimumHeaderHeight }
+        var currentHeight = 250 - (height * progress)
+        currentHeight = currentHeight < minimumHeaderHeight ? minimumHeaderHeight : currentHeight
+        return currentHeight
+    }
+
+    var minimumHeaderHeight: CGFloat {
+        65 + safeArea.top
+    }
 }
+
+
 
 struct HorizontalListFavoriteAssetsView: View {
     var body: some View {
@@ -133,7 +175,7 @@ struct HorizontalListFavoriteAssetsView: View {
 
 struct ListCryptoView: View {
     @Environment(\.modelContext) private var context
-    
+
     var cryptos: [Crypto]
     var body: some View {
         LazyVStack(spacing: 20, content: {
@@ -146,7 +188,7 @@ struct ListCryptoView: View {
             }
         })
     }
-    
+
     @ViewBuilder
     func CryptoRow(with crypto: Crypto) -> some View {
         HStack {
@@ -161,7 +203,7 @@ struct ListCryptoView: View {
                     .background(Color.white)
                     .clipShape(Circle())
             }
-            
+
             VStack(alignment: .leading, content: {
                 Text(crypto.name)
                     .fontWeight(.bold)
@@ -181,5 +223,5 @@ struct ListCryptoView: View {
 }
 
 #Preview {
-    HomeView(VM: HomeViewModel(useCase: CryptoMockUseCases()))
+    HomeView(VM: HomeViewModel(cryptoUseCases: CryptoMockUseCases(), ratesUseCases: RatesMockUseCases()))
 }
