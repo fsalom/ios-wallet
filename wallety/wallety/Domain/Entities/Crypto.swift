@@ -16,14 +16,16 @@ class Crypto: Identifiable {
     var imageUrl: URL {
         return URL(string: "https://assets.coincap.io/assets/icons/\(symbol.lowercased())@2x.png")!
     }
+    var currency: Rate = Rate.default()
+
     var price: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         formatter.maximumFractionDigits = 2
         formatter.decimalSeparator = ","
         formatter.groupingSeparator = "."
-        let number = NSNumber(value: priceUsd)
-        return "$\(formatter.string(from: number) ?? "-")"
+        let number = NSNumber(value: priceUsd/currency.rateUsd)
+        return "\(currency.currencySymbol)\(formatter.string(from: number) ?? "-")"
     }
 
     init(symbol: String, name: String, priceUsd: Float) {
