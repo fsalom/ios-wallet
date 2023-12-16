@@ -12,7 +12,7 @@ import SwiftData
 struct walletyApp: App {
     var container: ModelContainer! = {
             do {
-                let container = try ModelContainer(for: CryptoDBO.self, CryptoPortfolioDBO.self)
+                let container = try ModelContainer(for: CryptoDBO.self, CryptoPortfolioDBO.self, RateDBO.self)
                 if let url = container.configurations.first?.url.path(percentEncoded: false) {
                     print("🗄️ sqlite3 \"\(url)\"")
                 } else {
