@@ -12,6 +12,23 @@ struct ProfileView: View {
 
     var body: some View {
         List {
+            Section("Configuración") {
+                NavigationLink {
+                    List {
+                        Button(action: {
+                        }, label: {
+                            Text("€")
+                        })
+                        Button(action: {
+                        }, label: {
+                            Text("$")
+                        })
+                    }
+                } label: {
+                    Text("Cambiar moneda")
+                }
+
+            }
             Section("Ajustes") {
                 Button(action: {
                 }, label: {

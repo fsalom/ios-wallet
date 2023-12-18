@@ -45,7 +45,7 @@ struct MyPortfolioView: View {
             })
             Spacer()
             VStack(alignment: .trailing, content: {
-                Text("$\(portfolio.crypto.priceUsd * portfolio.quantity)")
+                Text(portfolio.valuePerQuantity)
                     .fontWeight(.bold)
                 Text("\(portfolio.quantity)")
             })
