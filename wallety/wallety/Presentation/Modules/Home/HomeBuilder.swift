@@ -26,8 +26,16 @@ class HomeBuilder {
                                               cacheDataSource: ratesCacheDataSource)
         let ratesUseCases = RatesUseCases(repository: ratesRepository)
 
+        let portfolioDataSource = DBCryptoPortfolioDataSource(with: container)
+        let portfolioRepository = CryptoPortfolioRepository(
+            localDataSource: portfolioDataSource)
+        let portfolioUseCases = CryptoPortfolioUseCases(
+            cryptoPortfolioRepository: portfolioRepository,
+            cryptoRepository: repository)
 
-        let viewModel = HomeViewModel(cryptoUseCases: cryptoUseCases, ratesUseCases: ratesUseCases)
+        let viewModel = HomeViewModel(cryptoUseCases: cryptoUseCases,
+                                      cryptoPortfolioUseCases: portfolioUseCases,
+                                      ratesUseCases: ratesUseCases)
         let view = HomeView(VM: viewModel)
         return view
     }

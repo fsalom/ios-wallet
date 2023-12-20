@@ -22,6 +22,7 @@ class HomeViewModel: ObservableObject {
     @Published var currencySymbol: String = "-"
 
     var cryptoUseCases: CryptoUseCasesProtocol
+    var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
     private var currentCurrency: Rate {
         didSet {
@@ -31,8 +32,11 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    init(cryptoUseCases: CryptoUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol) {
+    init(cryptoUseCases: CryptoUseCasesProtocol,
+         cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol,
+         ratesUseCases: RatesUseCasesProtocol) {
         self.cryptoUseCases = cryptoUseCases
+        self.cryptoPortfolioUseCases = cryptoPortfolioUseCases
         self.ratesUseCases = ratesUseCases
         self.currentCurrency = Rate.default()
     }
@@ -75,7 +79,7 @@ class HomeViewModel: ObservableObject {
     }
 
     func getTotal() async throws -> String {
-        return try await self.cryptoUseCases.getTotal(with: currentCurrency)
+        return try await self.cryptoPortfolioUseCases.getTotal(with: currentCurrency)
     }
 
     func getCurrentCurrency() async throws -> Rate {
@@ -100,7 +104,7 @@ class HomeViewModel: ObservableObject {
 
     private func updateCryptoCurrency() {
         Task {
-            let total = try await cryptoUseCases.getTotal(with: currentCurrency)
+            let total = try await cryptoPortfolioUseCases.getTotal(with: currentCurrency)
             await MainActor.run {
                 var updatedCryptos: [Crypto] = []
                 self.cryptos.forEach { crypto in

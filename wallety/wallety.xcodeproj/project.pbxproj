@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C10302742B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10302732B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift */; };
+		C10302772B322035005E8C54 /* DBCryptoPortfolioDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10302762B322035005E8C54 /* DBCryptoPortfolioDataSource.swift */; };
+		C103027B2B32219E005E8C54 /* CryptoPortfolioRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C103027A2B32219E005E8C54 /* CryptoPortfolioRepository.swift */; };
+		C103027E2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C103027D2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift */; };
+		C10302802B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C103027F2B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift */; };
 		C10EAC1D2B1D22AB006C1A0D /* LocalCryptoDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC1C2B1D22AB006C1A0D /* LocalCryptoDataSourceProtocol.swift */; };
 		C10EAC1F2B1D22C2006C1A0D /* RemoteCryptoDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC1E2B1D22C2006C1A0D /* RemoteCryptoDataSourceProtocol.swift */; };
 		C10EAC222B1D2369006C1A0D /* RemoteCoincapDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC212B1D2369006C1A0D /* RemoteCoincapDataSource.swift */; };
@@ -73,6 +78,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C10302732B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCryptoPortfolioDataSourceProtocol.swift; sourceTree = "<group>"; };
+		C10302762B322035005E8C54 /* DBCryptoPortfolioDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBCryptoPortfolioDataSource.swift; sourceTree = "<group>"; };
+		C103027A2B32219E005E8C54 /* CryptoPortfolioRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPortfolioRepository.swift; sourceTree = "<group>"; };
+		C103027D2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPortfolioRespositoryProtocol.swift; sourceTree = "<group>"; };
+		C103027F2B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPortfolioMockUseCases.swift; sourceTree = "<group>"; };
 		C10EAC1C2B1D22AB006C1A0D /* LocalCryptoDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCryptoDataSourceProtocol.swift; sourceTree = "<group>"; };
 		C10EAC1E2B1D22C2006C1A0D /* RemoteCryptoDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCryptoDataSourceProtocol.swift; sourceTree = "<group>"; };
 		C10EAC212B1D2369006C1A0D /* RemoteCoincapDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCoincapDataSource.swift; sourceTree = "<group>"; };
@@ -150,6 +160,56 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C103026E2B321F6A005E8C54 /* CryptoPortfolio */ = {
+			isa = PBXGroup;
+			children = (
+				C10302702B321F78005E8C54 /* Local */,
+			);
+			path = CryptoPortfolio;
+			sourceTree = "<group>";
+		};
+		C10302702B321F78005E8C54 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				C10302752B32200D005E8C54 /* DB */,
+				C10302732B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		C10302752B32200D005E8C54 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				C10302782B3220B3005E8C54 /* Table */,
+				C10302762B322035005E8C54 /* DBCryptoPortfolioDataSource.swift */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
+		C10302782B3220B3005E8C54 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				C10EAC552B1F581A006C1A0D /* CryptoPortfolioDBO.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		C10302792B32218B005E8C54 /* CryptoPortfolio */ = {
+			isa = PBXGroup;
+			children = (
+				C103027A2B32219E005E8C54 /* CryptoPortfolioRepository.swift */,
+			);
+			path = CryptoPortfolio;
+			sourceTree = "<group>";
+		};
+		C103027C2B322326005E8C54 /* CryptoPortfolio */ = {
+			isa = PBXGroup;
+			children = (
+				C103027D2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift */,
+			);
+			path = CryptoPortfolio;
+			sourceTree = "<group>";
+		};
 		C10EAC0A2B19D8C0006C1A0D /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -181,6 +241,7 @@
 		C10EAC0D2B1B2641006C1A0D /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
+				C103026E2B321F6A005E8C54 /* CryptoPortfolio */,
 				C17916DF2B25B44F00C7798A /* Rates */,
 				C10EAC192B1D2245006C1A0D /* Crypto */,
 			);
@@ -190,6 +251,7 @@
 		C10EAC0E2B1B2647006C1A0D /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				C10302792B32218B005E8C54 /* CryptoPortfolio */,
 				C17916F72B26524D00C7798A /* Rates */,
 				C10EAC352B1DE012006C1A0D /* Crypto */,
 			);
@@ -209,6 +271,7 @@
 		C10EAC102B1B2658006C1A0D /* Respositories */ = {
 			isa = PBXGroup;
 			children = (
+				C103027C2B322326005E8C54 /* CryptoPortfolio */,
 				C17916F22B25BA1E00C7798A /* Rates */,
 				C10EAC302B1DDF96006C1A0D /* Crypto */,
 			);
@@ -348,7 +411,6 @@
 			isa = PBXGroup;
 			children = (
 				C10EAC532B1F56F4006C1A0D /* CryptoDBO.swift */,
-				C10EAC552B1F581A006C1A0D /* CryptoPortfolioDBO.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -606,6 +668,7 @@
 			children = (
 				C17917002B27280B00C7798A /* CryptoPortfolioUseCasesProtocol.swift */,
 				C17917022B27281E00C7798A /* CryptoPortfolioUseCases.swift */,
+				C103027F2B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift */,
 			);
 			path = CryptoPortfolio;
 			sourceTree = "<group>";
@@ -707,11 +770,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C10EAC4E2B1E0164006C1A0D /* CryptoMockUseCases.swift in Sources */,
+				C10302802B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift in Sources */,
 				C10EAC632B1FD356006C1A0D /* MyPortfolioView.swift in Sources */,
 				C17916E12B25B46700C7798A /* DBRatesDataSource.swift in Sources */,
 				C10EAC412B1DE19B006C1A0D /* TopCryptosViewModel.swift in Sources */,
 				C10EAC602B1FCD76006C1A0D /* CryptoPortfolio.swift in Sources */,
 				C17916F12B25B7CB00C7798A /* RateDBO.swift in Sources */,
+				C10302742B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift in Sources */,
 				C10EAC562B1F581A006C1A0D /* CryptoPortfolioDBO.swift in Sources */,
 				C10EAC3D2B1DE112006C1A0D /* CryptoUseCases.swift in Sources */,
 				C10EAC4A2B1DFEEF006C1A0D /* HomeBuilder.swift in Sources */,
@@ -725,6 +790,7 @@
 				C10EAC222B1D2369006C1A0D /* RemoteCoincapDataSource.swift in Sources */,
 				C10EAC6C2B2062A8006C1A0D /* AddAssetBuilder.swift in Sources */,
 				C10EAC342B1DDFD5006C1A0D /* Crypto.swift in Sources */,
+				C103027E2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift in Sources */,
 				C17917032B27281E00C7798A /* CryptoPortfolioUseCases.swift in Sources */,
 				C17916F92B26525E00C7798A /* RatesRepository.swift in Sources */,
 				C10EAC752B206347006C1A0D /* CryptoViewModel.swift in Sources */,
@@ -750,6 +816,7 @@
 				C17916DE2B24C5CD00C7798A /* ProfileViewModel.swift in Sources */,
 				C10EAC1D2B1D22AB006C1A0D /* LocalCryptoDataSourceProtocol.swift in Sources */,
 				C10EAC482B1DF078006C1A0D /* DBCryptoDataSource.swift in Sources */,
+				C10302772B322035005E8C54 /* DBCryptoPortfolioDataSource.swift in Sources */,
 				C10EAC512B1E0E37006C1A0D /* TabbarView.swift in Sources */,
 				C10EAC5B2B1F5D5A006C1A0D /* DBManagerProtocol.swift in Sources */,
 				C10EAC6E2B2062B3006C1A0D /* AddAssetView.swift in Sources */,
@@ -761,6 +828,7 @@
 				C17916EE2B25B54300C7798A /* RateDTO.swift in Sources */,
 				C10EAC432B1DE1A7006C1A0D /* TopCryptosView.swift in Sources */,
 				C17917082B273D2F00C7798A /* RateInfoDTO.swift in Sources */,
+				C103027B2B32219E005E8C54 /* CryptoPortfolioRepository.swift in Sources */,
 				C10EAC282B1DDE45006C1A0D /* RemoteManagerProtocol.swift in Sources */,
 				C17916EA2B25B4B200C7798A /* CoincapRatesDataSource.swift in Sources */,
 				C1F826102B29B108007AE951 /* CacheRatesDataSourceProtocol.swift in Sources */,

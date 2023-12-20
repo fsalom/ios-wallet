@@ -33,9 +33,9 @@ class CryptoDetailViewModel: ObservableObject {
     private var priceToAdd: Float = 0.0
     private var quantityToAdd: Float = 0.0
 
-    var useCase: CryptoUseCasesProtocol
+    var useCase: CryptoPortfolioUseCasesProtocol
 
-    init(crypto: Crypto, useCase: CryptoUseCasesProtocol) {
+    init(crypto: Crypto, useCase: CryptoPortfolioUseCasesProtocol) {
         self.crypto = crypto
         self.useCase = useCase
         self.priceText = "\(crypto.priceUsd)"

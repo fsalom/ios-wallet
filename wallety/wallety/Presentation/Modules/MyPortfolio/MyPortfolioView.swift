@@ -56,5 +56,5 @@ struct MyPortfolioView: View {
 }
 
 #Preview {
-    MyPortfolioView(VM: MyPortfolioViewModel(useCase: CryptoMockUseCases()))
+    MyPortfolioView(VM: MyPortfolioViewModel(useCase: CryptoPortfolioMockUseCases()))
 }

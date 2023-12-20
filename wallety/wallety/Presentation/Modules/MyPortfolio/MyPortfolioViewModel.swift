@@ -11,9 +11,9 @@ class MyPortfolioViewModel: ObservableObject {
     @Published var cryptos: [CryptoPortfolio] = []
     @Published var error: String = ""
 
-    var useCase: CryptoUseCasesProtocol
+    var useCase: CryptoPortfolioUseCasesProtocol
 
-    init(useCase: CryptoUseCasesProtocol) {
+    init(useCase: CryptoPortfolioUseCasesProtocol) {
         self.useCase = useCase
     }
 

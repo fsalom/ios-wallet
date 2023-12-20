@@ -15,7 +15,14 @@ class CryptoDetailBuilder {
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource,
                                           cacheManager: UserDefaultsManager())
-        let useCase = CryptoUseCases(repository: repository)
+
+        let portfolioLocalDataSource = DBCryptoPortfolioDataSource(
+            with: container)
+        let cryptoPortfolioRepository = CryptoPortfolioRepository(
+            localDataSource: portfolioLocalDataSource)
+        let useCase = CryptoPortfolioUseCases(
+            cryptoPortfolioRepository: cryptoPortfolioRepository,
+            cryptoRepository: repository)
 
         let viewModel = CryptoDetailViewModel(crypto: crypto, useCase: useCase)
         let view = CryptoDetailView(VM: viewModel)

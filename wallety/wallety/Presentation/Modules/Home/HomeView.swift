@@ -223,5 +223,7 @@ struct ListCryptoView: View {
 }
 
 #Preview {
-    HomeView(VM: HomeViewModel(cryptoUseCases: CryptoMockUseCases(), ratesUseCases: RatesMockUseCases()))
+    HomeView(VM: HomeViewModel(cryptoUseCases: CryptoMockUseCases(),
+                               cryptoPortfolioUseCases: CryptoPortfolioMockUseCases(),
+                               ratesUseCases: RatesMockUseCases()))
 }

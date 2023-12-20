@@ -14,10 +14,15 @@ class MyPortfolioBuilder {
         let localDataSource = DBCryptoDataSource(with: container)
         let repository = CryptoRepository(localDataSource: localDataSource,
                                           remoteDataSource: networkDataSource,
-                                          cacheManager: UserDefaultsManager())
-        let useCase = CryptoUseCases(repository: repository)
-
-        let viewModel = MyPortfolioViewModel(useCase: useCase)
+                                          cacheManager: UserDefaultsManager())        
+        let portfolioDataSource = DBCryptoPortfolioDataSource(with: container)
+        let portfolioRepository = CryptoPortfolioRepository(
+            localDataSource: portfolioDataSource)
+        let portfolioUseCases = CryptoPortfolioUseCases(
+            cryptoPortfolioRepository: portfolioRepository,
+            cryptoRepository: repository)
+        
+        let viewModel = MyPortfolioViewModel(useCase: portfolioUseCases)
         let view = MyPortfolioView(VM: viewModel)
         return view
     }
