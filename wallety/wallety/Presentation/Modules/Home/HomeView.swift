@@ -81,50 +81,7 @@ struct HomeView: View {
             }).padding(5)
                 .opacity(1.0 - (progress * 2.5))
             Spacer()
-            Button(VM.currencySymbol) {
-                showingPopover = true
-            }
-            .popover(isPresented: $showingPopover) {
-                ListCurrenciesView() .presentationDetents(
-                    [.medium, .large]
-                 )
-            }
-            .padding(10)
-            .background(Color.active)
-            .clipShape(Circle())
-            .fontWeight(.bold)
-
         }.padding(.horizontal, 20)
-    }
-
-    @ViewBuilder
-    func ListCurrenciesView() -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            LazyVStack(spacing: 10, content: {
-                ForEach(VM.rates) { currency in
-                    Button {
-                        showingPopover = false
-                        VM.select(this: currency)
-                    } label: {
-                        HStack(spacing: 10) {
-                            Text(currency.currencySymbol)
-                            .padding(10)
-                            .background(Color.active)
-                            .clipShape(Circle())
-                            VStack(alignment: .leading) {
-                                Text(currency.identifier).fontWeight(.bold)
-                                Text("1 \(currency.symbol) - USD \(currency.rateUsdFormatted)").font(.footnote)
-                            }
-                            Spacer()
-                        }
-                        .padding(10)
-                        .background(Color.white)
-                        .clipShape(
-                            RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                    }
-                }
-            }).padding(2)
-        }.contentMargins(.horizontal, 20, for: .scrollContent)
     }
 
     func headerHeight(with height: CGFloat? = 0,

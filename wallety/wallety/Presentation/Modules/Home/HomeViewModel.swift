@@ -19,18 +19,11 @@ class HomeViewModel: ObservableObject {
     @Published var rates: [Rate] = []
     @Published var total: String = "---"
     @Published var error: String = ""
-    @Published var currencySymbol: String = "-"
 
     var cryptoUseCases: CryptoUseCasesProtocol
     var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
-    private var currentCurrency: Rate {
-        didSet {
-            DispatchQueue.main.async {
-                self.currencySymbol = self.currentCurrency.currencySymbol
-            }
-        }
-    }
+    private var currentCurrency: Rate
 
     init(cryptoUseCases: CryptoUseCasesProtocol,
          cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol,
@@ -84,22 +77,6 @@ class HomeViewModel: ObservableObject {
 
     func getCurrentCurrency() async throws -> Rate {
         return try await self.ratesUseCases.getCurrentCurrency()
-    }
-
-    func select(this currency: Rate) {
-        currentCurrency = currency
-        updateCryptoCurrency()
-        save(this: currency)
-    }
-
-    private func save(this currency: Rate) {
-        Task {
-            do {
-                try await self.ratesUseCases.select(this: currency)
-            } catch {
-                self.error = "_ERROR_"
-            }
-        }
     }
 
     private func updateCryptoCurrency() {

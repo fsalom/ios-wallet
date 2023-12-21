@@ -56,7 +56,7 @@ struct MainTabbedView: View {
                 }
             case 3:
                 NavigationStack {
-                    ProfileView()
+                    ProfileBuilder().build(with: context.container)
                         .opacity(selectedTab == 3 ? 1 : 0)
                 }
             default:
