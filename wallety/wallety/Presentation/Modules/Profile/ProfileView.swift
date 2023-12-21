@@ -9,19 +9,21 @@ import SwiftUI
 
 struct ProfileView: View {
     @Environment(\.modelContext) private var context
+    @ObservedObject var VM: ProfileViewModel
 
     var body: some View {
         List {
             Section("Configuración") {
                 NavigationLink {
-                    List {
+                    List(VM.currencies) { currency in
                         Button(action: {
+                            VM.select(this: currency)
                         }, label: {
-                            Text("€")
-                        })
-                        Button(action: {
-                        }, label: {
-                            Text("$")
+                            HStack {
+                                if currency.symbol == VM.currentCurrency.symbol { Image(systemName: "checkmark")
+                                }
+                                Text("\(currency.currencySymbol)")
+                            }
                         })
                     }
                 } label: {
@@ -35,10 +37,12 @@ struct ProfileView: View {
                     Text("Borrar base de datos")
                 })
             }
+        }.onAppear {
+            VM.load()
         }
     }
 }
 
 #Preview {
-    ProfileView()
+    ProfileView(VM: ProfileViewModel(useCase: RatesMockUseCases()))
 }
