@@ -14,5 +14,5 @@ protocol LocalCryptoPortfolioDataSourceProtocol {
                           symbol: String,
                           with quantity: Float,
                           and price: Float) async throws
-    func delete(this id: UUID) async throws
+    func delete(this portfolio: CryptoPortfolioDBO) async throws
 }

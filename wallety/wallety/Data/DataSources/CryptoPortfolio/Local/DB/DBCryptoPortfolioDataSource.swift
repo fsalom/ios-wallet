@@ -39,9 +39,7 @@ class DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
         try context.save()
     }
 
-    func delete(this id: UUID) async throws {
-        try context.delete(model: CryptoPortfolioDBO.self, where: #Predicate { portfolio in
-            portfolio.id == id
-        })
+    func delete(this portfolio: CryptoPortfolioDBO) async throws {
+        context.delete(portfolio)
     }
 }

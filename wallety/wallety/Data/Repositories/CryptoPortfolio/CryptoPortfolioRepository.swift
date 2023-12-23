@@ -15,7 +15,6 @@ class CryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol {
     }
 
     func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
-
         return try await localDataSource.getCryptoPortfolio().map({$0.toDomain()})
     }
 
@@ -35,17 +34,25 @@ class CryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol {
     }
 
     func delete(this portfolio: CryptoPortfolio) async throws {
-        try await localDataSource.delete(this: portfolio.id)
+        try await localDataSource.delete(this: portfolio.toDBO())
     }
 }
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        return CryptoPortfolio(id: id,
-                               crypto: Crypto(
+        return CryptoPortfolio(crypto: Crypto(
             symbol: symbol,
             name: name,
             priceUsd: priceUsd),
             quantity: quantity)
+    }
+}
+
+fileprivate extension CryptoPortfolio {
+    func toDBO() -> CryptoPortfolioDBO {
+        return CryptoPortfolioDBO(quantity: quantity,
+                                  priceUsd: crypto.priceUsd,
+                                  name: crypto.name,
+                                  symbol: crypto.symbol)
     }
 }
