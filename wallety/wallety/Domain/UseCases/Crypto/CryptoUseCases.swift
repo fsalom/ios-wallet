@@ -21,4 +21,13 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     func getCryptos() async throws -> [Crypto] {
         try await repository.getCryptos()
     }
+
+    func update(these cryptos: [Crypto], with currency: Rate) -> [Crypto] {
+        var updatedCryptos: [Crypto] = []
+        cryptos.forEach { crypto in
+            crypto.currency = currency
+            updatedCryptos.append(crypto)
+        }
+        return updatedCryptos
+    }
 }

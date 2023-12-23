@@ -10,4 +10,5 @@ import Foundation
 protocol CryptoUseCasesProtocol {
     func getCrypto(with symbol: String) async throws -> Crypto?
     func getCryptos() async throws -> [Crypto]
+    func update(these cryptos: [Crypto], with currency: Rate) -> [Crypto]
 }
