@@ -10,7 +10,6 @@ import Foundation
 class TopCryptosViewModel: ObservableObject {
     struct TopCryptoData {
         var cryptos: [Crypto]
-        var rate: Rate
     }
 
     @Published var cryptos: [Crypto] = []
@@ -30,7 +29,7 @@ class TopCryptosViewModel: ObservableObject {
             do {
                 let data = try await loadData()
                 await MainActor.run {
-                    self.cryptos = updateCurrency(for: data.cryptos, with: data.rate)
+                    self.cryptos = data.cryptos
                 }
             } catch {
                 self.error = "_ERROR_"
@@ -42,16 +41,7 @@ class TopCryptosViewModel: ObservableObject {
         async let cryptos = try await self.cryptoUseCases.getCryptos()
         async let currentCurrency = try await self.ratesUseCases.getCurrentCurrency()
         return try await TopCryptoData(
-            cryptos: cryptos,
-            rate: currentCurrency)
-    }
-
-    private func updateCurrency(for cryptos: [Crypto], with currency: Rate) -> [Crypto] {
-        var updatedCryptos: [Crypto] = []
-        cryptos.forEach { crypto in
-            crypto.currency = currency
-            updatedCryptos.append(crypto)
-        }
-        return cryptos
+            cryptos: self.cryptoUseCases.update(these: cryptos, with: currentCurrency)
+        )
     }
 }
