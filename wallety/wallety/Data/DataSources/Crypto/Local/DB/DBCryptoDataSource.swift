@@ -28,6 +28,10 @@ actor DBCryptoDataSource: LocalCryptoDataSourceProtocol {
         try context.save()
     }
 
+    func deleteAll() async throws {
+        try context.delete(model: CryptoDBO.self)
+    }
+
     func getCryptos() async throws -> [CryptoDBO] {
         try context.fetch(FetchDescriptor<CryptoDBO>())
     }

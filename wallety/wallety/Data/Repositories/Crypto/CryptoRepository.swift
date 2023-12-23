@@ -29,7 +29,8 @@ class CryptoRepository: CryptoRepositoryProtocol {
         let cryptosDBO = try await localDataSource.getCryptos()
         if cryptosDBO.isEmpty || !isUpdated {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
-            try await save(these: cryptosDTO.map({$0.toDBO()}))
+            try await localDataSource.deleteAll()
+            try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
             setDate(for: .top)
             return cryptosDTO.map { $0.toDomain() }
         }
@@ -118,8 +119,7 @@ fileprivate extension Crypto {
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        return CryptoPortfolio(id: id,
-                               crypto: Crypto(
+        return CryptoPortfolio(crypto: Crypto(
             symbol: symbol,
             name: name,
             priceUsd: priceUsd),                               

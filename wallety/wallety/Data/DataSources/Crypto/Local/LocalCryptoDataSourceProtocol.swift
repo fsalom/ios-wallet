@@ -10,6 +10,7 @@ import Foundation
 protocol LocalCryptoDataSourceProtocol {
     func save(these cryptos: [CryptoDBO])  async throws
     func save(this crypto: CryptoDBO)  async throws
+    func deleteAll() async throws
     func getCryptos() async throws -> [CryptoDBO]
     func getCrypto(with symbol: String) async throws -> CryptoDBO?    
 }
