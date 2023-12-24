@@ -43,7 +43,8 @@ fileprivate extension CryptoPortfolioDBO {
         return CryptoPortfolio(crypto: Crypto(
             symbol: symbol,
             name: name,
-            priceUsd: priceUsd),
+            priceUsd: priceUsd, 
+            changePercent24Hr: 0.0),
             quantity: quantity)
     }
 }

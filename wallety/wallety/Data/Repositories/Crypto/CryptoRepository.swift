@@ -91,13 +91,15 @@ fileprivate extension CryptoCoinCapDTO {
     func toDomain() -> Crypto {
         return Crypto(symbol: self.symbol,
                       name: self.name,
-                      priceUsd: Float(self.priceUsd) ?? 0.0)
+                      priceUsd: Float(self.priceUsd) ?? 0.0,
+                      changePercent24Hr: Float(changePercent24Hr) ?? 0.0)
     }
 
     func toDBO() -> CryptoDBO {
         return CryptoDBO(name: self.name,
                          symbol: self.symbol,
-                         priceUsd: Float(self.priceUsd) ?? 0.0)
+                         priceUsd: Float(self.priceUsd) ?? 0.0,
+                         changePercent24Hr: Float(changePercent24Hr) ?? 0.0)
     }
 }
 
@@ -105,7 +107,8 @@ fileprivate extension CryptoDBO {
     func toDomain() -> Crypto {
         return Crypto(symbol: self.symbol,
                       name: self.name,
-                      priceUsd: self.priceUsd)
+                      priceUsd: self.priceUsd,
+                      changePercent24Hr: self.changePercent24Hr ?? 0.0)
     }
 }
 
@@ -113,7 +116,8 @@ fileprivate extension Crypto {
     func toDBO() -> CryptoDBO {
         return CryptoDBO(name: self.name,
                          symbol: self.symbol,
-                         priceUsd: self.priceUsd)
+                         priceUsd: self.priceUsd,
+                         changePercent24Hr: self.changePercent24Hr)
     }
 }
 
@@ -122,7 +126,8 @@ fileprivate extension CryptoPortfolioDBO {
         return CryptoPortfolio(crypto: Crypto(
             symbol: symbol,
             name: name,
-            priceUsd: priceUsd),                               
+            priceUsd: priceUsd,
+            changePercent24Hr: 0.0),
             quantity: quantity)
     }
 }
