@@ -3,6 +3,7 @@ import SwiftData
 
 @Model
 final class CryptoPortfolioDBO {
+    @Attribute(.unique) var id:String
     var quantity: Float
     var priceUsd: Float
     var name: String
@@ -12,6 +13,7 @@ final class CryptoPortfolioDBO {
          priceUsd: Float,
          name: String,
          symbol: String) {
+        self.id = UUID().uuidString
         self.quantity = quantity
         self.priceUsd = priceUsd
         self.name = name

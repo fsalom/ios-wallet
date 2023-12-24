@@ -8,7 +8,7 @@
 import Foundation
 
 class CryptoPortfolio: Identifiable {
-    var id: UUID
+    var id: UUID = UUID()
     var crypto: Crypto
     var quantity: Float
     var currency: Rate = Rate.default()
@@ -22,8 +22,7 @@ class CryptoPortfolio: Identifiable {
         return "\(currency.currencySymbol)\(formatter.string(from: number) ?? "-")"
     }
 
-    init(id: UUID, crypto: Crypto, quantity: Float) {
-        self.id = id
+    init(crypto: Crypto, quantity: Float) {
         self.crypto = crypto
         self.quantity = quantity
     }
