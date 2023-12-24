@@ -31,7 +31,7 @@ class HomeBuilder {
             localDataSource: portfolioDataSource)
         let portfolioUseCases = CryptoPortfolioUseCases(
             cryptoPortfolioRepository: portfolioRepository,
-            cryptoRepository: repository)
+            cryptoRepository: repository, ratesRepository: ratesRepository)
 
         let viewModel = HomeViewModel(cryptoUseCases: cryptoUseCases,
                                       cryptoPortfolioUseCases: portfolioUseCases,

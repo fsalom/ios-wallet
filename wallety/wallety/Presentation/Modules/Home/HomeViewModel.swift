@@ -55,8 +55,10 @@ class HomeViewModel: ObservableObject {
         async let total = try await getTotal()
         async let rates = try await getRates()
         async let currentCurrency = try await getCurrentCurrency()
+
         return try await HomeData(
-            cryptos: cryptos,
+            cryptos: cryptoUseCases.update(these: cryptos,
+                                           with: currentCurrency),
             rates: rates,
             total: total,
             currentCurrency: currentCurrency)
@@ -72,25 +74,10 @@ class HomeViewModel: ObservableObject {
     }
 
     func getTotal() async throws -> String {
-        return try await self.cryptoPortfolioUseCases.getTotal(with: currentCurrency)
+        return try await self.cryptoPortfolioUseCases.getTotal()
     }
 
     func getCurrentCurrency() async throws -> Rate {
         return try await self.ratesUseCases.getCurrentCurrency()
-    }
-
-    private func updateCryptoCurrency() {
-        Task {
-            let total = try await cryptoPortfolioUseCases.getTotal(with: currentCurrency)
-            await MainActor.run {
-                var updatedCryptos: [Crypto] = []
-                self.cryptos.forEach { crypto in
-                    crypto.currency = currentCurrency
-                    updatedCryptos.append(crypto)
-                }
-                self.cryptos = updatedCryptos
-                self.total = total
-            }
-        }
     }
 }
