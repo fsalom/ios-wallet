@@ -12,6 +12,7 @@ struct MyPortfolioView: View {
 
     var body: some View {
         ScrollView(.vertical) {
+            Text(VM.total)
             LazyVStack(content: {
                 ForEach(VM.cryptos) { crypto in
                     CryptoRow(with: crypto)
@@ -56,5 +57,6 @@ struct MyPortfolioView: View {
 }
 
 #Preview {
-    MyPortfolioView(VM: MyPortfolioViewModel(useCase: CryptoPortfolioMockUseCases()))
+    MyPortfolioView(VM: MyPortfolioViewModel(portfolioUseCases: CryptoPortfolioMockUseCases(),
+                                             ratesUseCases: RatesMockUseCases()))
 }

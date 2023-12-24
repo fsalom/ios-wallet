@@ -9,24 +9,42 @@ import Foundation
 
 class MyPortfolioViewModel: ObservableObject {
     @Published var cryptos: [CryptoPortfolio] = []
+    @Published var total: String = ""
     @Published var error: String = ""
 
-    var useCase: CryptoPortfolioUseCasesProtocol
+    struct PortfolioData {
+        var cryptosPorfolio: [CryptoPortfolio]
+    }
 
-    init(useCase: CryptoPortfolioUseCasesProtocol) {
-        self.useCase = useCase
+    var portfolioUseCases: CryptoPortfolioUseCasesProtocol
+    var ratesUseCases: RatesUseCasesProtocol
+
+    init(portfolioUseCases: CryptoPortfolioUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol) {
+        self.portfolioUseCases = portfolioUseCases
+        self.ratesUseCases = ratesUseCases
     }
 
     func load() {
         Task {
             do {
-                let cryptos = try await self.useCase.getCryptosPortfolio()
+                let data = try await loadData()
+                let total = try await self.portfolioUseCases.getTotal(of: cryptos)
                 await MainActor.run {
-                    self.cryptos = cryptos
+                    self.cryptos = data.cryptosPorfolio
+                    self.total = total
                 }
             } catch {
                 self.error = "_ERROR_"
             }
         }
+    }
+
+    private func loadData() async throws -> PortfolioData  {
+        async let cryptos = try await self.portfolioUseCases.getCryptosPortfolio()
+        async let currentCurrency = try await self.ratesUseCases.getCurrentCurrency()
+        return try await PortfolioData(
+            cryptosPorfolio: self.portfolioUseCases.update(these: cryptos,
+                                                           with: currentCurrency)
+        )
     }
 }

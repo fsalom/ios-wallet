@@ -18,11 +18,22 @@ class MyPortfolioBuilder {
         let portfolioDataSource = DBCryptoPortfolioDataSource(with: container)
         let portfolioRepository = CryptoPortfolioRepository(
             localDataSource: portfolioDataSource)
+        let ratesLocalDataSource = DBRatesDataSource(with: container)
+        let ratesRemoteDataSource = CoincapRatesDataSource(networkManager: NetworkManager())
+        let ratesCacheDataSource = UDRatesDataSource(with: UserDefaultsManager())
+        let ratesRepository = RatesRepository(localDataSource: ratesLocalDataSource,
+                                              remoteDataSource: ratesRemoteDataSource,
+                                              cacheDataSource: ratesCacheDataSource)
+
         let portfolioUseCases = CryptoPortfolioUseCases(
             cryptoPortfolioRepository: portfolioRepository,
-            cryptoRepository: repository)
-        
-        let viewModel = MyPortfolioViewModel(useCase: portfolioUseCases)
+            cryptoRepository: repository, 
+            ratesRepository: ratesRepository)
+
+        let ratesUseCases = RatesUseCases(repository: ratesRepository)
+
+        let viewModel = MyPortfolioViewModel(portfolioUseCases: portfolioUseCases,
+                                             ratesUseCases: ratesUseCases)
         let view = MyPortfolioView(VM: viewModel)
         return view
     }
