@@ -12,4 +12,5 @@ struct CryptoCoinCapDTO: Codable {
     var symbol: String
     var name: String
     var priceUsd: String
+    var changePercent24Hr: String
 }

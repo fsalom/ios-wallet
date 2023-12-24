@@ -17,6 +17,7 @@ class Crypto: Identifiable {
         return URL(string: "https://assets.coincap.io/assets/icons/\(symbol.lowercased())@2x.png")!
     }
     var currency: Rate = Rate.default()
+    var changePercent24Hr: Float
 
     var price: String {
         let formatter = NumberFormatter()
@@ -28,10 +29,21 @@ class Crypto: Identifiable {
         return "\(currency.currencySymbol)\(formatter.string(from: number) ?? "-")"
     }
 
-    init(symbol: String, name: String, priceUsd: Float) {
+    var changePercent24HrFormatted: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = ","
+        formatter.groupingSeparator = "."
+        let number = NSNumber(value: changePercent24Hr)
+        return "\(changePercent24Hr > 0 ? "+" : "")\(formatter.string(from: number) ?? "-")"
+    }
+
+    init(symbol: String, name: String, priceUsd: Float, changePercent24Hr: Float) {
         self.reference = name.lowercased()
         self.symbol = symbol
         self.name = name
+        self.changePercent24Hr = changePercent24Hr
         self.priceUsd = priceUsd
     }
 }
