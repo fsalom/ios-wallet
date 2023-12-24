@@ -18,5 +18,7 @@ protocol CryptoPortfolioUseCasesProtocol {
     func getTotalAndQuantityFormatted(
         of cryptosPortfolio: [CryptoPortfolio]) async throws -> (String, String)
     func delete(this portfolio: CryptoPortfolio) async throws
-    func getTotal(with currency: Rate) async throws -> String
+    func getTotal() async throws -> String
+    func getTotal(of cryptosPorfolio:[CryptoPortfolio]) async throws -> String
+    func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio]
 }

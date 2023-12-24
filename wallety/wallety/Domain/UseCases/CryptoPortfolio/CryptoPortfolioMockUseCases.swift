@@ -8,6 +8,10 @@
 import Foundation
 
 class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
+    func getTotal(of cryptosPorfolio: [CryptoPortfolio]) async throws -> String {
+        ""
+    }
+    
     func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
         []
     }
@@ -26,7 +30,11 @@ class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
 
     func delete(this portfolio: CryptoPortfolio) async throws { }
 
-    func getTotal(with currency: Rate) async throws -> String {
+    func getTotal() async throws -> String {
         ""
+    }
+    
+    func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio] {
+        cryptos
     }
 }

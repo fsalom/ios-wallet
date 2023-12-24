@@ -10,10 +10,14 @@ import Foundation
 class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
     let cryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol
     let cryptoRepository: CryptoRepositoryProtocol
+    let ratesRepository: RatesRepositoryProtocol
 
-    init(cryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol, cryptoRepository: CryptoRepositoryProtocol) {
+    init(cryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol,
+         cryptoRepository: CryptoRepositoryProtocol,
+         ratesRepository: RatesRepositoryProtocol) {
         self.cryptoPortfolioRepository = cryptoPortfolioRepository
         self.cryptoRepository = cryptoRepository
+        self.ratesRepository = ratesRepository
     }
 
     func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
@@ -63,8 +67,8 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
         try await cryptoPortfolioRepository.delete(this: portfolio)
     }
 
-    func getTotal(with currency: Rate = Rate.default()) async throws -> String {
-        let cryptosPortfolio = try await getCryptosPortfolio()
+    func getTotal(of cryptosPortfolio: [CryptoPortfolio]) async throws -> String {
+        let currency = try await ratesRepository.getCurrentCurrency()
         var total: Float = 0.0
         for cryptoPortfolio in cryptosPortfolio {
             let currentCrypto = try await cryptoRepository.getCrypto(with: cryptoPortfolio.crypto.symbol)
@@ -75,6 +79,30 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
         }
         guard let priceFormatted = format(this: total) else { return "bad format" }
         return currency.currencySymbol + priceFormatted
+    }
+
+    func getTotal() async throws -> String {
+        let currency = try await ratesRepository.getCurrentCurrency()
+        let cryptosPortfolio = try await cryptoPortfolioRepository.getCryptosPortfolio()
+        var total: Float = 0.0
+        for cryptoPortfolio in cryptosPortfolio {
+            let currentCrypto = try await cryptoRepository.getCrypto(with: cryptoPortfolio.crypto.symbol)
+            guard let currentCrypto else {
+                return "missing crypto"
+            }
+            total += cryptoPortfolio.quantity * (currentCrypto.priceUsd/currency.rateUsd)
+        }
+        guard let priceFormatted = format(this: total) else { return "bad format" }
+        return currency.currencySymbol + priceFormatted
+    }
+
+    func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio] {
+        var updatedCryptos: [CryptoPortfolio] = []
+        cryptos.forEach { crypto in
+            crypto.currency = currency
+            updatedCryptos.append(crypto)
+        }
+        return updatedCryptos
     }
 }
 
