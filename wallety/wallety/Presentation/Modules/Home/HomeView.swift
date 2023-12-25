@@ -170,7 +170,7 @@ struct ListCryptoView: View {
             VStack(alignment: .trailing, content: {
                 Text("\(crypto.price)")
                     .fontWeight(.bold)
-                Text("+12,23%")
+                Text("\(crypto.changePercent24HrFormatted)%")
             })
         }
         .padding(10)
