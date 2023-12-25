@@ -9,14 +9,12 @@ import Foundation
 
 struct HomeData {
     var cryptos: [Crypto]
-    var rates: [Rate]
     var total: String
     var currentCurrency: Rate
 }
 
 class HomeViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
-    @Published var rates: [Rate] = []
     @Published var total: String = "---"
     @Published var error: String = ""
 
@@ -40,7 +38,6 @@ class HomeViewModel: ObservableObject {
                 let data = try await loadData()
                 await MainActor.run {
                     self.cryptos = data.cryptos
-                    self.rates = data.rates
                     self.total = data.total
                     self.currentCurrency = data.currentCurrency
                 }
@@ -53,13 +50,11 @@ class HomeViewModel: ObservableObject {
     func loadData() async throws -> HomeData {
         async let cryptos = try await getCryptos()
         async let total = try await getTotal()
-        async let rates = try await getRates()
         async let currentCurrency = try await getCurrentCurrency()
 
         return try await HomeData(
             cryptos: cryptoUseCases.update(these: cryptos,
                                            with: currentCurrency),
-            rates: rates,
             total: total,
             currentCurrency: currentCurrency)
     }
@@ -67,10 +62,6 @@ class HomeViewModel: ObservableObject {
     func getCryptos() async throws -> [Crypto] {
         let cryptos = try await self.cryptoUseCases.getCryptos()
         return cryptos
-    }
-
-    func getRates() async throws -> [Rate] {
-        return try await self.ratesUseCases.getFilteredCurrenciesRates()
     }
 
     func getTotal() async throws -> String {
