@@ -21,6 +21,15 @@ class CryptoPortfolio: Identifiable {
         let number = NSNumber(value: (crypto.priceUsd/currency.rateUsd) * quantity)
         return "\(currency.currencySymbol)\(formatter.string(from: number) ?? "-")"
     }
+    var quantityFormatted: String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = ","
+        formatter.groupingSeparator = "."
+        let number = NSNumber(value: quantity)
+        return "\(formatter.string(from: number) ?? "-")"
+    }
 
     init(crypto: Crypto, quantity: Float) {
         self.crypto = crypto

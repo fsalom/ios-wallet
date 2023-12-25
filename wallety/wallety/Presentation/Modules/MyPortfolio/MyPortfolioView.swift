@@ -13,6 +13,8 @@ struct MyPortfolioView: View {
     var body: some View {
         ScrollView(.vertical) {
             Text(VM.total)
+                .font(.largeTitle)
+                .fontWeight(.bold)
             LazyVStack(content: {
                 ForEach(VM.cryptos) { crypto in
                     CryptoRow(with: crypto)
@@ -22,6 +24,7 @@ struct MyPortfolioView: View {
             }
             .padding(.horizontal, 20)
         }.background(Color.background)
+            .searchable(text: $VM.searchText)
     }
 
     @ViewBuilder
@@ -48,7 +51,7 @@ struct MyPortfolioView: View {
             VStack(alignment: .trailing, content: {
                 Text(portfolio.valuePerQuantity)
                     .fontWeight(.bold)
-                Text("\(portfolio.quantity)")
+                Text(portfolio.quantityFormatted)
             })
         }
         .padding(10)
