@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MyPortfolioView: View {
     @ObservedObject var VM: MyPortfolioViewModel
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         ScrollView(.vertical) {
@@ -17,7 +18,11 @@ struct MyPortfolioView: View {
                 .fontWeight(.bold)
             LazyVStack(content: {
                 ForEach(VM.cryptos) { crypto in
-                    CryptoRow(with: crypto)
+                    NavigationLink {
+                        CryptoDetailBuilder().build(with: crypto.crypto, and: context.container)
+                    } label: {
+                        CryptoRow(with: crypto)
+                    }
                 }
             }).onAppear {
                 VM.load()
@@ -51,7 +56,7 @@ struct MyPortfolioView: View {
             VStack(alignment: .trailing, content: {
                 Text(portfolio.valuePerQuantity)
                     .fontWeight(.bold)
-                Text(portfolio.quantityFormatted)
+                Text(portfolio.quantityFormatted + " \(portfolio.crypto.symbol)")
             })
         }
         .padding(10)

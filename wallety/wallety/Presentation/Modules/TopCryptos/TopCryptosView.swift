@@ -9,12 +9,17 @@ import SwiftUI
 
 struct TopCryptosView: View {
     @ObservedObject var VM: TopCryptosViewModel
+    @Environment(\.modelContext) private var context
 
     var body: some View {
         ScrollView(.vertical) {
             LazyVStack(content: {
                 ForEach(VM.cryptos) { crypto in
-                    CryptoRow(with: crypto)
+                    NavigationLink {
+                        CryptoDetailBuilder().build(with: crypto, and: context.container)
+                    } label: {
+                        CryptoRow(with: crypto)
+                    }
                 }
             }).onAppear {
                 VM.load()
@@ -46,7 +51,7 @@ struct TopCryptosView: View {
             VStack(alignment: .trailing, content: {
                 Text("\(crypto.price)")
                     .fontWeight(.bold)
-                Text("+12,23%")
+                Text("\(crypto.changePercent24HrFormatted)%")
             })
         }
         .padding(10)
