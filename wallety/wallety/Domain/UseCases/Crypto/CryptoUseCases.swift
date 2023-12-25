@@ -30,4 +30,8 @@ class CryptoUseCases: CryptoUseCasesProtocol {
         }
         return updatedCryptos
     }
+
+    func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {
+        return cryptos.filter({$0.name.lowercased().contains(text.lowercased())})
+    }
 }

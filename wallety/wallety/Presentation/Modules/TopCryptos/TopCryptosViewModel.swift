@@ -14,8 +14,13 @@ class TopCryptosViewModel: ObservableObject {
 
     @Published var cryptos: [Crypto] = []
     @Published var error: String = ""
-    @Published var searchText: String = ""
+    @Published var searchText: String = "" {
+        didSet {
+            filter(with: searchText)
+        }
+    }
 
+    var originalCryptos: [Crypto] = []
     var cryptoUseCases: CryptoUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
 
@@ -30,6 +35,7 @@ class TopCryptosViewModel: ObservableObject {
                 let data = try await loadData()
                 await MainActor.run {
                     self.cryptos = data.cryptos
+                    self.originalCryptos = data.cryptos
                 }
             } catch {
                 self.error = "_ERROR_"
@@ -43,5 +49,13 @@ class TopCryptosViewModel: ObservableObject {
         return try await TopCryptoData(
             cryptos: self.cryptoUseCases.update(these: cryptos, with: currentCurrency)
         )
+    }
+
+    func filter(with text: String) {
+        if text.isEmpty {
+            self.cryptos = originalCryptos
+        }else{
+            self.cryptos = cryptoUseCases.filter(these: originalCryptos, with: text)
+        }
     }
 }

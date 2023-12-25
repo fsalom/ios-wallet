@@ -8,6 +8,10 @@
 import Foundation
 
 class CryptoMockUseCases: CryptoUseCasesProtocol {
+    func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {
+        cryptos
+    }
+    
     
     func getTotal(with currency: Rate) async throws -> String {
         "40000"
