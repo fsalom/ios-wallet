@@ -37,4 +37,8 @@ class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
     func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio] {
         cryptos
     }
+
+    func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio] {
+        return cryptos
+    }
 }

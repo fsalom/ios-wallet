@@ -21,4 +21,5 @@ protocol CryptoPortfolioUseCasesProtocol {
     func getTotal() async throws -> String
     func getTotal(of cryptosPorfolio:[CryptoPortfolio]) async throws -> String
     func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio]
+    func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio]
 }

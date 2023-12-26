@@ -48,17 +48,11 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
     }
 
     func getTotalAndQuantityFormatted(of cryptosPortfolio: [CryptoPortfolio]) async throws -> (String, String) {
-        guard let currentCrypto = try await cryptoRepository.getCrypto(with: cryptosPortfolio.first?.crypto.symbol ?? "") else {
-            return ("---", "---")
-        }
-
-        var total: Float = 0.0
         var quantity: Float = 0.0
         for cryptoPortfolio in cryptosPortfolio {
-            total += (cryptoPortfolio.quantity * currentCrypto.priceUsd)
             quantity += cryptoPortfolio.quantity
         }
-        let totalFormatted = "$\(format(this: total) ?? "-")"
+        let totalFormatted = try await getTotal(of: cryptosPortfolio)
         let quantityFormatted = "\(quantity)"
         return (totalFormatted, quantityFormatted)
     }
@@ -103,6 +97,10 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
             updatedCryptos.append(crypto)
         }
         return updatedCryptos
+    }
+
+    func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio] {
+        return cryptos.filter({$0.crypto.name.lowercased().contains(text.lowercased())})
     }
 }
 
