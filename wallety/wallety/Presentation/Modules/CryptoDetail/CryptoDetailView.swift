@@ -41,6 +41,7 @@ struct CryptoDetailView: View {
                 }
                 .padding(EdgeInsets(top: 20, leading: 20, bottom: 10, trailing: 20))
                 HStack(alignment: .bottom) {
+                    Text("$")
                     TextField(text: $VM.priceText) {
                         Text("Precio")
                     }
@@ -53,7 +54,7 @@ struct CryptoDetailView: View {
                 LazyVStack(alignment: .leading, content: {
                     ForEach(VM.cryptosPortfolio) { portfolio in
                         HStack(spacing: 10) {
-                            Text("\(portfolio.quantity)")
+                            Text("\(portfolio.quantityFormatted) \(portfolio.crypto.symbol)")
                             Spacer()
                             Text("\(portfolio.crypto.price)")
                                 .fontWeight(.bold)
@@ -89,6 +90,7 @@ struct CryptoDetailView: View {
 #Preview {
     CryptoDetailView(VM: CryptoDetailViewModel(
         crypto: Crypto(symbol: "BTC", name: "bitcoin", priceUsd: 40000.00, changePercent24Hr: 2.0),
-        useCase: CryptoPortfolioMockUseCases()
+        portfolioUseCases: CryptoPortfolioMockUseCases(),
+        rateUseCases: RatesMockUseCases()
     ))
 }

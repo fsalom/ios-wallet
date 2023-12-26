@@ -26,12 +26,16 @@ class CryptoDetailBuilder {
         let ratesRepository = RatesRepository(localDataSource: ratesLocalDataSource,
                                               remoteDataSource: ratesRemoteDataSource,
                                               cacheDataSource: ratesCacheDataSource)
-        let useCase = CryptoPortfolioUseCases(
+        let portfolioUseCases = CryptoPortfolioUseCases(
             cryptoPortfolioRepository: cryptoPortfolioRepository,
             cryptoRepository: repository, 
             ratesRepository: ratesRepository)
 
-        let viewModel = CryptoDetailViewModel(crypto: crypto, useCase: useCase)
+        let rateUseCases = RatesUseCases(repository: ratesRepository)
+
+        let viewModel = CryptoDetailViewModel(crypto: crypto,
+                                              portfolioUseCases: portfolioUseCases,
+                                              rateUseCases: rateUseCases)
         let view = CryptoDetailView(VM: viewModel)
         return view
     }

@@ -33,18 +33,22 @@ class CryptoDetailViewModel: ObservableObject {
     private var priceToAdd: Float = 0.0
     private var quantityToAdd: Float = 0.0
 
-    var useCase: CryptoPortfolioUseCasesProtocol
+    var portfolioUseCases: CryptoPortfolioUseCasesProtocol
+    var rateUseCases: RatesUseCasesProtocol
 
-    init(crypto: Crypto, useCase: CryptoPortfolioUseCasesProtocol) {
+    init(crypto: Crypto, portfolioUseCases: CryptoPortfolioUseCasesProtocol, rateUseCases: RatesUseCasesProtocol) {
         self.crypto = crypto
-        self.useCase = useCase
+        self.portfolioUseCases = portfolioUseCases
+        self.rateUseCases = rateUseCases
         self.priceText = "\(crypto.priceUsd)"
     }
 
     func load() {
         Task {
-            let cryptosPortfolio = try await useCase.getPortfolio(with: crypto.symbol)
-            let (total, quantity) = try await useCase.getTotalAndQuantityFormatted(of: cryptosPortfolio)
+            let cryptosPortfolio = try await portfolioUseCases.getPortfolio(with: crypto.symbol)
+            let rate = try await rateUseCases.getCurrentCurrency()
+            crypto.currency = rate
+            let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: cryptosPortfolio)
             await MainActor.run {
                 self.cryptosPortfolio = cryptosPortfolio
                 self.total = total
@@ -57,9 +61,9 @@ class CryptoDetailViewModel: ObservableObject {
         Task {
             do {
                 if quantityToAdd > 0 {
-                    try await useCase.addToMyPorfolio(this: crypto,
-                                                      with: self.quantityToAdd,
-                                                      and: priceToAdd)
+                    try await portfolioUseCases.addToMyPorfolio(this: crypto,
+                                                                with: self.quantityToAdd,
+                                                                and: priceToAdd)
                     load()
                     await MainActor.run {
                         self.priceText = "\(crypto.priceUsd)"
@@ -73,7 +77,7 @@ class CryptoDetailViewModel: ObservableObject {
 
     func delete(this portfolio: CryptoPortfolio) {
         Task {
-            try await useCase.delete(this: portfolio)
+            try await portfolioUseCases.delete(this: portfolio)
             load()
         }
     }
