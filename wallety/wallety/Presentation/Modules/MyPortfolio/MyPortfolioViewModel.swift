@@ -11,12 +11,16 @@ class MyPortfolioViewModel: ObservableObject {
     @Published var cryptos: [CryptoPortfolio] = []
     @Published var total: String = ""
     @Published var error: String = ""
-    @Published var searchText: String = ""
+    @Published var searchText: String = "" {
+        didSet{
+            filter(with: searchText)
+        }
+    }
 
     struct PortfolioData {
         var cryptosPorfolio: [CryptoPortfolio]
     }
-
+    var originalCryptos: [CryptoPortfolio] = []
     var portfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
 
@@ -33,6 +37,7 @@ class MyPortfolioViewModel: ObservableObject {
                 await MainActor.run {
                     self.cryptos = data.cryptosPorfolio
                     self.total = total
+                    self.originalCryptos = data.cryptosPorfolio
                 }
             } catch {
                 self.error = "_ERROR_"
@@ -47,5 +52,13 @@ class MyPortfolioViewModel: ObservableObject {
             cryptosPorfolio: self.portfolioUseCases.update(these: cryptos,
                                                            with: currentCurrency)
         )
+    }
+
+    func filter(with text: String) {
+        if text.isEmpty {
+            self.cryptos = originalCryptos
+        }else{
+            self.cryptos = portfolioUseCases.filter(these: originalCryptos, with: text)
+        }
     }
 }
