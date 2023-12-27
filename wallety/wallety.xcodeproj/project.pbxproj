@@ -48,6 +48,9 @@
 		C10EAC732B20633B006C1A0D /* CryptoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC722B20633B006C1A0D /* CryptoDetailView.swift */; };
 		C10EAC752B206347006C1A0D /* CryptoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC742B206347006C1A0D /* CryptoViewModel.swift */; };
 		C16281142B32ED5700EDFFF0 /* ProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16281132B32ED5700EDFFF0 /* ProfileBuilder.swift */; };
+		C16282782B3B20A700EDFFF0 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16282772B3B20A700EDFFF0 /* OnBoardingView.swift */; };
+		C162827A2B3B354000EDFFF0 /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16282792B3B354000EDFFF0 /* OnBoardingViewModel.swift */; };
+		C162827C2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C162827B2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift */; };
 		C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16D040A2B18BFB60014F906 /* walletyApp.swift */; };
 		C16D04112B18BFB70014F906 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C16D04102B18BFB70014F906 /* Assets.xcassets */; };
 		C16D04142B18BFB70014F906 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C16D04132B18BFB70014F906 /* Preview Assets.xcassets */; };
@@ -73,6 +76,8 @@
 		C17917032B27281E00C7798A /* CryptoPortfolioUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917022B27281E00C7798A /* CryptoPortfolioUseCases.swift */; };
 		C17917052B27364B00C7798A /* RatesMockUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917042B27364B00C7798A /* RatesMockUseCases.swift */; };
 		C17917082B273D2F00C7798A /* RateInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917072B273D2F00C7798A /* RateInfoDTO.swift */; };
+		C197169B2B3C2F8B0079A7B7 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C197169A2B3C2F8B0079A7B7 /* ButtonStyle.swift */; };
+		C19716A32B3C55600079A7B7 /* FavoriteCryptoDBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */; };
 		C1F8260D2B29AFE3007AE951 /* UDRatesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8260C2B29AFE3007AE951 /* UDRatesDataSource.swift */; };
 		C1F826102B29B108007AE951 /* CacheRatesDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8260F2B29B108007AE951 /* CacheRatesDataSourceProtocol.swift */; };
 		C1F826132B29B14C007AE951 /* CacheRateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F826122B29B14C007AE951 /* CacheRateDTO.swift */; };
@@ -120,6 +125,9 @@
 		C10EAC722B20633B006C1A0D /* CryptoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoDetailView.swift; sourceTree = "<group>"; };
 		C10EAC742B206347006C1A0D /* CryptoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoViewModel.swift; sourceTree = "<group>"; };
 		C16281132B32ED5700EDFFF0 /* ProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBuilder.swift; sourceTree = "<group>"; };
+		C16282772B3B20A700EDFFF0 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
+		C16282792B3B354000EDFFF0 /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
+		C162827B2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingBuilder.swift; sourceTree = "<group>"; };
 		C16D04072B18BFB60014F906 /* wallety.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wallety.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C16D040A2B18BFB60014F906 /* walletyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = walletyApp.swift; sourceTree = "<group>"; };
 		C16D04102B18BFB70014F906 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -146,6 +154,8 @@
 		C17917022B27281E00C7798A /* CryptoPortfolioUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPortfolioUseCases.swift; sourceTree = "<group>"; };
 		C17917042B27364B00C7798A /* RatesMockUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesMockUseCases.swift; sourceTree = "<group>"; };
 		C17917072B273D2F00C7798A /* RateInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateInfoDTO.swift; sourceTree = "<group>"; };
+		C197169A2B3C2F8B0079A7B7 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
+		C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCryptoDBO.swift; sourceTree = "<group>"; };
 		C1F8260C2B29AFE3007AE951 /* UDRatesDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDRatesDataSource.swift; sourceTree = "<group>"; };
 		C1F8260F2B29B108007AE951 /* CacheRatesDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheRatesDataSourceProtocol.swift; sourceTree = "<group>"; };
 		C1F826122B29B14C007AE951 /* CacheRateDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheRateDTO.swift; sourceTree = "<group>"; };
@@ -223,8 +233,8 @@
 		C10EAC0B2B1B262C006C1A0D /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				C10EAC102B1B2658006C1A0D /* Repositories */,
 				C10EAC112B1B265F006C1A0D /* UseCases */,
-				C10EAC102B1B2658006C1A0D /* Respositories */,
 				C10EAC0F2B1B2653006C1A0D /* Entities */,
 			);
 			path = Domain;
@@ -270,14 +280,14 @@
 			path = Entities;
 			sourceTree = "<group>";
 		};
-		C10EAC102B1B2658006C1A0D /* Respositories */ = {
+		C10EAC102B1B2658006C1A0D /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
 				C103027C2B322326005E8C54 /* CryptoPortfolio */,
 				C17916F22B25BA1E00C7798A /* Rates */,
 				C10EAC302B1DDF96006C1A0D /* Crypto */,
 			);
-			path = Respositories;
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 		C10EAC112B1B265F006C1A0D /* UseCases */ = {
@@ -413,6 +423,7 @@
 			isa = PBXGroup;
 			children = (
 				C10EAC532B1F56F4006C1A0D /* CryptoDBO.swift */,
+				C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */,
 			);
 			path = Tables;
 			sourceTree = "<group>";
@@ -464,6 +475,16 @@
 			path = CryptoDetail;
 			sourceTree = "<group>";
 		};
+		C16282762B3B209000EDFFF0 /* OnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				C16282772B3B20A700EDFFF0 /* OnBoardingView.swift */,
+				C16282792B3B354000EDFFF0 /* OnBoardingViewModel.swift */,
+				C162827B2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift */,
+			);
+			path = OnBoarding;
+			sourceTree = "<group>";
+		};
 		C16D03FE2B18BFB60014F906 = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +525,7 @@
 		C16D041A2B18EEF10014F906 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C19716982B3C2F740079A7B7 /* Style */,
 				C10EAC4F2B1E0E23006C1A0D /* Tabbar */,
 				C16D041C2B18EEFC0014F906 /* Modules */,
 				C16D041B2B18EEF70014F906 /* App */,
@@ -522,6 +544,7 @@
 		C16D041C2B18EEFC0014F906 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C16282762B3B209000EDFFF0 /* OnBoarding */,
 				C17916DA2B24C50E00C7798A /* Profile */,
 				C10EAC6F2B20631E006C1A0D /* CryptoDetail */,
 				C10EAC682B20628A006C1A0D /* AddAsset */,
@@ -676,6 +699,22 @@
 			path = CryptoPortfolio;
 			sourceTree = "<group>";
 		};
+		C19716982B3C2F740079A7B7 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				C19716992B3C2F7D0079A7B7 /* Button */,
+			);
+			path = Style;
+			sourceTree = "<group>";
+		};
+		C19716992B3C2F7D0079A7B7 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				C197169A2B3C2F8B0079A7B7 /* ButtonStyle.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
 		C1F8260B2B29AFCB007AE951 /* Cache */ = {
 			isa = PBXGroup;
 			children = (
@@ -772,6 +811,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C19716A32B3C55600079A7B7 /* FavoriteCryptoDBO.swift in Sources */,
 				C10EAC4E2B1E0164006C1A0D /* CryptoMockUseCases.swift in Sources */,
 				C10302802B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift in Sources */,
 				C10EAC632B1FD356006C1A0D /* MyPortfolioView.swift in Sources */,
@@ -781,6 +821,7 @@
 				C17916F12B25B7CB00C7798A /* RateDBO.swift in Sources */,
 				C10302742B321FC2005E8C54 /* LocalCryptoPortfolioDataSourceProtocol.swift in Sources */,
 				C10EAC562B1F581A006C1A0D /* CryptoPortfolioDBO.swift in Sources */,
+				C16282782B3B20A700EDFFF0 /* OnBoardingView.swift in Sources */,
 				C10EAC3D2B1DE112006C1A0D /* CryptoUseCases.swift in Sources */,
 				C16281142B32ED5700EDFFF0 /* ProfileBuilder.swift in Sources */,
 				C10EAC4A2B1DFEEF006C1A0D /* HomeBuilder.swift in Sources */,
@@ -795,6 +836,7 @@
 				C10EAC6C2B2062A8006C1A0D /* AddAssetBuilder.swift in Sources */,
 				C10EAC342B1DDFD5006C1A0D /* Crypto.swift in Sources */,
 				C103027E2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift in Sources */,
+				C162827C2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift in Sources */,
 				C17917032B27281E00C7798A /* CryptoPortfolioUseCases.swift in Sources */,
 				C17916F92B26525E00C7798A /* RatesRepository.swift in Sources */,
 				C10EAC752B206347006C1A0D /* CryptoViewModel.swift in Sources */,
@@ -811,8 +853,10 @@
 				C10EAC652B1FD369006C1A0D /* MyPortfolioViewModel.swift in Sources */,
 				C17916FE2B27272900C7798A /* RatesUseCases.swift in Sources */,
 				C17916D32B2270DF00C7798A /* UserDefaultsManager.swift in Sources */,
+				C197169B2B3C2F8B0079A7B7 /* ButtonStyle.swift in Sources */,
 				C10EAC712B206331006C1A0D /* CryptoDetailBuilder.swift in Sources */,
 				C10EAC2A2B1DDE51006C1A0D /* RemoteManager.swift in Sources */,
+				C162827A2B3B354000EDFFF0 /* OnBoardingViewModel.swift in Sources */,
 				C10EAC2D2B1DDEE4006C1A0D /* CryptoCoinCapDTO.swift in Sources */,
 				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
 				C17916D92B238BFE00C7798A /* DefaultTabbarView.swift in Sources */,
