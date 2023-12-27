@@ -59,4 +59,7 @@ class CryptoMockUseCases: CryptoUseCasesProtocol {
     func update(these cryptos: [Crypto], with currency: Rate) -> [Crypto] {
         cryptos
     }
+
+    func favOrUnfav(this symbol: String) async throws {        
+    }
 }

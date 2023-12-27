@@ -12,5 +12,7 @@ protocol LocalCryptoDataSourceProtocol {
     func save(this crypto: CryptoDBO)  async throws
     func deleteAll() async throws
     func getCryptos() async throws -> [CryptoDBO]
-    func getCrypto(with symbol: String) async throws -> CryptoDBO?    
+    func getCrypto(with symbol: String) async throws -> CryptoDBO?
+    func favOrUnfav(this symbol: String) async throws
+    func getFavorites() async throws -> [FavoriteCryptoDBO]
 }

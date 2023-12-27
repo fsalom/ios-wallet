@@ -32,13 +32,23 @@ class CryptoRepository: CryptoRepositoryProtocol {
             try await localDataSource.deleteAll()
             try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
             setDate(for: .top)
-            return cryptosDTO.map { $0.toDomain() }
+            return try await setFavorites(for: cryptosDTO.map { $0.toDomain() })
         }
-        return cryptosDBO.map({$0.toDomain()})
+        return try await setFavorites(for: cryptosDBO.map { $0.toDomain() })
     }
 
     private func save(these cryptosDBO: [CryptoDBO]) async throws {
         try await localDataSource.save(these: cryptosDBO)
+    }
+
+    func favOrUnfav(this symbol: String) async throws {
+        try await localDataSource.favOrUnfav(this: symbol)
+    }
+
+    func getFavorites() async throws -> [Crypto]{
+        var cryptos = try await getCryptos()
+        cryptos = try await setFavorites(for: cryptos)
+        return cryptos.filter({$0.isFavorite})
     }
 }
 
@@ -60,6 +70,14 @@ extension CryptoRepository {
             case .portfolio: return 300
             }
         }
+    }
+
+    private func setFavorites(for cryptos: [Crypto]) async throws -> [Crypto] {
+        let favorites = try await localDataSource.getFavorites().flatMap({$0.symbol})
+        for crypto in cryptos {
+            crypto.isFavorite = favorites.contains(crypto.symbol) ? true : false
+        }
+        return cryptos
     }
 
     private func shouldUpdate(for option: LastUpdatedOption) -> Bool {

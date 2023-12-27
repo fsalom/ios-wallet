@@ -43,4 +43,21 @@ actor DBCryptoDataSource: LocalCryptoDataSourceProtocol {
             })
         ).first
     }
+
+    func favOrUnfav(this symbol: String) async throws {
+        if let fav = try context.fetch(FetchDescriptor<FavoriteCryptoDBO>(
+            predicate: #Predicate {
+                $0.symbol == symbol
+            })
+        ).first {
+            context.delete(fav)
+        } else {
+            context.insert(FavoriteCryptoDBO(symbol: symbol))
+            try context.save()
+        }
+    }
+
+    func getFavorites() async throws -> [FavoriteCryptoDBO] {
+        try context.fetch(FetchDescriptor<FavoriteCryptoDBO>())
+    }
 }

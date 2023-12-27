@@ -18,6 +18,7 @@ class Crypto: Identifiable {
     }
     var currency: Rate = Rate.default()
     var changePercent24Hr: Float
+    var isFavorite: Bool = false
 
     var price: String {
         let formatter = NumberFormatter()

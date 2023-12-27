@@ -34,4 +34,8 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {
         return cryptos.filter({$0.name.lowercased().contains(text.lowercased())})
     }
+
+    func favOrUnfav(this symbol: String) async throws {
+        try await repository.favOrUnfav(this: symbol)
+    }
 }
