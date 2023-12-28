@@ -38,4 +38,12 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     func favOrUnfav(this symbol: String) async throws {
         try await repository.favOrUnfav(this: symbol)
     }
+
+    func getCryptosWithoutFavorites(from cryptos: [Crypto]) async throws -> [Crypto] {
+        return cryptos.filter({$0.isFavorite != true})
+    }
+
+    func getFavoriteCryptos(from cryptos: [Crypto]) async throws -> [Crypto] {
+        return cryptos.filter({$0.isFavorite == true})
+    }
 }

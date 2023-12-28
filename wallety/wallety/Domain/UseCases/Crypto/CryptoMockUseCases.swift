@@ -8,6 +8,14 @@
 import Foundation
 
 class CryptoMockUseCases: CryptoUseCasesProtocol {
+    func getCryptosWithoutFavorites(from cryptos: [Crypto]) async throws -> [Crypto] {
+        []
+    }
+    
+    func getFavoriteCryptos(from cryptos: [Crypto]) async throws -> [Crypto] {
+        []
+    }
+    
     func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {
         cryptos
     }
