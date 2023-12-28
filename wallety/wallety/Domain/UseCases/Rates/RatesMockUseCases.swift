@@ -24,6 +24,10 @@ class RatesMockUseCases: RatesUseCasesProtocol {
         nil
     }
 
+    func getCurrency(from rates: [Rate], with symbol: String) -> Rate? {
+        nil
+    }
+
     func getCurrentCurrency() async throws -> Rate {
         return Rate.default()
     }

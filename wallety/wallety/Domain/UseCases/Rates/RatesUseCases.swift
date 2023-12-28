@@ -28,6 +28,10 @@ class RatesUseCases: RatesUseCasesProtocol {
         try await repository.getRate(with: id)
     }
 
+    func getCurrency(from rates: [Rate], with symbol: String) -> Rate? {
+        return rates.first(where: {$0.symbol == symbol})
+    }
+
     func getCurrentCurrency() async throws -> Rate {
         try await repository.getCurrentCurrency()
     }
