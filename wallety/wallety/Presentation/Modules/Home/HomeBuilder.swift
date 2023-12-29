@@ -33,9 +33,14 @@ class HomeBuilder {
             cryptoPortfolioRepository: portfolioRepository,
             cryptoRepository: repository, ratesRepository: ratesRepository)
 
+        let userCacheDataSource = UDUserDataSource(userDefaultsManager: UserDefaultsManager())
+        let userRepository = UserRepository(datasource: userCacheDataSource)
+        let userUseCases = UserUseCases(repository: userRepository)
+
         let viewModel = HomeViewModel(cryptoUseCases: cryptoUseCases,
                                       cryptoPortfolioUseCases: portfolioUseCases,
-                                      ratesUseCases: ratesUseCases)
+                                      ratesUseCases: ratesUseCases,
+                                      userUseCases: userUseCases)
         let view = HomeView(VM: viewModel)
         return view
     }

@@ -7,28 +7,34 @@
 
 import Foundation
 
-struct HomeData {
-    var cryptos: [Crypto]
-    var total: String
-    var currentCurrency: Rate
-}
-
 class HomeViewModel: ObservableObject {
+    struct HomeData {
+        var cryptos: [Crypto]
+        var total: String
+        var currentCurrency: Rate
+        var user: User?
+    }
+
     @Published var cryptos: [Crypto] = []
+    @Published var favoriteCryptos: [Crypto] = []
+    @Published var name: String = "Desconocido"
     @Published var total: String = "---"
     @Published var error: String = ""
 
     var cryptoUseCases: CryptoUseCasesProtocol
     var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
+    var userUseCases: UserUseCasesProtocol
     private var currentCurrency: Rate
 
     init(cryptoUseCases: CryptoUseCasesProtocol,
          cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol,
-         ratesUseCases: RatesUseCasesProtocol) {
+         ratesUseCases: RatesUseCasesProtocol,
+         userUseCases: UserUseCasesProtocol) {
         self.cryptoUseCases = cryptoUseCases
         self.cryptoPortfolioUseCases = cryptoPortfolioUseCases
         self.ratesUseCases = ratesUseCases
+        self.userUseCases = userUseCases
         self.currentCurrency = Rate.default()
     }
 
@@ -36,10 +42,17 @@ class HomeViewModel: ObservableObject {
         Task {
             do {
                 let data = try await loadData()
+                let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
+                let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
                 await MainActor.run {
-                    self.cryptos = data.cryptos
+                    self.cryptos = cryptoUseCases.update(these: cryptosWithoutFavorite,
+                                                         with: data.currentCurrency)
+                    self.favoriteCryptos = cryptoUseCases.update(these: favoriteCryptos,
+                                                                 with: data.currentCurrency)
                     self.total = data.total
                     self.currentCurrency = data.currentCurrency
+                    guard let user = data.user else { return }
+                    self.name = user.name
                 }
             } catch {
                 self.error = "_ERROR_"
@@ -48,27 +61,14 @@ class HomeViewModel: ObservableObject {
     }
 
     func loadData() async throws -> HomeData {
-        async let cryptos = try await getCryptos()
-        async let total = try await getTotal()
-        async let currentCurrency = try await getCurrentCurrency()
-
+        async let cryptos = cryptoUseCases.getCryptos()
+        async let total = cryptoPortfolioUseCases.getTotal()
+        async let currentCurrency = ratesUseCases.getCurrentCurrency()
+        async let user = userUseCases.getMe()
         return try await HomeData(
-            cryptos: cryptoUseCases.update(these: cryptos,
-                                           with: currentCurrency),
+            cryptos: cryptos,
             total: total,
-            currentCurrency: currentCurrency)
-    }
-
-    func getCryptos() async throws -> [Crypto] {
-        let cryptos = try await self.cryptoUseCases.getCryptos()
-        return cryptos
-    }
-
-    func getTotal() async throws -> String {
-        return try await self.cryptoPortfolioUseCases.getTotal()
-    }
-
-    func getCurrentCurrency() async throws -> Rate {
-        return try await self.ratesUseCases.getCurrentCurrency()
+            currentCurrency: currentCurrency,
+            user: user)
     }
 }

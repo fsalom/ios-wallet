@@ -19,7 +19,9 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     VStack {
                         HeaderView()
-                        HorizontalListFavoriteAssetsView()
+                        if !VM.favoriteCryptos.isEmpty {
+                            HorizontalListFavoriteAssetsView(favoriteCryptos: VM.favoriteCryptos)
+                        }
                         ListCryptoView(cryptos: VM.cryptos).padding(.horizontal, 20)
                     }
                 }.scrollIndicators(.hidden)
@@ -76,7 +78,7 @@ struct HomeView: View {
                 .clipShape(Circle())
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Hola 👋")
-                Text("Fernando Salom")
+                Text(VM.name)
                     .fontWeight(.bold)
             }).padding(5)
                 .opacity(1.0 - (progress * 2.5))
@@ -100,33 +102,45 @@ struct HomeView: View {
 
 
 struct HorizontalListFavoriteAssetsView: View {
+    var favoriteCryptos: [Crypto]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10, content: {
-                ForEach(1...10, id: \.self) { count in
-                    VStack(alignment: .trailing, content: {
-                        HStack{
-                            Image(systemName: "star")
-                            Spacer()
-                        }
-                        Spacer()
-                        Image(.bitcoin)
-                            .resizable()
-                            .frame(width: 40, height: 40)
-                            .background(Color.white)
-                            .clipShape(Circle())
-                        Text("Bitcoin").fontWeight(.bold)
-                        Text("35.134€")
-                    })
-                    .padding(20)
-                    .frame(width: 150, height: 200)
-                    .background(Color.white)
-                    .clipShape(
-                        RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
-                    .shadow(radius: 1)
+                ForEach(favoriteCryptos) { crypto in
+                    FavoriteCryptoRow(with: crypto)
                 }
             }).padding(2)
         }.contentMargins(.horizontal, 20, for: .scrollContent)
+    }
+
+    @ViewBuilder
+    func FavoriteCryptoRow(with crypto: Crypto) -> some View {
+        VStack(alignment: .trailing, content: {
+            HStack{
+                Image(systemName: "star.fill").foregroundColor(.yellow)
+                Spacer()
+            }
+            Spacer()
+            AsyncImage(url: crypto.imageUrl) { image in
+                image.resizable()
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
+            }
+            Text(crypto.name).fontWeight(.bold)
+            Text(crypto.price)
+        })
+        .padding(20)
+        .frame(width: 150, height: 200)
+        .background(Color.white)
+        .clipShape(
+            RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+        .shadow(radius: 1)
     }
 }
 
@@ -182,5 +196,6 @@ struct ListCryptoView: View {
 #Preview {
     HomeView(VM: HomeViewModel(cryptoUseCases: CryptoMockUseCases(),
                                cryptoPortfolioUseCases: CryptoPortfolioMockUseCases(),
-                               ratesUseCases: RatesMockUseCases()))
+                               ratesUseCases: RatesMockUseCases(),
+                               userUseCases: UserMockUseCases()))
 }
