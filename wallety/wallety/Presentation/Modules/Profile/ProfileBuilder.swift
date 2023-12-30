@@ -19,7 +19,11 @@ class ProfileBuilder {
                                               cacheDataSource: ratesCacheDataSource)
         let ratesUseCases = RatesUseCases(repository: ratesRepository)
 
-        let viewModel = ProfileViewModel(useCase: ratesUseCases)
+        let userCacheDataSource = UDUserDataSource(userDefaultsManager: UserDefaultsManager())
+        let userRepository = UserRepository(datasource: userCacheDataSource)
+        let userUseCases = UserUseCases(repository: userRepository)
+
+        let viewModel = ProfileViewModel(rateUseCases: ratesUseCases, userUseCases: userUseCases)
 
         let view = ProfileView(VM: viewModel)
         return view

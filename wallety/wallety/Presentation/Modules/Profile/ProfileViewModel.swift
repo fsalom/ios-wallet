@@ -10,17 +10,22 @@ import Foundation
 struct ProfileData {
     var currencies: [Rate]
     var currentCurrency: Rate
+    var user: User?
 }
 
 class ProfileViewModel: ObservableObject {
 
-    var useCase: RatesUseCasesProtocol
+    var rateUseCases: RatesUseCasesProtocol
+    var userUseCases: UserUseCasesProtocol
     @Published var currentCurrency: Rate = Rate.default()
     @Published var currencies: [Rate] = []
     @Published var errorMessage: String = ""
+    @Published var name: String = ""
+    @Published var image: Data?
 
-    init(useCase: RatesUseCasesProtocol) {
-        self.useCase = useCase
+    init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
+        self.rateUseCases = rateUseCases
+        self.userUseCases = userUseCases
     }
 
     func load() {
@@ -29,16 +34,19 @@ class ProfileViewModel: ObservableObject {
             await MainActor.run {
                 self.currencies = data.currencies
                 self.currentCurrency = data.currentCurrency
+                self.name = data.user?.name ?? "Desconocido"
             }
         }
     }
 
     func loadData() async throws -> ProfileData {
-        async let currencies = try await useCase.getFilteredCurrenciesRates()
-        async let currentCurrency = try await useCase.getCurrentCurrency()
+        async let currencies = try await rateUseCases.getFilteredCurrenciesRates()
+        async let currentCurrency = try await rateUseCases.getCurrentCurrency()
+        async let user = try await userUseCases.getMe()
         return try await ProfileData(
             currencies: currencies,
-            currentCurrency: currentCurrency)
+            currentCurrency: currentCurrency,
+            user: user)
     }
 
     func select(this currency: Rate) {
@@ -49,7 +57,7 @@ class ProfileViewModel: ObservableObject {
     private func save(this currency: Rate) {
         Task {
             do {
-                try await self.useCase.select(this: currency)
+                try await self.rateUseCases.select(this: currency)
             } catch {
                 self.errorMessage = "_ERROR_"
             }
