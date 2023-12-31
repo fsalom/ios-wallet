@@ -22,19 +22,19 @@ struct ProfileView: View {
                         PhotosPicker(selection: $avatarItem, photoLibrary: .shared()) {
                             ZStack {
                                 Circle()
-                                    .frame(width: 50, height: 50)
+                                    .frame(width: 200, height: 200)
                                     .foregroundColor(.green)
                                 if let avatarImage {
                                     avatarImage
                                         .resizable()
                                         .scaledToFill()
-                                        .frame(width: 50, height: 50)
+                                        .frame(width: 200, height: 200)
                                         .clipShape(Circle())
                                 } else {
                                     Image(systemName: "camera")
                                         .foregroundColor(.white)
                                         .imageScale(.small)
-                                        .frame(width: 44, height: 40)
+                                        .frame(width: 80, height: 80)
                                 }
                             }.padding()
 
@@ -43,38 +43,33 @@ struct ProfileView: View {
                             Task {
                                 if let data = try? await avatarItem?.loadTransferable(type: Data.self) {
                                     VM.image = data
+                                    VM.save(this: data)
                                     if let uiImage = UIImage(data: data) {
                                         avatarImage = Image(uiImage: uiImage)
                                         return
                                     }
                                 }
-
-                                print("Failed")
                             }
                         })
-                        
-                        Image(.profile)
-                            .resizable()
-                            .clipShape(Circle())
-                            .frame(width: 200, height: 200)
+
                         List{
                             Button(action: {
 
                             }, label: {
-                                Text("Seleccionar")
+                                Text("Borrar imagen")
                             })
                         }
                     }
                     .background(Color.backgroundList)
                 } label: {
                     HStack {
-                        Image(.profile)
+                        avatarImage?
                             .resizable()
                             .clipShape(Circle())
                             .frame(
                                 width: 30,
                                 height: 30)
-                        Text("Cambiar imagen").foregroundStyle(.gray)
+                        Text("Cambiar imagen")
                         Spacer()
                     }
                 }
@@ -118,8 +113,14 @@ struct ProfileView: View {
                     Text("Borrar base de datos")
                 })
             }
-        }.onAppear {
+        }
+        .task {
             VM.load()
+            if let data = VM.image,
+               let uiImage = UIImage(data: data) {
+                avatarImage = Image(uiImage: uiImage)
+                return
+            }
         }
     }
 }

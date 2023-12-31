@@ -35,6 +35,7 @@ class ProfileViewModel: ObservableObject {
                 self.currencies = data.currencies
                 self.currentCurrency = data.currentCurrency
                 self.name = data.user?.name ?? "Desconocido"
+                self.image = data.user?.image
             }
         }
     }
@@ -52,6 +53,16 @@ class ProfileViewModel: ObservableObject {
     func select(this currency: Rate) {
         currentCurrency = currency
         save(this: currency)
+    }
+
+    func save(this image: Data) {
+        Task {
+            do {
+                try await self.userUseCases.save(this: image)
+            } catch {
+                self.errorMessage = "_ERROR_"
+            }
+        }
     }
 
     private func save(this currency: Rate) {
