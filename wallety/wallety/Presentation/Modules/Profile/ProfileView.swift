@@ -10,8 +10,7 @@ import PhotosUI
 
 struct ProfileView: View {
     @Environment(\.modelContext) private var context
-    @State private var avatarItem: PhotosPickerItem?
-    @State private var avatarImage: Image?
+    @State private var avatarItem: PhotosPickerItem?    
     @ObservedObject var VM: ProfileViewModel
 
     var body: some View {
@@ -24,8 +23,8 @@ struct ProfileView: View {
                                 Circle()
                                     .frame(width: 200, height: 200)
                                     .foregroundColor(.green)
-                                if let avatarImage {
-                                    avatarImage
+                                if VM.avatarImage != nil {
+                                    VM.avatarImage?
                                         .resizable()
                                         .scaledToFill()
                                         .frame(width: 200, height: 200)
@@ -45,7 +44,7 @@ struct ProfileView: View {
                                     VM.image = data
                                     VM.save(this: data)
                                     if let uiImage = UIImage(data: data) {
-                                        avatarImage = Image(uiImage: uiImage)
+                                        VM.avatarImage = Image(uiImage: uiImage)
                                         return
                                     }
                                 }
@@ -63,7 +62,7 @@ struct ProfileView: View {
                     .background(Color.backgroundList)
                 } label: {
                     HStack {
-                        avatarImage?
+                        VM.avatarImage?
                             .resizable()
                             .clipShape(Circle())
                             .frame(
@@ -115,12 +114,7 @@ struct ProfileView: View {
             }
         }
         .task {
-            VM.load()
-            if let data = VM.image,
-               let uiImage = UIImage(data: data) {
-                avatarImage = Image(uiImage: uiImage)
-                return
-            }
+            VM.load()            
         }
     }
 }

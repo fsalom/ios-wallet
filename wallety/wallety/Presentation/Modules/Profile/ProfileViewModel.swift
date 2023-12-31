@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import UIKit
+import SwiftUI
 
 struct ProfileData {
     var currencies: [Rate]
@@ -22,10 +24,11 @@ class ProfileViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var name: String = ""
     @Published var image: Data?
+    @Published var avatarImage: Image?
 
     init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
         self.rateUseCases = rateUseCases
-        self.userUseCases = userUseCases
+        self.userUseCases = userUseCases        
     }
 
     func load() {
@@ -36,6 +39,11 @@ class ProfileViewModel: ObservableObject {
                 self.currentCurrency = data.currentCurrency
                 self.name = data.user?.name ?? "Desconocido"
                 self.image = data.user?.image
+                if let data = image,
+                   let uiImage = UIImage(data: data) {
+                    avatarImage = Image(uiImage: uiImage)
+                    return
+                }
             }
         }
     }
