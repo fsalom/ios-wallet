@@ -29,4 +29,14 @@ class UDUserDataSource: UserDataSourceProtocol {
             userDefaultsManager.save(objectFor: keyName, this: me)
         }
     }
+
+    func save(this image: Data) async throws {
+        if var me = try await getMe() {
+            me.image = image
+            userDefaultsManager.save(objectFor: keyName, this: me)
+        } else {
+            let me = UserDTO(name: "Desconocido", image: image)
+            userDefaultsManager.save(objectFor: keyName, this: me)
+        }
+    }
 }

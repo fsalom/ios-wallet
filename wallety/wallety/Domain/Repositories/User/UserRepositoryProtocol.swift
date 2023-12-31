@@ -10,4 +10,5 @@ import Foundation
 protocol UserRepositoryProtocol {
     func getMe() async throws -> User?
     func save(name: String) async throws
+    func save(this image: Data) async throws
 }

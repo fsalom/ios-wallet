@@ -21,4 +21,8 @@ class UserUseCases: UserUseCasesProtocol {
     func save(name: String) async throws {
         try await self.repository.save(name: name)
     }
+
+    func save(this image: Data) async throws {
+        try await self.repository.save(this: image)
+    }
 }

@@ -9,4 +9,5 @@ import Foundation
 
 struct UserDTO: Codable {
     var name: String
+    var image: Data?
 }

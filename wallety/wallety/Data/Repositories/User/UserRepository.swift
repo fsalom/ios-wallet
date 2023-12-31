@@ -21,10 +21,14 @@ class UserRepository: UserRepositoryProtocol {
     func save(name: String) async throws {
         try await self.datasource.save(name: name)
     }
+
+    func save(this image: Data) async throws {
+        try await self.datasource.save(this: image)
+    }
 }
 
 fileprivate extension UserDTO {
     func toDomain() -> User {
-        User(name: name)
+        User(name: name, image: image)
     }
 }
