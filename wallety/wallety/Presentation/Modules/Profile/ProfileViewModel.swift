@@ -22,9 +22,13 @@ class ProfileViewModel: ObservableObject {
     @Published var currentCurrency: Rate = Rate.default()
     @Published var currencies: [Rate] = []
     @Published var errorMessage: String = ""
-    @Published var name: String = ""
     @Published var image: Data?
     @Published var avatarImage: Image?
+    @Published var name: String = "" {
+        didSet {
+            save(this: name)
+        }
+    }
 
     init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
         self.rateUseCases = rateUseCases
@@ -61,6 +65,16 @@ class ProfileViewModel: ObservableObject {
     func select(this currency: Rate) {
         currentCurrency = currency
         save(this: currency)
+    }
+
+    func save(this name: String) {
+        Task {
+            do {
+                try await self.userUseCases.save(name: name)
+            } catch {
+                self.errorMessage = "_ERROR_"
+            }
+        }
     }
 
     func save(this image: Data) {
