@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class HomeViewModel: ObservableObject {
     struct HomeData {
@@ -18,6 +19,7 @@ class HomeViewModel: ObservableObject {
     @Published var cryptos: [Crypto] = []
     @Published var favoriteCryptos: [Crypto] = []
     @Published var name: String = "Desconocido"
+    @Published var image: Image
     @Published var total: String = "---"
     @Published var error: String = ""
 
@@ -36,6 +38,7 @@ class HomeViewModel: ObservableObject {
         self.ratesUseCases = ratesUseCases
         self.userUseCases = userUseCases
         self.currentCurrency = Rate.default()
+        self.image = Image(.profile)
     }
 
     func load() {
@@ -53,6 +56,15 @@ class HomeViewModel: ObservableObject {
                     self.currentCurrency = data.currentCurrency
                     guard let user = data.user else { return }
                     self.name = user.name
+                    if let image = data.user?.image {
+                        if let uiImage = UIImage(data: image) {
+                            self.image = Image(uiImage: uiImage)
+                            return
+                        }
+                    } else {
+                        self.image = Image(.profile)
+                    }
+
                 }
             } catch {
                 self.error = "_ERROR_"

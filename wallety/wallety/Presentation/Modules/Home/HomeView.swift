@@ -71,9 +71,9 @@ struct HomeView: View {
     @ViewBuilder
     func HomeProfileView(progress: CGFloat) -> some View {
         HStack {
-            Image(.profile)
+            VM.image
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
             VStack(alignment: .leading, spacing: 5, content: {
