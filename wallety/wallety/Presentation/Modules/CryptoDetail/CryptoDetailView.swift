@@ -89,7 +89,11 @@ struct CryptoDetailView: View {
 
 #Preview {
     CryptoDetailView(VM: CryptoDetailViewModel(
-        crypto: Crypto(symbol: "BTC", name: "bitcoin", priceUsd: 40000.00, changePercent24Hr: 2.0),
+        crypto: Crypto(symbol: "BTC",
+                       name: "bitcoin",
+                       priceUsd: 40000.00,
+                       marketCapUsd: 0.0,
+                       changePercent24Hr: 2.0),
         portfolioUseCases: CryptoPortfolioMockUseCases(),
         rateUseCases: RatesMockUseCases()
     ))

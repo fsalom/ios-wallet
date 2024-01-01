@@ -102,12 +102,18 @@ struct HomeView: View {
 
 
 struct HorizontalListFavoriteAssetsView: View {
+    @Environment(\.modelContext) private var context
+    
     var favoriteCryptos: [Crypto]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10, content: {
                 ForEach(favoriteCryptos) { crypto in
-                    FavoriteCryptoRow(with: crypto)
+                    NavigationLink {
+                        CryptoDetailBuilder().build(with: crypto, and: context.container)
+                    } label: {
+                        FavoriteCryptoRow(with: crypto)
+                    }
                 }
             }).padding(2)
         }.contentMargins(.horizontal, 20, for: .scrollContent)
