@@ -13,6 +13,7 @@ class Crypto: Identifiable {
     var symbol: String
     var name: String
     var priceUsd: Float
+    var marketCapUsd: Float
     var imageUrl: URL {
         return URL(string: "https://assets.coincap.io/assets/icons/\(symbol.lowercased())@2x.png")!
     }
@@ -40,11 +41,16 @@ class Crypto: Identifiable {
         return "\(changePercent24Hr > 0 ? "+" : "")\(formatter.string(from: number) ?? "-")"
     }
 
-    init(symbol: String, name: String, priceUsd: Float, changePercent24Hr: Float) {
+    init(symbol: String,
+         name: String,
+         priceUsd: Float,
+         marketCapUsd: Float,
+         changePercent24Hr: Float) {
         self.reference = name.lowercased()
         self.symbol = symbol
         self.name = name
         self.changePercent24Hr = changePercent24Hr
         self.priceUsd = priceUsd
+        self.marketCapUsd = marketCapUsd
     }
 }

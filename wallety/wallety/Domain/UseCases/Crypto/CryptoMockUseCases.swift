@@ -42,16 +42,24 @@ class CryptoMockUseCases: CryptoUseCasesProtocol {
     }
     
     func getCryptos() async throws -> [Crypto] {
-        [Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0),
-          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0),
-          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0),
-          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0),
-          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0),
-          Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 2.0)]
+        [Crypto(symbol: "BTC",
+                name: "Bitcoin",
+                priceUsd: 45200.00,
+                marketCapUsd: 0.0,
+                changePercent24Hr: 2.0),
+         Crypto(symbol: "BTC",
+                 name: "Bitcoin",
+                 priceUsd: 45200.00,
+                 marketCapUsd: 0.0,
+                 changePercent24Hr: 2.0)]
     }
 
     func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
-        let crypto = Crypto(symbol: "BTC", name: "Bitcoin", priceUsd: 45200.00, changePercent24Hr: 0.0)
+        let crypto = Crypto(symbol: "BTC",
+                            name: "Bitcoin",
+                            priceUsd: 45200.00,
+                            marketCapUsd: 0.0,
+                            changePercent24Hr: 0.0)
 
         return [CryptoPortfolio(crypto: crypto, quantity: 1.2),
                  CryptoPortfolio(crypto: crypto, quantity: 1.2),

@@ -44,6 +44,7 @@ fileprivate extension CryptoPortfolioDBO {
             symbol: symbol,
             name: name,
             priceUsd: priceUsd, 
+            marketCapUsd: 0.0,
             changePercent24Hr: 0.0),
             quantity: quantity)
     }
