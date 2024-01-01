@@ -33,7 +33,7 @@ actor DBCryptoDataSource: LocalCryptoDataSourceProtocol {
     }
 
     func getCryptos() async throws -> [CryptoDBO] {
-        try context.fetch(FetchDescriptor<CryptoDBO>())
+        try context.fetch(FetchDescriptor<CryptoDBO>(sortBy: [SortDescriptor(\.marketCapUsd)]))
     }
 
     func getCrypto(with symbol: String) async throws -> CryptoDBO? {

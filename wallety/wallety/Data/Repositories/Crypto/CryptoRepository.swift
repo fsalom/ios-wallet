@@ -48,7 +48,9 @@ class CryptoRepository: CryptoRepositoryProtocol {
     func getFavorites() async throws -> [Crypto]{
         var cryptos = try await getCryptos()
         cryptos = try await setFavorites(for: cryptos)
-        return cryptos.filter({$0.isFavorite})
+        cryptos = cryptos.filter({$0.isFavorite})
+        cryptos.sort { $0.marketCapUsd > $1.marketCapUsd }
+        return cryptos
     }
 }
 
@@ -66,18 +68,20 @@ extension CryptoRepository {
 
         var seconds: Int {
             switch self {
-            case .top: return 300
-            case .portfolio: return 300
+            case .top: return 30
+            case .portfolio: return 30
             }
         }
     }
 
     private func setFavorites(for cryptos: [Crypto]) async throws -> [Crypto] {
+        var cryptosWithFavorite = cryptos
         let favorites = try await localDataSource.getFavorites().flatMap({$0.symbol})
-        for crypto in cryptos {
+        for crypto in cryptosWithFavorite {
             crypto.isFavorite = favorites.contains(crypto.symbol) ? true : false
         }
-        return cryptos
+        cryptosWithFavorite.sort { $0.marketCapUsd > $1.marketCapUsd }
+        return cryptosWithFavorite
     }
 
     private func shouldUpdate(for option: LastUpdatedOption) -> Bool {
@@ -110,6 +114,7 @@ fileprivate extension CryptoCoinCapDTO {
         return Crypto(symbol: self.symbol,
                       name: self.name,
                       priceUsd: Float(self.priceUsd) ?? 0.0,
+                      marketCapUsd: Float(self.marketCapUsd) ?? 0.0,
                       changePercent24Hr: Float(changePercent24Hr) ?? 0.0)
     }
 
@@ -126,6 +131,7 @@ fileprivate extension CryptoDBO {
         return Crypto(symbol: self.symbol,
                       name: self.name,
                       priceUsd: self.priceUsd,
+                      marketCapUsd: self.marketCapUsd ?? 0.0,
                       changePercent24Hr: self.changePercent24Hr ?? 0.0)
     }
 }
@@ -145,6 +151,7 @@ fileprivate extension CryptoPortfolioDBO {
             symbol: symbol,
             name: name,
             priceUsd: priceUsd,
+            marketCapUsd: 0.0,
             changePercent24Hr: 0.0),
             quantity: quantity)
     }
