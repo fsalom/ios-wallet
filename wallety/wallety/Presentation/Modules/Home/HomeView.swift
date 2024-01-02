@@ -103,7 +103,7 @@ struct HomeView: View {
 
 struct HorizontalListFavoriteAssetsView: View {
     @Environment(\.modelContext) private var context
-    
+
     var favoriteCryptos: [Crypto]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -155,7 +155,7 @@ struct ListCryptoView: View {
 
     var cryptos: [Crypto]
     var body: some View {
-        LazyVStack(spacing: 20, content: {
+        LazyVStack(spacing: 10, content: {
             ForEach(cryptos) { crypto in
                 NavigationLink {
                     CryptoDetailBuilder().build(with: crypto, and: context.container)
@@ -171,12 +171,12 @@ struct ListCryptoView: View {
         HStack {
             AsyncImage(url: crypto.imageUrl) { image in
                 image.resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .background(Color.white)
                     .clipShape(Circle())
             } placeholder: {
                 ProgressView()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .background(Color.white)
                     .clipShape(Circle())
             }

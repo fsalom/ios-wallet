@@ -32,16 +32,29 @@ struct TopCryptosView: View {
     @ViewBuilder
     func CryptoRow(with crypto: Crypto) -> some View {
         HStack {
-            AsyncImage(url: crypto.imageUrl) { image in
-                image.resizable()
-                    .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 40, height: 40)
-            }
+            ZStack {
+                AsyncImage(url: crypto.imageUrl) { image in
+                    image.resizable()
+                        .frame(width: 50, height: 50)
+                        .background(Color.white)
+                        .clipShape(Circle())
+                } placeholder: {
+                    ProgressView()
+                        .frame(width: 50, height: 50)
+                }
+                if crypto.isFavorite {
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                        .foregroundColor(.yellow)
+                        .padding(5)
+                        .background(.white)
+                        .clipShape(Circle())
+                        .offset(x: 15, y: 15)
+                        .shadow(radius: 1)
 
+                }
+            }
             VStack(alignment: .leading, content: {
                 Text(crypto.name)
                     .fontWeight(.bold)
