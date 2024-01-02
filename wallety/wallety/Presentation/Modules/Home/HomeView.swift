@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Charts
 
 struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
@@ -41,13 +42,13 @@ struct HomeView: View {
             let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
             let maxHeight = headerHeight()
             let progress = max(min((-minY / maxHeight), 1), 0)
-
             ZStack {
                 Rectangle().fill(Color.background)
                 VStack(spacing: 0, content: {
                     GeometryReader(content: { _ in
                         HomeProfileView(progress: progress)
                     })
+                    ChartView(progress: progress)
                     Text(VM.total)
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -96,6 +97,47 @@ struct HomeView: View {
 
     var minimumHeaderHeight: CGFloat {
         65 + safeArea.top
+    }
+
+    struct Data {
+        var day: String
+        var sales: Float
+    }
+    @ViewBuilder
+    private func ChartView(progress: CGFloat) -> some View {
+        let data = [Data(day: "1", sales: 30),
+                    Data(day: "2", sales: 30),
+                    Data(day: "3", sales: 50),
+                    Data(day: "4", sales: 60),
+                    Data(day: "5", sales: 70),
+                    Data(day: "6", sales: 80),
+                    Data(day: "7", sales: 30),
+                    Data(day: "8", sales: 30),
+                    Data(day: "9", sales: 30),
+                    Data(day: "10", sales: 40),
+                    Data(day: "11", sales: 40),
+                    Data(day: "12", sales: 40),
+                    Data(day: "13", sales: 60),
+                    Data(day: "14", sales: 90),
+                    Data(day: "15", sales: 90),
+                    Data(day: "16", sales: 90),
+                    Data(day: "17", sales: 90)]
+
+        Chart(data, id: \.day) {
+            LineMark(
+                x: .value("Date", $0.day),
+                y: .value("Sales", $0.sales)
+            )
+            .lineStyle(StrokeStyle(lineWidth: 1))
+            .foregroundStyle(.black)
+            .interpolationMethod(.cardinal)
+            .symbol(Circle().strokeBorder(lineWidth: 1))
+            .symbolSize(0)
+        }
+        .chartLegend(.hidden)
+        .chartXAxis(.hidden)
+        .chartYAxis(.hidden)
+        .opacity(1.0 - (progress * 2.5))
     }
 }
 
