@@ -8,6 +8,6 @@
 import Foundation
 
 struct CryptoHistoryDTO: Codable {
-    var time: String
+    var time: Int
     var priceUsd: String
 }

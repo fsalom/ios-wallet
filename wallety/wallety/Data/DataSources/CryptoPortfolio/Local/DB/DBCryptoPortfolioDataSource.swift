@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-class DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
+actor DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
     private var context: ModelContext
 
     init(with container: ModelContainer) {

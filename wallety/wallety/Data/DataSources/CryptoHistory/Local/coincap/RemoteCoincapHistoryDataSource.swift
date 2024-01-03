@@ -15,9 +15,10 @@ class RemoteCoincapHistoryDataSource: RemoteCryptoHistoryDataSourceProtocol {
     }
 
     func getHistory(for crypto: String) async throws -> [CryptoHistoryDTO] {
-        guard let url = URL(string: "https://api.coincap.io/v2/assets/\(crypto)/?interval=d1") else {
-            throw NetworkError.badURL
-        }
+        let queryItems = [URLQueryItem(name: "interval", value: "d1")]
+        var urlComps = URLComponents(string: "https://api.coincap.io/v2/assets/\(crypto.lowercased().replacingOccurrences(of: " ", with: "-"))/history")!
+        urlComps.queryItems = queryItems
+        guard let url = urlComps.url else { throw NetworkError.badRequest }
         let request = URLRequest(url: url)
         let pagination = try await networkManager.call(this: request,
                                                    of: CryptoHistoryDataDTO.self)
