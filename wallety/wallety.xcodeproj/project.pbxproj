@@ -47,6 +47,19 @@
 		C10EAC712B206331006C1A0D /* CryptoDetailBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC702B206331006C1A0D /* CryptoDetailBuilder.swift */; };
 		C10EAC732B20633B006C1A0D /* CryptoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC722B20633B006C1A0D /* CryptoDetailView.swift */; };
 		C10EAC752B206347006C1A0D /* CryptoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10EAC742B206347006C1A0D /* CryptoViewModel.swift */; };
+		C1527DFF2B4429E5003B0161 /* CryptoHistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527DFE2B4429E5003B0161 /* CryptoHistoryRepository.swift */; };
+		C1527E032B442A28003B0161 /* LocalCryptoHistoryDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E022B442A28003B0161 /* LocalCryptoHistoryDataSourceProtocol.swift */; };
+		C1527E072B442A48003B0161 /* DBCryptoHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E062B442A48003B0161 /* DBCryptoHistoryDataSource.swift */; };
+		C1527E092B442A56003B0161 /* CryptoHistoryDBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E082B442A56003B0161 /* CryptoHistoryDBO.swift */; };
+		C1527E0C2B442B3C003B0161 /* RemoteCryptoHistoryDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E0B2B442B3C003B0161 /* RemoteCryptoHistoryDataSourceProtocol.swift */; };
+		C1527E0F2B442C0E003B0161 /* RemoteCoincapHistoryDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E0E2B442C0E003B0161 /* RemoteCoincapHistoryDataSource.swift */; };
+		C1527E122B442C69003B0161 /* CoincapHistoryDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E112B442C69003B0161 /* CoincapHistoryDTO.swift */; };
+		C1527E152B44379C003B0161 /* CryptoHistoryRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E142B44379C003B0161 /* CryptoHistoryRepositoryProtocol.swift */; };
+		C1527E182B443941003B0161 /* CryptoHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E172B443941003B0161 /* CryptoHistory.swift */; };
+		C1527E1C2B4497A5003B0161 /* CoincapHistoryDataDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E1B2B4497A5003B0161 /* CoincapHistoryDataDTO.swift */; };
+		C1527E1E2B449892003B0161 /* CryptoHistoryUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E1D2B449892003B0161 /* CryptoHistoryUseCase.swift */; };
+		C1527E202B4498B4003B0161 /* CryptoHistoryUseCaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E1F2B4498B4003B0161 /* CryptoHistoryUseCaseProtocol.swift */; };
+		C1527E222B44B821003B0161 /* CryptoHistoryMockUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1527E212B44B821003B0161 /* CryptoHistoryMockUseCases.swift */; };
 		C16281142B32ED5700EDFFF0 /* ProfileBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16281132B32ED5700EDFFF0 /* ProfileBuilder.swift */; };
 		C16282782B3B20A700EDFFF0 /* OnBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16282772B3B20A700EDFFF0 /* OnBoardingView.swift */; };
 		C162827A2B3B354000EDFFF0 /* OnBoardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C16282792B3B354000EDFFF0 /* OnBoardingViewModel.swift */; };
@@ -137,6 +150,19 @@
 		C10EAC702B206331006C1A0D /* CryptoDetailBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoDetailBuilder.swift; sourceTree = "<group>"; };
 		C10EAC722B20633B006C1A0D /* CryptoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoDetailView.swift; sourceTree = "<group>"; };
 		C10EAC742B206347006C1A0D /* CryptoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoViewModel.swift; sourceTree = "<group>"; };
+		C1527DFE2B4429E5003B0161 /* CryptoHistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryRepository.swift; sourceTree = "<group>"; };
+		C1527E022B442A28003B0161 /* LocalCryptoHistoryDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalCryptoHistoryDataSourceProtocol.swift; sourceTree = "<group>"; };
+		C1527E062B442A48003B0161 /* DBCryptoHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBCryptoHistoryDataSource.swift; sourceTree = "<group>"; };
+		C1527E082B442A56003B0161 /* CryptoHistoryDBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryDBO.swift; sourceTree = "<group>"; };
+		C1527E0B2B442B3C003B0161 /* RemoteCryptoHistoryDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCryptoHistoryDataSourceProtocol.swift; sourceTree = "<group>"; };
+		C1527E0E2B442C0E003B0161 /* RemoteCoincapHistoryDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteCoincapHistoryDataSource.swift; sourceTree = "<group>"; };
+		C1527E112B442C69003B0161 /* CoincapHistoryDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoincapHistoryDTO.swift; sourceTree = "<group>"; };
+		C1527E142B44379C003B0161 /* CryptoHistoryRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryRepositoryProtocol.swift; sourceTree = "<group>"; };
+		C1527E172B443941003B0161 /* CryptoHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistory.swift; sourceTree = "<group>"; };
+		C1527E1B2B4497A5003B0161 /* CoincapHistoryDataDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoincapHistoryDataDTO.swift; sourceTree = "<group>"; };
+		C1527E1D2B449892003B0161 /* CryptoHistoryUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryUseCase.swift; sourceTree = "<group>"; };
+		C1527E1F2B4498B4003B0161 /* CryptoHistoryUseCaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryUseCaseProtocol.swift; sourceTree = "<group>"; };
+		C1527E212B44B821003B0161 /* CryptoHistoryMockUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoHistoryMockUseCases.swift; sourceTree = "<group>"; };
 		C16281132B32ED5700EDFFF0 /* ProfileBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBuilder.swift; sourceTree = "<group>"; };
 		C16282772B3B20A700EDFFF0 /* OnBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingView.swift; sourceTree = "<group>"; };
 		C16282792B3B354000EDFFF0 /* OnBoardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingViewModel.swift; sourceTree = "<group>"; };
@@ -279,10 +305,11 @@
 		C10EAC0D2B1B2641006C1A0D /* DataSources */ = {
 			isa = PBXGroup;
 			children = (
-				C1DFE34E2B3CCB7800F4086F /* User */,
-				C103026E2B321F6A005E8C54 /* CryptoPortfolio */,
-				C17916DF2B25B44F00C7798A /* Rates */,
 				C10EAC192B1D2245006C1A0D /* Crypto */,
+				C103026E2B321F6A005E8C54 /* CryptoPortfolio */,
+				C1527E002B442A06003B0161 /* CryptoHistory */,
+				C1DFE34E2B3CCB7800F4086F /* User */,
+				C17916DF2B25B44F00C7798A /* Rates */,
 			);
 			path = DataSources;
 			sourceTree = "<group>";
@@ -290,10 +317,11 @@
 		C10EAC0E2B1B2647006C1A0D /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				C1DFE34F2B3CCB8600F4086F /* User */,
-				C10302792B32218B005E8C54 /* CryptoPortfolio */,
-				C17916F72B26524D00C7798A /* Rates */,
 				C10EAC352B1DE012006C1A0D /* Crypto */,
+				C1527DFD2B4429A8003B0161 /* CryptoHistory */,
+				C10302792B32218B005E8C54 /* CryptoPortfolio */,
+				C1DFE34F2B3CCB8600F4086F /* User */,
+				C17916F72B26524D00C7798A /* Rates */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -301,6 +329,7 @@
 		C10EAC0F2B1B2653006C1A0D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
+				C1527E172B443941003B0161 /* CryptoHistory.swift */,
 				C10EAC332B1DDFD5006C1A0D /* Crypto.swift */,
 				C10EAC5F2B1FCD76006C1A0D /* CryptoPortfolio.swift */,
 				C17916F52B25BA6C00C7798A /* Rate.swift */,
@@ -312,6 +341,7 @@
 		C10EAC102B1B2658006C1A0D /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
+				C1527E132B443777003B0161 /* CryptoHistory */,
 				C1DFE34B2B3CCB4400F4086F /* User */,
 				C103027C2B322326005E8C54 /* CryptoPortfolio */,
 				C17916F22B25BA1E00C7798A /* Rates */,
@@ -323,6 +353,7 @@
 		C10EAC112B1B265F006C1A0D /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				C1527E162B443933003B0161 /* CryptoHistory */,
 				C1DFE3462B3CCAB700F4086F /* User */,
 				C17916FF2B2727ED00C7798A /* CryptoPortfolio */,
 				C17916FA2B27270B00C7798A /* Rates */,
@@ -505,6 +536,95 @@
 				C10EAC742B206347006C1A0D /* CryptoViewModel.swift */,
 			);
 			path = CryptoDetail;
+			sourceTree = "<group>";
+		};
+		C1527DFD2B4429A8003B0161 /* CryptoHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C1527DFE2B4429E5003B0161 /* CryptoHistoryRepository.swift */,
+			);
+			path = CryptoHistory;
+			sourceTree = "<group>";
+		};
+		C1527E002B442A06003B0161 /* CryptoHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E0A2B442A69003B0161 /* Remote */,
+				C1527E012B442A17003B0161 /* Local */,
+			);
+			path = CryptoHistory;
+			sourceTree = "<group>";
+		};
+		C1527E012B442A17003B0161 /* Local */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E042B442A30003B0161 /* DB */,
+				C1527E022B442A28003B0161 /* LocalCryptoHistoryDataSourceProtocol.swift */,
+			);
+			path = Local;
+			sourceTree = "<group>";
+		};
+		C1527E042B442A30003B0161 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E052B442A37003B0161 /* Table */,
+				C1527E062B442A48003B0161 /* DBCryptoHistoryDataSource.swift */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
+		C1527E052B442A37003B0161 /* Table */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E082B442A56003B0161 /* CryptoHistoryDBO.swift */,
+			);
+			path = Table;
+			sourceTree = "<group>";
+		};
+		C1527E0A2B442A69003B0161 /* Remote */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E0D2B442BE9003B0161 /* coincap */,
+				C1527E0B2B442B3C003B0161 /* RemoteCryptoHistoryDataSourceProtocol.swift */,
+			);
+			name = Remote;
+			path = Local;
+			sourceTree = "<group>";
+		};
+		C1527E0D2B442BE9003B0161 /* coincap */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E102B442C5B003B0161 /* DTO */,
+				C1527E0E2B442C0E003B0161 /* RemoteCoincapHistoryDataSource.swift */,
+			);
+			path = coincap;
+			sourceTree = "<group>";
+		};
+		C1527E102B442C5B003B0161 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E112B442C69003B0161 /* CoincapHistoryDTO.swift */,
+				C1527E1B2B4497A5003B0161 /* CoincapHistoryDataDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		C1527E132B443777003B0161 /* CryptoHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E142B44379C003B0161 /* CryptoHistoryRepositoryProtocol.swift */,
+			);
+			path = CryptoHistory;
+			sourceTree = "<group>";
+		};
+		C1527E162B443933003B0161 /* CryptoHistory */ = {
+			isa = PBXGroup;
+			children = (
+				C1527E1D2B449892003B0161 /* CryptoHistoryUseCase.swift */,
+				C1527E1F2B4498B4003B0161 /* CryptoHistoryUseCaseProtocol.swift */,
+				C1527E212B44B821003B0161 /* CryptoHistoryMockUseCases.swift */,
+			);
+			path = CryptoHistory;
 			sourceTree = "<group>";
 		};
 		C16282762B3B209000EDFFF0 /* OnBoarding */ = {
@@ -929,17 +1049,21 @@
 				C1DFE3482B3CCAC500F4086F /* UserUseCases.swift in Sources */,
 				C10EAC732B20633B006C1A0D /* CryptoDetailView.swift in Sources */,
 				C10EAC542B1F56F4006C1A0D /* CryptoDBO.swift in Sources */,
+				C1527E032B442A28003B0161 /* LocalCryptoHistoryDataSourceProtocol.swift in Sources */,
 				C17916D72B22729800C7798A /* CryptoUpdatedDTO.swift in Sources */,
 				C1DFE3592B3CCCC800F4086F /* UserDTO.swift in Sources */,
 				C10EAC222B1D2369006C1A0D /* RemoteCoincapDataSource.swift in Sources */,
+				C1527E1C2B4497A5003B0161 /* CoincapHistoryDataDTO.swift in Sources */,
 				C10EAC6C2B2062A8006C1A0D /* AddAssetBuilder.swift in Sources */,
 				C10EAC342B1DDFD5006C1A0D /* Crypto.swift in Sources */,
 				C103027E2B322346005E8C54 /* CryptoPortfolioRespositoryProtocol.swift in Sources */,
 				C1DFE34A2B3CCAD800F4086F /* UserUseCasesProtocol.swift in Sources */,
 				C162827C2B3B3E6C00EDFFF0 /* OnBoardingBuilder.swift in Sources */,
+				C1527E182B443941003B0161 /* CryptoHistory.swift in Sources */,
 				C17917032B27281E00C7798A /* CryptoPortfolioUseCases.swift in Sources */,
 				C17916F92B26525E00C7798A /* RatesRepository.swift in Sources */,
 				C10EAC752B206347006C1A0D /* CryptoViewModel.swift in Sources */,
+				C1527E122B442C69003B0161 /* CoincapHistoryDTO.swift in Sources */,
 				C17916E72B25B49200C7798A /* RemoteRatesDataSourceProtocol.swift in Sources */,
 				C1DFE3532B3CCBBF00F4086F /* UserDataSourceProtocol.swift in Sources */,
 				C17916E52B25B48100C7798A /* LocalRatesDataSourceProtocol.swift in Sources */,
@@ -951,7 +1075,11 @@
 				C10EAC372B1DE028006C1A0D /* CryptoRepository.swift in Sources */,
 				C17916D12B2270CF00C7798A /* CacheManagerProtocol.swift in Sources */,
 				C17917052B27364B00C7798A /* RatesMockUseCases.swift in Sources */,
+				C1527E1E2B449892003B0161 /* CryptoHistoryUseCase.swift in Sources */,
 				C165CE492B3DB3760009F873 /* SplashViewModel.swift in Sources */,
+				C1527DFF2B4429E5003B0161 /* CryptoHistoryRepository.swift in Sources */,
+				C1527E092B442A56003B0161 /* CryptoHistoryDBO.swift in Sources */,
+				C1527E0C2B442B3C003B0161 /* RemoteCryptoHistoryDataSourceProtocol.swift in Sources */,
 				C10EAC672B1FD379006C1A0D /* MyPortfolioBuilder.swift in Sources */,
 				C10EAC1F2B1D22C2006C1A0D /* RemoteCryptoDataSourceProtocol.swift in Sources */,
 				C165CE3F2B3D7D930009F873 /* UserMockUseCases.swift in Sources */,
@@ -965,16 +1093,20 @@
 				C10EAC2D2B1DDEE4006C1A0D /* CryptoCoinCapDTO.swift in Sources */,
 				C16D041F2B18EF190014F906 /* HomeView.swift in Sources */,
 				C1DFE3562B3CCBE500F4086F /* UDUserDataSource.swift in Sources */,
+				C1527E0F2B442C0E003B0161 /* RemoteCoincapHistoryDataSource.swift in Sources */,
+				C1527E072B442A48003B0161 /* DBCryptoHistoryDataSource.swift in Sources */,
 				C17916D92B238BFE00C7798A /* DefaultTabbarView.swift in Sources */,
 				C17916F42B25BA3300C7798A /* RatesRepositoryProtocol.swift in Sources */,
 				C17916DE2B24C5CD00C7798A /* ProfileViewModel.swift in Sources */,
 				C10EAC1D2B1D22AB006C1A0D /* LocalCryptoDataSourceProtocol.swift in Sources */,
 				C10EAC482B1DF078006C1A0D /* DBCryptoDataSource.swift in Sources */,
 				C10302772B322035005E8C54 /* DBCryptoPortfolioDataSource.swift in Sources */,
+				C1527E202B4498B4003B0161 /* CryptoHistoryUseCaseProtocol.swift in Sources */,
 				C10EAC512B1E0E37006C1A0D /* TabbarView.swift in Sources */,
 				C10EAC5B2B1F5D5A006C1A0D /* DBManagerProtocol.swift in Sources */,
 				C10EAC6E2B2062B3006C1A0D /* AddAssetView.swift in Sources */,
 				C10EAC4C2B1DFEFA006C1A0D /* HomeViewModel.swift in Sources */,
+				C1527E152B44379C003B0161 /* CryptoHistoryRepositoryProtocol.swift in Sources */,
 				C10EAC592B1F5D30006C1A0D /* SwiftDataManager.swift in Sources */,
 				C16D040B2B18BFB60014F906 /* walletyApp.swift in Sources */,
 				C1F8260D2B29AFE3007AE951 /* UDRatesDataSource.swift in Sources */,
@@ -985,6 +1117,7 @@
 				C17917082B273D2F00C7798A /* RateInfoDTO.swift in Sources */,
 				C103027B2B32219E005E8C54 /* CryptoPortfolioRepository.swift in Sources */,
 				C10EAC282B1DDE45006C1A0D /* RemoteManagerProtocol.swift in Sources */,
+				C1527E222B44B821003B0161 /* CryptoHistoryMockUseCases.swift in Sources */,
 				C17916EA2B25B4B200C7798A /* CoincapRatesDataSource.swift in Sources */,
 				C1F826102B29B108007AE951 /* CacheRatesDataSourceProtocol.swift in Sources */,
 				C17917012B27280B00C7798A /* CryptoPortfolioUseCasesProtocol.swift in Sources */,
