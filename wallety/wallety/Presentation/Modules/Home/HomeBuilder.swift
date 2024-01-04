@@ -37,10 +37,16 @@ class HomeBuilder {
         let userRepository = UserRepository(datasource: userCacheDataSource)
         let userUseCases = UserUseCases(repository: userRepository)
 
+        let remoteHistoryDataSource = RemoteCoincapHistoryDataSource(networkManager: NetworkManager())
+        let localHistoryDataSource = DBCryptoHistoryDataSource(with: container)
+        let historyRepository = CryptoHistoryRepository(localDataSource: localHistoryDataSource, remoteDataSource: remoteHistoryDataSource)
+        let historyUseCases = CryptoHistoryUseCase(repository: historyRepository)
+
         let viewModel = HomeViewModel(cryptoUseCases: cryptoUseCases,
                                       cryptoPortfolioUseCases: portfolioUseCases,
                                       ratesUseCases: ratesUseCases,
-                                      userUseCases: userUseCases)
+                                      userUseCases: userUseCases,
+                                      historyUseCases: historyUseCases)
         let view = HomeView(VM: viewModel)
         return view
     }
