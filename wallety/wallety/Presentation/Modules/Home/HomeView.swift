@@ -11,6 +11,8 @@ import Charts
 struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
     @State private var showingPopover = false
+    @State private var selectedDayAndPrice: (String, CGPoint) = ("", CGPoint(x: 0.0, y: 0.0))
+
 
     let safeArea: EdgeInsets = EdgeInsets()
 
@@ -20,6 +22,7 @@ struct HomeView: View {
                 ScrollView(.vertical) {
                     VStack {
                         HeaderView()
+                        ChartView()
                         if !VM.favoriteCryptos.isEmpty {
                             HorizontalListFavoriteAssetsView(favoriteCryptos: VM.favoriteCryptos)
                         }
@@ -45,10 +48,9 @@ struct HomeView: View {
             ZStack {
                 Rectangle().fill(Color.background)
                 VStack(spacing: 0, content: {
-                    GeometryReader(content: { _ in
+                    GeometryReader { _ in
                         HomeProfileView(progress: progress)
-                    })
-                    ChartView(progress: progress)
+                    }
                     Text(VM.total)
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -99,45 +101,54 @@ struct HomeView: View {
         65 + safeArea.top
     }
 
-    struct Data {
-        var day: String
-        var sales: Float
-    }
     @ViewBuilder
-    private func ChartView(progress: CGFloat) -> some View {
-        let data = [Data(day: "1", sales: 30),
-                    Data(day: "2", sales: 30),
-                    Data(day: "3", sales: 50),
-                    Data(day: "4", sales: 60),
-                    Data(day: "5", sales: 70),
-                    Data(day: "6", sales: 80),
-                    Data(day: "7", sales: 30),
-                    Data(day: "8", sales: 30),
-                    Data(day: "9", sales: 30),
-                    Data(day: "10", sales: 40),
-                    Data(day: "11", sales: 40),
-                    Data(day: "12", sales: 40),
-                    Data(day: "13", sales: 60),
-                    Data(day: "14", sales: 90),
-                    Data(day: "15", sales: 90),
-                    Data(day: "16", sales: 90),
-                    Data(day: "17", sales: 90)]
+    private func ChartView() -> some View {
+        ZStack {
+            Chart(VM.totalsPerDay, id: \.time) {
+                LineMark(
+                    x: .value("Date", $0.dateString),
+                    y: .value("Price", $0.priceUsd)
+                )
+                .lineStyle(StrokeStyle(lineWidth: 1))
+                .foregroundStyle(.black)
+                .interpolationMethod(.cardinal)
+                .symbol(Circle().strokeBorder(lineWidth: 1))
+                .symbolSize(0)
+            }
+            .chartLegend(.hidden)
+            .chartXAxis(.hidden)
+            .chartYAxis(.hidden)
+            .chartYScale(domain: VM.minValueForChart...VM.maxValueForChart)
+            .chartOverlay { (proxy: ChartProxy) in
+                GeometryReader { geometry in
+                    Rectangle().fill(.clear).contentShape(Rectangle())
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                                                        // Convert the gesture location to the coordinate space of the plot area.
+                                    let origin = geometry[proxy.plotAreaFrame].origin
+                                    let location = CGPoint(
+                                        x: value.location.x - origin.x,
+                                        y: value.location.y - origin.y
+                                    )
+                                    // Get the x (date) and y (price) value from the location.
 
-        Chart(data, id: \.day) {
-            LineMark(
-                x: .value("Date", $0.day),
-                y: .value("Sales", $0.sales)
-            )
-            .lineStyle(StrokeStyle(lineWidth: 1))
-            .foregroundStyle(.black)
-            .interpolationMethod(.cardinal)
-            .symbol(Circle().strokeBorder(lineWidth: 1))
-            .symbolSize(0)
+                                    let (date, price) = proxy.value(at: location, as: (String, Float).self) ?? ("", 0.0)
+                                    let positionY = proxy.position(forX: Double(location.x))
+
+                                    print("\(date), \(price) --- \(positionY)")
+                                    //selectedDayAndPrice = (date, location)
+                                    
+                                }
+                        )
+                }
+            }
+            if selectedDayAndPrice.1.x != 0.0 && selectedDayAndPrice.1.y != 0.0 {
+                Text(selectedDayAndPrice.0).position(x: selectedDayAndPrice.1.x, y: selectedDayAndPrice.1.y)
+            }
         }
-        .chartLegend(.hidden)
-        .chartXAxis(.hidden)
-        .chartYAxis(.hidden)
-        .opacity(1.0 - (progress * 2.5))
+
+        //.opacity(1.0 - (progress * 2.5))
     }
 }
 
@@ -245,5 +256,6 @@ struct ListCryptoView: View {
     HomeView(VM: HomeViewModel(cryptoUseCases: CryptoMockUseCases(),
                                cryptoPortfolioUseCases: CryptoPortfolioMockUseCases(),
                                ratesUseCases: RatesMockUseCases(),
-                               userUseCases: UserMockUseCases()))
+                               userUseCases: UserMockUseCases(),
+                               historyUseCases: CryptoHistoryMockUseCases()))
 }
