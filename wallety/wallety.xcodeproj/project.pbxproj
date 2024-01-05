@@ -329,8 +329,8 @@
 		C10EAC0F2B1B2653006C1A0D /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				C1527E172B443941003B0161 /* CryptoHistory.swift */,
 				C10EAC332B1DDFD5006C1A0D /* Crypto.swift */,
+				C1527E172B443941003B0161 /* CryptoHistory.swift */,
 				C10EAC5F2B1FCD76006C1A0D /* CryptoPortfolio.swift */,
 				C17916F52B25BA6C00C7798A /* Rate.swift */,
 				C1DFE35A2B3CCE4C00F4086F /* User.swift */,
@@ -353,11 +353,11 @@
 		C10EAC112B1B265F006C1A0D /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				C1527E162B443933003B0161 /* CryptoHistory */,
-				C1DFE3462B3CCAB700F4086F /* User */,
-				C17916FF2B2727ED00C7798A /* CryptoPortfolio */,
-				C17916FA2B27270B00C7798A /* Rates */,
 				C10EAC382B1DE0EA006C1A0D /* Crypto */,
+				C1527E162B443933003B0161 /* CryptoHistory */,
+				C17916FF2B2727ED00C7798A /* CryptoPortfolio */,
+				C1DFE3462B3CCAB700F4086F /* User */,
+				C17916FA2B27270B00C7798A /* Rates */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";

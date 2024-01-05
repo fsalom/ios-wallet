@@ -125,26 +125,21 @@ struct HomeView: View {
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
-                                                                        // Convert the gesture location to the coordinate space of the plot area.
                                     let origin = geometry[proxy.plotAreaFrame].origin
                                     let location = CGPoint(
                                         x: value.location.x - origin.x,
                                         y: value.location.y - origin.y
                                     )
-                                    // Get the x (date) and y (price) value from the location.
 
                                     let (date, price) = proxy.value(at: location, as: (String, Float).self) ?? ("", 0.0)
                                     let positionY = proxy.position(forX: Double(location.x))
 
                                     print("\(date), \(price) --- \(positionY)")
+                                    VM.updateTotal(with: price)
                                     //selectedDayAndPrice = (date, location)
-                                    
                                 }
                         )
                 }
-            }
-            if selectedDayAndPrice.1.x != 0.0 && selectedDayAndPrice.1.y != 0.0 {
-                Text(selectedDayAndPrice.0).position(x: selectedDayAndPrice.1.x, y: selectedDayAndPrice.1.y)
             }
         }
 

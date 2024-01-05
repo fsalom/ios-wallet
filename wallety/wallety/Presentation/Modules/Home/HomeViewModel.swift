@@ -102,4 +102,13 @@ class HomeViewModel: ObservableObject {
             currentCurrency: currentCurrency,
             user: user)
     }
+
+    func updateTotal(with price: Float) {
+        Task {
+            let total = try await ratesUseCases.getFormattedWithCurrentCurrency(this: price)
+            await MainActor.run {
+                self.total = total
+            }
+        }
+    }
 }
