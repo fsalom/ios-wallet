@@ -39,4 +39,15 @@ class RatesUseCases: RatesUseCasesProtocol {
     func select(this currency: Rate) async throws {
         try await repository.save(selected: currency)
     }
+
+    func getFormattedWithCurrentCurrency(this price: Float) async throws -> String {
+        let currentCurrency = try await getCurrentCurrency()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximumFractionDigits = 2
+        formatter.decimalSeparator = ","
+        formatter.groupingSeparator = "."
+        let number = NSNumber(value: price/currentCurrency.rateUsd)
+        return "\(currentCurrency.currencySymbol)\(formatter.string(from: number) ?? "-")"
+    }
 }

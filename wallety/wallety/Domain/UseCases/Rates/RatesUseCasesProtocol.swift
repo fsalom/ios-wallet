@@ -14,5 +14,6 @@ protocol RatesUseCasesProtocol {
     func getCurrentCurrency() async throws -> Rate
     func getFilteredCurrenciesRates() async throws -> [Rate]
     func select(this currency: Rate) async throws
+    func getFormattedWithCurrentCurrency(this price: Float) async throws -> String
 }
 

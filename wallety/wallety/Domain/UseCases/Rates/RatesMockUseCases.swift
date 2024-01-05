@@ -8,6 +8,10 @@
 import Foundation
 
 class RatesMockUseCases: RatesUseCasesProtocol {
+    func getFormattedWithCurrentCurrency(this price: Float) async throws -> String {
+        ""
+    }
+    
     func select(this currency: Rate) async throws {
         
     }
