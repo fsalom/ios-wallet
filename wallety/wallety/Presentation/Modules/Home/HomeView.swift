@@ -11,8 +11,6 @@ import Charts
 struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
     @State private var showingPopover = false
-    @State private var selectedDayAndPrice: (String, CGPoint) = ("", CGPoint(x: 0.0, y: 0.0))
-
 
     let safeArea: EdgeInsets = EdgeInsets()
 
@@ -130,20 +128,20 @@ struct HomeView: View {
                                         x: value.location.x - origin.x,
                                         y: value.location.y - origin.y
                                     )
-
-                                    let (date, price) = proxy.value(at: location, as: (String, Float).self) ?? ("", 0.0)
-                                    let positionY = proxy.position(forX: Double(location.x))
-
-                                    print("\(date), \(price) --- \(positionY)")
-                                    VM.updateTotal(with: price)
-                                    //selectedDayAndPrice = (date, location)
+                                    guard let date = proxy.value(atX: location.x, as: String.self) else {
+                                        return
+                                    }
+                                    VM.updateTotal(with: date)
                                 }
+                                .onEnded({ _ in
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        VM.setOriginalTotal()
+                                    }
+                                })
                         )
                 }
             }
         }
-
-        //.opacity(1.0 - (progress * 2.5))
     }
 }
 

@@ -33,6 +33,7 @@ class HomeViewModel: ObservableObject {
     @Published var total: String = "---"
     @Published var error: String = ""
 
+    private var originalTotal: String = ""
     var cryptoUseCases: CryptoUseCasesProtocol
     var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
@@ -59,7 +60,11 @@ class HomeViewModel: ObservableObject {
             do {
                 let data = try await loadData()
                 let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
-                let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(10)
+                let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(30)
+                for totalDay in totalsPerDay{
+                    print(totalDay.dateString)
+                    print(totalDay.priceUsd)
+                }
                 let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
                 await MainActor.run {
                     self.cryptos = cryptoUseCases.update(these: cryptosWithoutFavorite,
@@ -103,12 +108,22 @@ class HomeViewModel: ObservableObject {
             user: user)
     }
 
-    func updateTotal(with price: Float) {
+    func updateTotal(with date: String) {
         Task {
-            let total = try await ratesUseCases.getFormattedWithCurrentCurrency(this: price)
+            guard let totalPerDayWithThisDate = self.totalsPerDay.filter({$0.dateString == date}).first else {
+                return
+            }
+            if self.originalTotal.isEmpty {
+                originalTotal = total
+            }
+            let total = try await ratesUseCases.getFormattedWithCurrentCurrency(this: totalPerDayWithThisDate.priceUsd)
             await MainActor.run {
                 self.total = total
             }
         }
+    }
+
+    func setOriginalTotal(){
+        total = originalTotal.isEmpty ? total : originalTotal
     }
 }
