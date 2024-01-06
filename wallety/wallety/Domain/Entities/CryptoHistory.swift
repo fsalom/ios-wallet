@@ -12,11 +12,12 @@ class CryptoHistory {
     var priceUsd: Float
     var crypto: String = ""
     var dateString: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(time))
+        let date = Date(timeIntervalSince1970: TimeInterval(time/1000))
         let dateFormatter = DateFormatter()
         dateFormatter.timeStyle = DateFormatter.Style.medium //Set time style
         dateFormatter.dateStyle = DateFormatter.Style.medium //Set date style
         dateFormatter.timeZone = .current
+        dateFormatter.dateFormat = "YYYY-MM-dd"
         return dateFormatter.string(from: date)
     }
 
