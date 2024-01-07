@@ -22,8 +22,8 @@ class HomeViewModel: ObservableObject {
     @Published var totalsPerDay: [CryptoHistory] = [] {
         didSet {
             let sortedtotalsPerDay = totalsPerDay.sorted(by: {$0.priceUsd < $1.priceUsd})
-            minValueForChart = sortedtotalsPerDay.first?.priceUsd ?? 0.0
             maxValueForChart = sortedtotalsPerDay.last?.priceUsd ?? 0.0
+            minValueForChart = sortedtotalsPerDay.first?.priceUsd ?? 0.0
         }
     }
     @Published var minValueForChart: Float = 0.0
