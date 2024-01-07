@@ -33,9 +33,15 @@ class CryptoDetailBuilder {
 
         let rateUseCases = RatesUseCases(repository: ratesRepository)
 
+        let remoteHistoryDataSource = RemoteCoincapHistoryDataSource(networkManager: NetworkManager())
+        let localHistoryDataSource = DBCryptoHistoryDataSource(with: container)
+        let historyRepository = CryptoHistoryRepository(localDataSource: localHistoryDataSource, remoteDataSource: remoteHistoryDataSource)
+        let historyUseCases = CryptoHistoryUseCase(repository: historyRepository)
+
         let viewModel = CryptoDetailViewModel(crypto: crypto,
                                               portfolioUseCases: portfolioUseCases,
-                                              rateUseCases: rateUseCases)
+                                              rateUseCases: rateUseCases,
+                                              cryptoHistoryUseCases: historyUseCases)
         let view = CryptoDetailView(VM: viewModel)
         return view
     }
