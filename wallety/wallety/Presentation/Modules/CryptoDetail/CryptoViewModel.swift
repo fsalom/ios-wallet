@@ -10,6 +10,13 @@ import Foundation
 class CryptoDetailViewModel: ObservableObject {
     @Published var crypto: Crypto
     @Published var cryptosPortfolio: [CryptoPortfolio] = []
+    @Published var cryptoHistoryPrices: [CryptoHistory] = [] {
+        didSet {
+            let sortedCryptoHistoryPrices = cryptoHistoryPrices.sorted(by: {$0.priceUsd < $1.priceUsd})
+            maxValueForChart = sortedCryptoHistoryPrices.last?.priceUsd ?? 0.0
+            minValueForChart = sortedCryptoHistoryPrices.first?.priceUsd ?? 0.0
+        }
+    }
     @Published var error: String = ""
     @Published var quantityText: String = "" {
         didSet {
@@ -29,17 +36,26 @@ class CryptoDetailViewModel: ObservableObject {
     }
     @Published var total: String = "---"
     @Published var quantity: String = "---"
+    @Published var minValueForChart: Float = 0.0
+    @Published var maxValueForChart: Float = 0.0
+    @Published var price: Float = 0.0
 
     private var priceToAdd: Float = 0.0
     private var quantityToAdd: Float = 0.0
+    private var originalPrice: Float = 0.0
 
     var portfolioUseCases: CryptoPortfolioUseCasesProtocol
     var rateUseCases: RatesUseCasesProtocol
+    var cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol
 
-    init(crypto: Crypto, portfolioUseCases: CryptoPortfolioUseCasesProtocol, rateUseCases: RatesUseCasesProtocol) {
+    init(crypto: Crypto,
+         portfolioUseCases: CryptoPortfolioUseCasesProtocol,
+         rateUseCases: RatesUseCasesProtocol,
+         cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol) {
         self.crypto = crypto
         self.portfolioUseCases = portfolioUseCases
         self.rateUseCases = rateUseCases
+        self.cryptoHistoryUseCases = cryptoHistoryUseCases
         self.priceText = "\(crypto.priceUsd)"
     }
 
@@ -47,12 +63,15 @@ class CryptoDetailViewModel: ObservableObject {
         Task {
             let cryptosPortfolio = try await portfolioUseCases.getPortfolio(with: crypto.symbol)
             let rate = try await rateUseCases.getCurrentCurrency()
+            let cryptoHistoryPrices = try await cryptoHistoryUseCases.getHistory(for: self.crypto.name).suffix(30)
             crypto.currency = rate
             let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: cryptosPortfolio)
             await MainActor.run {
                 self.cryptosPortfolio = cryptosPortfolio
+                self.cryptoHistoryPrices = Array(cryptoHistoryPrices)
                 self.total = total
                 self.quantity = quantity
+                self.originalPrice = crypto.priceUsd
             }
         }
     }
@@ -80,5 +99,9 @@ class CryptoDetailViewModel: ObservableObject {
             try await portfolioUseCases.delete(this: portfolio)
             load()
         }
+    }
+
+    func setOriginalPrice() {
+        self.price = originalPrice
     }
 }
