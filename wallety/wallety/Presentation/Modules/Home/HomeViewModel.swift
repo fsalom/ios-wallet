@@ -28,8 +28,7 @@ class HomeViewModel: ObservableObject {
     }
     @Published var minValueForChart: Float = 0.0
     @Published var maxValueForChart: Float = 0.0
-    @Published var name: String = "Desconocido"
-    @Published var image: Image
+    @Published var user: User?
     @Published var total: String = "---"
     @Published var error: String = ""
 
@@ -52,44 +51,27 @@ class HomeViewModel: ObservableObject {
         self.userUseCases = userUseCases
         self.historyUseCases = historyUseCases
         self.currentCurrency = Rate.default()
-        self.image = Image(.profile)
     }
 
-    func load() {
-        Task {
-            do {
-                let data = try await loadData()
-                let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
-                let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(30)
-                for totalDay in totalsPerDay{
-                    print(totalDay.dateString)
-                    print(totalDay.priceUsd)
-                }
-                let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
-                await MainActor.run {
-                    self.cryptos = cryptoUseCases.update(these: cryptosWithoutFavorite,
-                                                         with: data.currentCurrency)
-                    self.favoriteCryptos = cryptoUseCases.update(these: favoriteCryptos,
-                                                                 with: data.currentCurrency)
-                    self.total = data.total
-                    self.totalsPerDay = Array(totalsPerDay)
-                    self.currentCurrency = data.currentCurrency
-                    guard let user = data.user else { return }
-                    self.name = user.name
-                    if let image = data.user?.image {
-                        if let uiImage = UIImage(data: image) {
-                            self.image = Image(uiImage: uiImage)
-                            return
-                        }
-                    } else {
-                        self.image = Image(.profile)
-                    }
-
-                }
-            } catch {
-                await MainActor.run {
-                    self.error = "_ERROR_"
-                }
+    func load() async {
+        do {
+            let data = try await loadData()
+            let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
+            let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(30)
+            let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
+            await MainActor.run {
+                self.cryptos = cryptoUseCases.update(these: cryptosWithoutFavorite,
+                                                     with: data.currentCurrency)
+                self.favoriteCryptos = cryptoUseCases.update(these: favoriteCryptos,
+                                                             with: data.currentCurrency)
+                self.total = data.total
+                self.totalsPerDay = Array(totalsPerDay)
+                self.currentCurrency = data.currentCurrency
+                self.user = data.user
+            }
+        } catch {
+            await MainActor.run {
+                self.error = "_ERROR_"
             }
         }
     }
