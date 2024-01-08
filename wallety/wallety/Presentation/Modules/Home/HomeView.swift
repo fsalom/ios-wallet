@@ -30,8 +30,8 @@ struct HomeView: View {
                     .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
             }
             .background(Color.background)
-            .onAppear() {
-                VM.load()
+            .task {
+                await VM.load()
             }
         }
     }
@@ -72,19 +72,28 @@ struct HomeView: View {
     @ViewBuilder
     func HomeProfileView(progress: CGFloat) -> some View {
         HStack {
-            VM.image
+            getProfileImage()
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 50, height: 50)
                 .clipShape(Circle())
+
             VStack(alignment: .leading, spacing: 5, content: {
                 Text("Hola 👋")
-                Text(VM.name)
+                Text(VM.user?.name ?? "Desconocido")
                     .fontWeight(.bold)
             }).padding(5)
                 .opacity(1.0 - (progress * 2.5))
             Spacer()
         }.padding(.horizontal, 20)
+    }
+
+    func getProfileImage() -> Image {
+        if let image = VM.user?.image, let data = UIImage(data: image) {
+            return Image(uiImage: data)
+        } else {
+            return Image(.profile)
+        }
     }
 
     func headerHeight(with height: CGFloat? = 0,
