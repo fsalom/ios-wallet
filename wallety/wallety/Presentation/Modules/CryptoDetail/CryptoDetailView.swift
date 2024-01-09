@@ -83,8 +83,8 @@ struct CryptoDetailView: View {
             .foregroundColor(.primary)
             .navigationTitle("\(VM.crypto.name)")
             .accentColor(.black)
-            .onAppear {
-                VM.load()
+            .task {
+                await VM.load()
             }
     }
 
