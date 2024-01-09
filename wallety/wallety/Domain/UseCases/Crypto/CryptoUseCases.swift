@@ -19,7 +19,7 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     }
 
     func getCryptos() async throws -> [Crypto] {
-        try await repository.getCryptos()
+        try await repository.getCryptos().sorted(by: {$0.marketCapUsd > $1.marketCapUsd})
     }
 
     func update(these cryptos: [Crypto], with currency: Rate) -> [Crypto] {
@@ -28,7 +28,7 @@ class CryptoUseCases: CryptoUseCasesProtocol {
             crypto.currency = currency
             updatedCryptos.append(crypto)
         }
-        return updatedCryptos
+        return updatedCryptos.sorted(by: {$0.marketCapUsd > $1.marketCapUsd})
     }
 
     func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {
@@ -40,10 +40,10 @@ class CryptoUseCases: CryptoUseCasesProtocol {
     }
 
     func getCryptosWithoutFavorites(from cryptos: [Crypto]) async throws -> [Crypto] {
-        return cryptos.filter({$0.isFavorite != true})
+        return cryptos.filter({$0.isFavorite != true}).sorted(by: {$0.marketCapUsd > $1.marketCapUsd})
     }
 
     func getFavoriteCryptos(from cryptos: [Crypto]) async throws -> [Crypto] {
-        return cryptos.filter({$0.isFavorite == true})
+        return cryptos.filter({$0.isFavorite == true}).sorted(by: {$0.marketCapUsd > $1.marketCapUsd})
     }
 }
