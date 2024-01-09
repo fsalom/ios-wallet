@@ -29,17 +29,15 @@ class TopCryptosViewModel: ObservableObject {
         self.ratesUseCases = ratesUseCases
     }
 
-    func load() {
-        Task {
-            do {
-                let data = try await loadData()
-                await MainActor.run {
-                    self.cryptos = data.cryptos
-                    self.originalCryptos = data.cryptos
-                }
-            } catch {
-                self.error = "_ERROR_"
+    func load() async {
+        do {
+            let data = try await loadData()
+            await MainActor.run {
+                self.cryptos = data.cryptos
+                self.originalCryptos = data.cryptos
             }
+        } catch {
+            self.error = "_ERROR_"
         }
     }
 
@@ -51,7 +49,7 @@ class TopCryptosViewModel: ObservableObject {
         )
     }
 
-    func filter(with text: String) {
+    private func filter(with text: String) {
         if text.isEmpty {
             self.cryptos = originalCryptos
         }else{

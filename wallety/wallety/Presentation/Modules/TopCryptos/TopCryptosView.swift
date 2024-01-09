@@ -21,8 +21,8 @@ struct TopCryptosView: View {
                         CryptoRow(with: crypto)
                     }
                 }
-            }).onAppear {
-                VM.load()
+            }).task {
+                await VM.load()
             }
             .padding(.horizontal, 20)
         }.background(Color.background)
