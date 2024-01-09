@@ -114,7 +114,15 @@ struct ProfileView: View {
             }
         }
         .task {
-            VM.load()            
+            await VM.load()
+            setProfileImage()
+        }
+    }
+
+    func setProfileImage() {
+        if let data = VM.image, let uiImage = UIImage(data: data) {
+            VM.avatarImage = Image(uiImage: uiImage)
+            return
         }
     }
 }

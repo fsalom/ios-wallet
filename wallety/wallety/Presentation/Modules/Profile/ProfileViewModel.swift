@@ -16,7 +16,7 @@ struct ProfileData {
 }
 
 class ProfileViewModel: ObservableObject {
-
+    
     var rateUseCases: RatesUseCasesProtocol
     var userUseCases: UserUseCasesProtocol
     @Published var currentCurrency: Rate = Rate.default()
@@ -29,29 +29,26 @@ class ProfileViewModel: ObservableObject {
             save(this: name)
         }
     }
-
+    
     init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
         self.rateUseCases = rateUseCases
         self.userUseCases = userUseCases        
     }
-
-    func load() {
-        Task {
+    
+    func load() async {
+        do {
             let data = try await loadData()
             await MainActor.run {
                 self.currencies = data.currencies
                 self.currentCurrency = data.currentCurrency
                 self.name = data.user?.name ?? "Desconocido"
                 self.image = data.user?.image
-                if let data = image,
-                   let uiImage = UIImage(data: data) {
-                    avatarImage = Image(uiImage: uiImage)
-                    return
-                }
             }
+        } catch {
+            self.errorMessage = "_ERROR_"
         }
     }
-
+    
     func loadData() async throws -> ProfileData {
         async let currencies = try await rateUseCases.getFilteredCurrenciesRates()
         async let currentCurrency = try await rateUseCases.getCurrentCurrency()
@@ -61,12 +58,12 @@ class ProfileViewModel: ObservableObject {
             currentCurrency: currentCurrency,
             user: user)
     }
-
+    
     func select(this currency: Rate) {
         currentCurrency = currency
         save(this: currency)
     }
-
+    
     func save(this name: String) {
         Task {
             do {
@@ -76,7 +73,7 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-
+    
     func save(this image: Data) {
         Task {
             do {
@@ -86,7 +83,7 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-
+    
     private func save(this currency: Rate) {
         Task {
             do {
@@ -96,7 +93,7 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-
+    
     func clearDB() {
         Task {
             
