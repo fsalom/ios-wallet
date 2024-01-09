@@ -141,6 +141,7 @@ fileprivate extension Crypto {
         return CryptoDBO(name: self.name,
                          symbol: self.symbol,
                          priceUsd: self.priceUsd,
+                         marketCapUsd: self.marketCapUsd,
                          changePercent24Hr: self.changePercent24Hr)
     }
 }
