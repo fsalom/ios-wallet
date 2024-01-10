@@ -28,7 +28,7 @@ class CryptoUseCases: CryptoUseCasesProtocol {
             crypto.currency = currency
             updatedCryptos.append(crypto)
         }
-        return updatedCryptos.sorted(by: {$0.marketCapUsd > $1.marketCapUsd})
+        return updatedCryptos
     }
 
     func filter(these cryptos: [Crypto], with text: String) -> [Crypto] {

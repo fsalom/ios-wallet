@@ -8,7 +8,11 @@
 import Foundation
 
 class CryptoHistoryMockUseCases: CryptoHistoryUseCasesProtocol {
-    func getHistory(for crypto: String) async throws -> [CryptoHistory] {
+    func get24HoursHistory(for crypto: String) async throws -> [CryptoHistory] {
+        []
+    }
+    
+    func getOneMonthHistory(for crypto: String) async throws -> [CryptoHistory] {
         []
     }
     
