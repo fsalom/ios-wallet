@@ -8,5 +8,6 @@
 import Foundation
 
 protocol CryptoHistoryRepositoryProtocol {
-    func getHistory(for crypto: String) async throws -> [CryptoHistory]
+    func getHistoryByHour(for crypto: String) async throws -> [CryptoHistory]
+    func getHistoryByDay(for crypto: String) async throws -> [CryptoHistory]
 }

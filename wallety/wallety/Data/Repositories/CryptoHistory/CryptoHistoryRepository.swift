@@ -17,8 +17,14 @@ class CryptoHistoryRepository: CryptoHistoryRepositoryProtocol {
         self.remoteDataSource = remoteDataSource
     }
 
-    func getHistory(for crypto: String) async throws -> [CryptoHistory] {
-        try await self.remoteDataSource.getHistory(for: crypto).map(
+    func getHistoryByHour(for crypto: String) async throws -> [CryptoHistory] {
+        try await self.remoteDataSource.getHistoryByHours(for: crypto).map(
+            { $0.toDomain() }
+        )
+    }
+
+    func getHistoryByDay(for crypto: String) async throws -> [CryptoHistory] {
+        try await self.remoteDataSource.getHistoryByDays(for: crypto).map(
             { $0.toDomain() }
         )
     }

@@ -8,5 +8,6 @@
 import Foundation
 
 protocol RemoteCryptoHistoryDataSourceProtocol {
-    func getHistory(for crypto: String) async throws -> [CryptoHistoryDTO]
+    func getHistoryByDays(for crypto: String) async throws -> [CryptoHistoryDTO]
+    func getHistoryByHours(for crypto: String) async throws -> [CryptoHistoryDTO]
 }
