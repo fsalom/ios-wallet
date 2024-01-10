@@ -92,7 +92,7 @@ class HomeViewModel: ObservableObject {
 
     func updateTotal(with date: String) {
         Task {
-            guard let totalPerDayWithThisDate = self.totalsPerDay.filter({$0.dateString == date}).first else {
+            guard let totalPerDayWithThisDate = self.totalsPerDay.filter({$0.day == date}).first else {
                 return
             }
             if self.originalTotal.isEmpty {

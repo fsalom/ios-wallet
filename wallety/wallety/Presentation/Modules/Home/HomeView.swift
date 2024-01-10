@@ -113,7 +113,7 @@ struct HomeView: View {
         ZStack {
             Chart(VM.totalsPerDay, id: \.time) {
                 LineMark(
-                    x: .value("Date", $0.dateString),
+                    x: .value("Date", $0.day),
                     y: .value("Price", $0.priceUsd)
                 )
                 .lineStyle(StrokeStyle(lineWidth: 1))
