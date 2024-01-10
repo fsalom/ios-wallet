@@ -76,6 +76,7 @@ struct HomeView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 50, height: 50)
+                .background(Color.black)
                 .clipShape(Circle())
 
             VStack(alignment: .leading, spacing: 5, content: {
