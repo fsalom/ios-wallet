@@ -80,7 +80,6 @@ extension CryptoRepository {
         for crypto in cryptosWithFavorite {
             crypto.isFavorite = favorites.contains(crypto.symbol) ? true : false
         }
-        cryptosWithFavorite.sort { $0.marketCapUsd > $1.marketCapUsd }
         return cryptosWithFavorite
     }
 
@@ -122,6 +121,7 @@ fileprivate extension CryptoCoinCapDTO {
         return CryptoDBO(name: self.name,
                          symbol: self.symbol,
                          priceUsd: Float(self.priceUsd) ?? 0.0,
+                         marketCapUsd: Float(self.marketCapUsd) ?? 0.0,
                          changePercent24Hr: Float(changePercent24Hr) ?? 0.0)
     }
 }
