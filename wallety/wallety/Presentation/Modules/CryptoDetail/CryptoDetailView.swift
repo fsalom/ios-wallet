@@ -93,7 +93,7 @@ struct CryptoDetailView: View {
         ZStack {
             Chart(VM.cryptoHistoryPrices, id: \.time) {
                 LineMark(
-                    x: .value("Date", $0.dateString),
+                    x: .value("Date", $0.dayAndHour),
                     y: .value("Price", $0.priceUsd)
                 )
                 .lineStyle(StrokeStyle(lineWidth: 1))

@@ -63,10 +63,10 @@ class CryptoDetailViewModel: ObservableObject {
         do {
             let cryptosPortfolio = try await portfolioUseCases.getPortfolio(with: crypto.symbol)
             let rate = try await rateUseCases.getCurrentCurrency()
-            let cryptoHistoryPrices = try await cryptoHistoryUseCases.getHistory(for: self.crypto.name).suffix(30)
-            crypto.currency = rate
+            let cryptoHistoryPrices = try await cryptoHistoryUseCases.get24HoursHistory(for: self.crypto.name)
             let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: cryptosPortfolio)
             await MainActor.run {
+                self.crypto.currency = rate
                 self.cryptosPortfolio = cryptosPortfolio
                 self.cryptoHistoryPrices = Array(cryptoHistoryPrices)
                 self.total = total
