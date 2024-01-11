@@ -3,17 +3,19 @@ import SwiftData
 
 @Model
 final class CryptoPortfolioDBO {
-    @Attribute(.unique) var id:String
+    @Attribute(.unique) var id: String
+    var portfolio_id: String = UUID().uuidString
     var quantity: Float
     var priceUsd: Float
     var name: String
     var symbol: String
 
-    init(quantity: Float,
+    init(id: String,
+         quantity: Float,
          priceUsd: Float,
          name: String,
          symbol: String) {
-        self.id = UUID().uuidString
+        self.id = id
         self.quantity = quantity
         self.priceUsd = priceUsd
         self.name = name

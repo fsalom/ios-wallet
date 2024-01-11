@@ -51,6 +51,7 @@ actor DBCryptoDataSource: LocalCryptoDataSourceProtocol {
             })
         ).first {
             context.delete(fav)
+            try context.save()
         } else {
             context.insert(FavoriteCryptoDBO(symbol: symbol))
             try context.save()

@@ -19,7 +19,7 @@ actor DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
         try context.fetch(FetchDescriptor<CryptoPortfolioDBO>())
     }
 
-    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolioDBO] {
+    func getPortfolios(with symbol: String) async throws -> [CryptoPortfolioDBO] {
         try context.fetch(FetchDescriptor<CryptoPortfolioDBO>(
             predicate: #Predicate {
                 $0.symbol == symbol
@@ -31,7 +31,8 @@ actor DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
                           symbol: String,
                           with quantity: Float,
                           and price: Float) async throws {
-        let cryptoPorfolioDBO = CryptoPortfolioDBO(quantity: quantity,
+        let cryptoPorfolioDBO = CryptoPortfolioDBO(id: UUID().uuidString,
+                                                   quantity: quantity,
                                                    priceUsd: price,
                                                    name: crypto,
                                                    symbol: symbol)
@@ -39,7 +40,14 @@ actor DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
         try context.save()
     }
 
-    func delete(this portfolio: CryptoPortfolioDBO) async throws {
-        context.delete(portfolio)
+    func delete(this id: String) async throws {
+        if let portfolio = try context.fetch(FetchDescriptor<CryptoPortfolioDBO>(
+            predicate: #Predicate {
+                $0.portfolio_id == id
+            })
+        ).first {
+            context.delete(portfolio)
+            try context.save()
+        }
     }
 }
