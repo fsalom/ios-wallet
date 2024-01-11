@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Crypto: Identifiable {
+struct Crypto: Identifiable {
     var id: String = UUID().uuidString
     var reference: String
     var symbol: String
