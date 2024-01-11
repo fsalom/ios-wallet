@@ -39,4 +39,11 @@ class UDUserDataSource: UserDataSourceProtocol {
             userDefaultsManager.save(objectFor: keyName, this: me)
         }
     }
+
+    func deleteImage() async throws {
+        if var me = try await getMe() {
+            me.image = nil
+            userDefaultsManager.save(objectFor: keyName, this: me)
+        }
+    }
 }

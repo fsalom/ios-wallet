@@ -73,7 +73,21 @@ class ProfileViewModel: ObservableObject {
             }
         }
     }
-    
+
+    func deleteImage() {
+        Task {
+            do {
+                try await self.userUseCases.deleteImage()
+                await MainActor.run {
+                    self.image = nil
+                    self.avatarImage = nil
+                }
+            } catch {
+                self.errorMessage = "_ERROR_"
+            }
+        }
+    }
+
     func save(this image: Data) {
         Task {
             do {

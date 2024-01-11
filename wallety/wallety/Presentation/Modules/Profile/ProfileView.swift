@@ -53,7 +53,7 @@ struct ProfileView: View {
 
                         List{
                             Button(action: {
-
+                                VM.deleteImage()
                             }, label: {
                                 Text("Borrar imagen")
                             })

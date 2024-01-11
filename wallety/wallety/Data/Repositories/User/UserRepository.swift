@@ -25,6 +25,10 @@ class UserRepository: UserRepositoryProtocol {
     func save(this image: Data) async throws {
         try await self.datasource.save(this: image)
     }
+
+    func deleteImage() async throws {
+        try await self.datasource.deleteImage()
+    }
 }
 
 fileprivate extension UserDTO {
