@@ -25,4 +25,8 @@ class UserUseCases: UserUseCasesProtocol {
     func save(this image: Data) async throws {
         try await self.repository.save(this: image)
     }
+
+    func deleteImage() async throws {
+        try await self.repository.deleteImage()
+    }
 }

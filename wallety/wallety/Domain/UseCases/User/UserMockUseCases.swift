@@ -17,4 +17,7 @@ class UserMockUseCases: UserUseCasesProtocol {
 
     func save(this image: Data) async throws {
     }
+
+    func deleteImage() async throws {        
+    }
 }
