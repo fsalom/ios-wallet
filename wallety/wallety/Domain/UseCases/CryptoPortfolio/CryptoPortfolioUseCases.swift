@@ -43,16 +43,18 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
             and: price)
     }
 
-    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolio] {
-        try await cryptoPortfolioRepository.getPortfolio(with: symbol)
+    func getPortfolios(with symbol: String) async throws -> [CryptoPortfolio] {
+        try await cryptoPortfolioRepository.getPortfolios(with: symbol)
     }
 
-    func getTotalAndQuantityFormatted(of cryptosPortfolio: [CryptoPortfolio]) async throws -> (String, String) {
-        var quantity: Float = 0.0
-        for cryptoPortfolio in cryptosPortfolio {
-            quantity += cryptoPortfolio.quantity
+    func getTotalAndQuantityFormatted(of symbol: String) async throws -> (String, String) {
+        guard let crypto = try await cryptoRepository.getCrypto(with: symbol) else {
+            throw CryptoPortfolioError.notFound
         }
-        let totalFormatted = try await getTotal(of: cryptosPortfolio)
+        let cryptoPortfolio = try await getPortfolios(with: symbol)
+        var quantity: Float = cryptoPortfolio.compactMap({$0.quantity}).reduce(0, +)
+        let totalUsd = quantity * crypto.priceUsd
+        let totalFormatted = try await getTotalFormattedWithCurrentCurrency(of: totalUsd)
         let quantityFormatted = "\(quantity)"
         return (totalFormatted, quantityFormatted)
     }
@@ -61,33 +63,12 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
         try await cryptoPortfolioRepository.delete(this: portfolio)
     }
 
-    func getTotal(of cryptosPortfolio: [CryptoPortfolio]) async throws -> String {
-        let currency = try await ratesRepository.getCurrentCurrency()
-        var total: Float = 0.0
-        for cryptoPortfolio in cryptosPortfolio {
-            let currentCrypto = try await cryptoRepository.getCrypto(with: cryptoPortfolio.crypto.symbol)
-            guard let currentCrypto else {
-                return "missing crypto"
-            }
-            total += cryptoPortfolio.quantity * (currentCrypto.priceUsd/currency.rateUsd)
-        }
-        guard let priceFormatted = format(this: total) else { return "bad format" }
-        return currency.currencySymbol + priceFormatted
+    func getTotalPriceUsd() async throws -> Float {
+        return try await calculateCurrentTotalInUsd()
     }
 
-    func getTotal() async throws -> String {
-        let currency = try await ratesRepository.getCurrentCurrency()
-        let cryptosPortfolio = try await cryptoPortfolioRepository.getCryptosPortfolio()
-        var total: Float = 0.0
-        for cryptoPortfolio in cryptosPortfolio {
-            let currentCrypto = try await cryptoRepository.getCrypto(with: cryptoPortfolio.crypto.symbol)
-            guard let currentCrypto else {
-                return "missing crypto"
-            }
-            total += cryptoPortfolio.quantity * (currentCrypto.priceUsd/currency.rateUsd)
-        }
-        guard let priceFormatted = format(this: total) else { return "bad format" }
-        return currency.currencySymbol + priceFormatted
+    func getTotalFormattedWithCurrentCurrency(of totalUsd: Float) async throws -> String {
+        return try await getTotalFormattedWithCurrentCurrency(with: totalUsd)
     }
 
     func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio] {
@@ -113,5 +94,31 @@ extension CryptoPortfolioUseCases {
         formatter.groupingSeparator = "."
         let number = NSNumber(value: price)
         return formatter.string(from: number)
+    }
+
+    private func calculateCurrentTotalInUsd() async throws -> Float {
+        let cryptosPortfolio = try await cryptoPortfolioRepository.getCryptosPortfolio()
+        var totalUsd: Float = 0.0
+        for cryptoPortfolio in cryptosPortfolio {
+            let currentCrypto = try await cryptoRepository.getCrypto(with: cryptoPortfolio.crypto.symbol)
+            guard let currentCrypto else {
+                throw CryptoPortfolioError.incompleted
+            }
+            totalUsd += cryptoPortfolio.quantity * (currentCrypto.priceUsd)
+        }
+        return totalUsd
+    }
+
+    func getTotalFormattedWithCurrentCurrency(with total: Float) async throws -> String {
+        let currency = try await ratesRepository.getCurrentCurrency()
+        let totalWithCurrency = total / currency.rateUsd
+        guard let totalFormatted = format(this: totalWithCurrency) else { throw CryptoPortfolioError.badFormat }
+        return currency.currencySymbol + totalFormatted
+    }
+
+    enum CryptoPortfolioError: Error {
+        case notFound
+        case incompleted
+        case badFormat
     }
 }

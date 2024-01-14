@@ -28,19 +28,19 @@ class CryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol {
                                                    and: price)
     }
 
-    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolio] {
-        let cryptosPortfolio = try await localDataSource.getPortfolio(with: symbol)
-        return cryptosPortfolio.map { $0.toDomain() }
+    func getPortfolios(with symbol: String) async throws -> [CryptoPortfolio] {
+        try await localDataSource.getPortfolios(with: symbol).map({$0.toDomain()})
     }
 
     func delete(this portfolio: CryptoPortfolio) async throws {
-        try await localDataSource.delete(this: portfolio.toDBO())
+        try await localDataSource.delete(this: portfolio.id)
     }
 }
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        return CryptoPortfolio(crypto: Crypto(
+        return CryptoPortfolio(id: portfolio_id,
+            crypto: Crypto(
             symbol: symbol,
             name: name,
             priceUsd: priceUsd, 
@@ -52,7 +52,8 @@ fileprivate extension CryptoPortfolioDBO {
 
 fileprivate extension CryptoPortfolio {
     func toDBO() -> CryptoPortfolioDBO {
-        return CryptoPortfolioDBO(quantity: quantity,
+        return CryptoPortfolioDBO(id: id,
+                                  quantity: quantity,
                                   priceUsd: crypto.priceUsd,
                                   name: crypto.name,
                                   symbol: crypto.symbol)

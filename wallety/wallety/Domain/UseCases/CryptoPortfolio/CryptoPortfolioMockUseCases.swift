@@ -8,8 +8,12 @@
 import Foundation
 
 class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
-    func getTotal(of cryptosPorfolio: [CryptoPortfolio]) async throws -> String {
+    func getTotalFormattedWithCurrentCurrency(of total: Float) async throws -> String {
         ""
+    }
+    
+    func getTotalPriceUsd() async throws -> Float {
+        0.0
     }
     
     func getCryptosPortfolio() async throws -> [CryptoPortfolio] {
@@ -20,11 +24,11 @@ class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
 
     }
 
-    func getPortfolio(with symbol: String) async throws -> [CryptoPortfolio] {
+    func getPortfolios(with symbol: String) async throws -> [CryptoPortfolio] {
         []
     }
 
-    func getTotalAndQuantityFormatted(of cryptosPortfolio: [CryptoPortfolio]) async throws -> (String, String) {
+    func getTotalAndQuantityFormatted(of symbol: String) async throws -> (String, String) {
         ("","")
     }
 
