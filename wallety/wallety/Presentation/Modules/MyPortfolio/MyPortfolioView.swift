@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyPortfolioView: View {
     @ObservedObject var VM: MyPortfolioViewModel
@@ -35,18 +36,11 @@ struct MyPortfolioView: View {
     @ViewBuilder
     func CryptoRow(with portfolio: CryptoPortfolio) -> some View {
         HStack {
-            AsyncImage(url: portfolio.crypto.imageUrl) { image in
-                image.resizable()
-                    .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            } placeholder: {
-                Image(systemName: "star").resizable()
-                    .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            }
-            
+            KFAnimatedImage(portfolio.crypto.imageUrl)
+                .frame(width: 40, height: 40)
+                .background(Color.white)
+                .clipShape(Circle())
+
             VStack(alignment: .leading, content: {
                 Text(portfolio.crypto.name)
                     .fontWeight(.bold)

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import Kingfisher
 
 struct HomeView: View {    
     @Environment(\.scenePhase) var scenePhase
@@ -172,7 +173,6 @@ struct HomeView: View {
                                 let lineHeight = geo[plotFrame].maxY
                                 let fullWidth = geo[plotFrame].maxX
                                 let boxWidth: CGFloat = 100
-                                let boxOffset = max(0, min(geo.size.width - boxWidth, lineX - boxWidth / 2))
                                 HStack(spacing: 0) {
                                     Rectangle()
                                         .fill(.active)
@@ -222,17 +222,10 @@ struct HorizontalListFavoriteAssetsView: View {
                 Spacer()
             }
             Spacer()
-            AsyncImage(url: crypto.imageUrl) { image in
-                image.resizable()
-                    .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 40, height: 40)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            }
+            KFAnimatedImage(crypto.imageUrl)
+                .frame(width: 40, height: 40)
+                .background(Color.white)
+                .clipShape(Circle())
             Text(crypto.name).fontWeight(.bold)
             Text(crypto.price)
         })
@@ -250,7 +243,7 @@ struct ListCryptoView: View {
 
     var cryptos: [Crypto]
     var body: some View {
-        LazyVStack(spacing: 10, content: {
+        VStack(spacing: 10, content: {
             ForEach(cryptos) { crypto in
                 NavigationLink {
                     CryptoDetailBuilder().build(with: crypto, and: context.container)
@@ -264,17 +257,10 @@ struct ListCryptoView: View {
     @ViewBuilder
     func CryptoRow(with crypto: Crypto) -> some View {
         HStack {
-            AsyncImage(url: crypto.imageUrl) { image in
-                image.resizable()
-                    .frame(width: 50, height: 50)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            } placeholder: {
-                ProgressView()
-                    .frame(width: 50, height: 50)
-                    .background(Color.white)
-                    .clipShape(Circle())
-            }
+            KFAnimatedImage(crypto.imageUrl)
+                .frame(width: 50, height: 50)
+                .background(Color.white)
+                .clipShape(Circle())
 
             VStack(alignment: .leading, content: {
                 Text(crypto.name)

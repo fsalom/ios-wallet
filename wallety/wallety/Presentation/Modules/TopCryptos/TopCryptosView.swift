@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct TopCryptosView: View {
     @ObservedObject var VM: TopCryptosViewModel
@@ -33,15 +34,10 @@ struct TopCryptosView: View {
     func CryptoRow(with crypto: Crypto) -> some View {
         HStack {
             ZStack {
-                AsyncImage(url: crypto.imageUrl) { image in
-                    image.resizable()
-                        .frame(width: 50, height: 50)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 50, height: 50)
-                }
+                KFAnimatedImage(crypto.imageUrl)
+                    .frame(width: 50, height: 50)
+                    .background(Color.white)
+                    .clipShape(Circle())
                 if crypto.isFavorite {
                     Image(systemName: "star.fill")
                         .resizable()

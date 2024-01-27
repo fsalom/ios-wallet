@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct OnBoardingView: View {
     @ObservedObject var VM: OnBoardingViewModel
@@ -156,15 +157,10 @@ struct OnBoardingView: View {
                 if crypto.isFavorite {
                     Image(systemName: "star.fill").foregroundColor(.yellow)
                 }
-                AsyncImage(url: crypto.imageUrl) { image in
-                    image.resizable()
-                        .frame(width: 40, height: 40)
-                        .background(Color.white)
-                        .clipShape(Circle())
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 40, height: 40)
-                }
+                KFAnimatedImage(crypto.imageUrl)
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
 
                 VStack(alignment: .leading, content: {
                     Text(crypto.name)
