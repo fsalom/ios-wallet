@@ -9,14 +9,6 @@ import Foundation
 import SwiftUI
 
 class HomeViewModel: ObservableObject {
-    struct HomeData {
-        var cryptos: [Crypto]
-        var total: String
-        var portfolios: [CryptoPortfolio]
-        var currentCurrency: Rate
-        var user: User?
-    }
-
     @Published var cryptos: [Crypto] = []
     @Published var favoriteCryptos: [Crypto] = []
     @Published var totalsPerDay: [CryptoHistory] = [] {
@@ -31,6 +23,15 @@ class HomeViewModel: ObservableObject {
     @Published var user: User?
     @Published var total: String = "---"
     @Published var error: String = ""
+
+    struct HomeData {
+        var cryptos: [Crypto]
+        var totalUsd: Float
+        var totalFormatted: String
+        var portfolios: [CryptoPortfolio]
+        var currentCurrency: Rate
+        var user: User?
+    }
 
     private var originalTotal: String = ""
     var cryptoUseCases: CryptoUseCasesProtocol
@@ -53,19 +54,27 @@ class HomeViewModel: ObservableObject {
         self.currentCurrency = Rate.default()
     }
 
+    func update() {
+        Task {
+            await load()
+        }
+    }
+
     func load() async {
         do {
             let data = try await loadData()
             let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
             let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(30)
             let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
+            let todayHistory = CryptoHistory(time: Int(Date().timeIntervalSince1970)*1000, priceUsd: data.totalUsd)
             await MainActor.run {
                 self.cryptos = cryptoUseCases.update(these: cryptosWithoutFavorite,
                                                      with: data.currentCurrency)
                 self.favoriteCryptos = cryptoUseCases.update(these: favoriteCryptos,
                                                              with: data.currentCurrency)
-                self.total = data.total
+                self.total = data.totalFormatted
                 self.totalsPerDay = Array(totalsPerDay)
+                self.totalsPerDay.append(todayHistory)
                 self.currentCurrency = data.currentCurrency
                 self.user = data.user
             }
@@ -78,13 +87,14 @@ class HomeViewModel: ObservableObject {
 
     func loadData() async throws -> HomeData {
         async let cryptos = cryptoUseCases.getCryptos()
-        async let total = cryptoPortfolioUseCases.getTotal()
+        async let totalUsd = cryptoPortfolioUseCases.getTotalPriceUsd()
         async let currentCurrency = ratesUseCases.getCurrentCurrency()
         async let portfolios = cryptoPortfolioUseCases.getCryptosPortfolio()
         async let user = userUseCases.getMe()
         return try await HomeData(
             cryptos: cryptos,
-            total: total,
+            totalUsd: totalUsd,
+            totalFormatted: cryptoPortfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd),
             portfolios: portfolios,
             currentCurrency: currentCurrency,
             user: user)

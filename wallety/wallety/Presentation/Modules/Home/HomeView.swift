@@ -8,10 +8,12 @@
 import SwiftUI
 import Charts
 
-struct HomeView: View {
+struct HomeView: View {    
+    @Environment(\.scenePhase) var scenePhase
     @ObservedObject var VM: HomeViewModel
     @State private var showingPopover = false
 
+    @State var selectedDate: String? = nil
     let safeArea: EdgeInsets = EdgeInsets()
 
     var body: some View {
@@ -30,9 +32,11 @@ struct HomeView: View {
                     .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
             }
             .background(Color.background)
-            .task {
-                await VM.load()
-            }
+            .onChange(of: scenePhase, initial: true, { oldValue, newValue in
+                if newValue == .active {
+                    VM.update()
+                }
+            })
         }
     }
 
@@ -48,6 +52,11 @@ struct HomeView: View {
                 VStack(spacing: 0, content: {
                     GeometryReader { _ in
                         HomeProfileView(progress: progress)
+                    }
+                    if progress == 0 {
+                        Text(selectedDate ?? "")
+                            .font(.footnote)
+                            .frame(height: 30)
                     }
                     Text(VM.total)
                         .font(.largeTitle)
@@ -99,8 +108,8 @@ struct HomeView: View {
 
     func headerHeight(with height: CGFloat? = 0,
                       and progress: CGFloat? = 1) -> CGFloat {
-        guard let height, let progress else { return 250 - minimumHeaderHeight }
-        var currentHeight = 250 - (height * progress)
+        guard let height, let progress else { return 150 - minimumHeaderHeight }
+        var currentHeight = 150 - (height * progress)
         currentHeight = currentHeight < minimumHeaderHeight ? minimumHeaderHeight : currentHeight
         return currentHeight
     }
@@ -117,8 +126,8 @@ struct HomeView: View {
                     x: .value("Date", $0.day),
                     y: .value("Price", $0.priceUsd)
                 )
-                .lineStyle(StrokeStyle(lineWidth: 1))
-                .foregroundStyle(.black)
+                .lineStyle(StrokeStyle(lineWidth: 2))
+                .foregroundStyle(.active)
                 .interpolationMethod(.cardinal)
                 .symbol(Circle().strokeBorder(lineWidth: 1))
                 .symbolSize(0)
@@ -141,14 +150,44 @@ struct HomeView: View {
                                     guard let date = proxy.value(atX: location.x, as: String.self) else {
                                         return
                                     }
+                                    selectedDate = date
                                     VM.updateTotal(with: date)
                                 }
                                 .onEnded({ _ in
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                         VM.setOriginalTotal()
+                                        selectedDate = nil
                                     }
                                 })
                         )
+                }
+            }
+            .chartBackground { proxy in
+                ZStack(alignment: .topLeading) {
+                    GeometryReader { geo in
+                        if let selectedDate {
+                            let startPositionX1 = proxy.position(forX: selectedDate) ?? 0
+                            if let plotFrame = proxy.plotFrame {
+                                let lineX = startPositionX1 + geo[plotFrame].origin.x
+                                let lineHeight = geo[plotFrame].maxY
+                                let fullWidth = geo[plotFrame].maxX
+                                let boxWidth: CGFloat = 100
+                                let boxOffset = max(0, min(geo.size.width - boxWidth, lineX - boxWidth / 2))
+                                HStack(spacing: 0) {
+                                    Rectangle()
+                                        .fill(.active)
+                                        .frame(
+                                            width: fullWidth - (fullWidth - lineX),
+                                            height: lineHeight)
+                                        .offset(x: 0, y: 0)
+                                        .opacity(0.2)
+                                    Rectangle()
+                                        .fill(.active)
+                                        .frame(width: 1, height: lineHeight)
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
