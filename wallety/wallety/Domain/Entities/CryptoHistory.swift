@@ -12,7 +12,7 @@ class CryptoHistory {
     var priceUsd: Float
     var crypto: String = ""
     var day: String {
-        time.toString(with: "YYYY-MM-dd")
+        time.toString(with: "dd MMMM YYYY")
     }
 
     var dayAndHour: String {
@@ -32,6 +32,7 @@ fileprivate extension Int {
         dateFormatter.timeStyle = DateFormatter.Style.medium
         dateFormatter.dateStyle = DateFormatter.Style.medium
         dateFormatter.timeZone = .current
+        dateFormatter.locale = Locale(identifier: Locale.preferredLanguages[0] as String)
         dateFormatter.dateFormat = format
         return dateFormatter.string(from: date)
     }
