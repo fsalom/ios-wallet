@@ -47,27 +47,31 @@ class CryptoDetailViewModel: ObservableObject {
     var portfolioUseCases: CryptoPortfolioUseCasesProtocol
     var rateUseCases: RatesUseCasesProtocol
     var cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol
+    var cryptoUseCases: CryptoUseCasesProtocol
 
     init(crypto: Crypto,
          portfolioUseCases: CryptoPortfolioUseCasesProtocol,
          rateUseCases: RatesUseCasesProtocol,
-         cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol) {
+         cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol,
+         cryptoUseCases: CryptoUseCasesProtocol) {
         self.crypto = crypto
         self.portfolioUseCases = portfolioUseCases
         self.rateUseCases = rateUseCases
         self.cryptoHistoryUseCases = cryptoHistoryUseCases
-        self.priceText = "\(crypto.priceUsd)"
+        self.cryptoUseCases = cryptoUseCases
+        self.priceText = "\(crypto.priceForCurrency)"
     }
 
     func load() async {
         do {
-            let cryptosPortfolio = try await portfolioUseCases.getPortfolio(with: crypto.symbol)
+            let cryptoPortfolios = try await portfolioUseCases.getPortfolios(with: crypto.symbol)
             let rate = try await rateUseCases.getCurrentCurrency()
+            let updatedCryptoPortfolios = portfolioUseCases.update(these: cryptoPortfolios, with: rate)
             let cryptoHistoryPrices = try await cryptoHistoryUseCases.get24HoursHistory(for: self.crypto.name)
-            let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: cryptosPortfolio)
+            let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: crypto.symbol)
             await MainActor.run {
                 self.crypto.currency = rate
-                self.cryptosPortfolio = cryptosPortfolio
+                self.cryptosPortfolio = updatedCryptoPortfolios
                 self.cryptoHistoryPrices = Array(cryptoHistoryPrices)
                 self.total = total
                 self.quantity = quantity
@@ -87,7 +91,7 @@ class CryptoDetailViewModel: ObservableObject {
                                                                 and: priceToAdd)
                     await load()
                     await MainActor.run {
-                        self.priceText = "\(crypto.priceUsd)"
+                        self.priceText = "\(crypto.priceForCurrency)"
                     }
                 }
             } catch {
@@ -100,6 +104,15 @@ class CryptoDetailViewModel: ObservableObject {
         Task {
             try await portfolioUseCases.delete(this: portfolio)
             await load()
+        }
+    }
+
+    func favOrUnfav() {
+        Task {
+            try await cryptoUseCases.favOrUnfav(this: crypto.symbol)
+            await MainActor.run {
+                crypto.isFavorite.toggle()
+            }
         }
     }
 

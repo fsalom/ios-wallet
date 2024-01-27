@@ -10,7 +10,7 @@ import Charts
 
 struct CryptoDetailView: View {
     @ObservedObject var VM: CryptoDetailViewModel
-
+    
     var body: some View {
         ScrollView {
             VStack{
@@ -26,33 +26,58 @@ struct CryptoDetailView: View {
                         .font(.caption)
                 }
                 .clipShape(Rectangle())
-                HStack(alignment: .bottom) {
-                    TextField(text: $VM.quantityText) {
-                        Text("Cantidad")
+                
+                VStack(spacing: 10) {
+                    HStack(alignment: .bottom, spacing: 10) {
+                        Text(VM.crypto.symbol)
+                            .font(.system(size: 30))
+                            .fontWeight(.bold)
+                            .frame(width: 100)
+                        Divider()
+                        TextField(text: $VM.quantityText) {
+                            Text("Cantidad")
+                        }
+                        .font(.system(size: 30))
+                        .keyboardType(.decimalPad)
                     }
-                    .font(.system(size: 40))
-                    .fontWeight(.bold)
-                    .keyboardType(.decimalPad)
-                    Spacer()
+                    .padding(10)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(radius: 1)
+                    
+                    Divider()
+                    Text("Precio de compra (si deseas calcular rentabilidad)")
+                        .font(.footnote)
+                    
+                    HStack(alignment: .bottom, spacing: 10) {
+                        Text(VM.crypto.currency.symbol)
+                            .font(.system(size: 30))
+                            .fontWeight(.bold)
+                            .frame(width: 100)
+                        Divider()
+                        TextField(text: $VM.priceText) {
+                            Text("Precio")
+                        }
+                        .font(.system(size: 30))
+                        .keyboardType(.decimalPad)
+                    }
+                    .padding(10)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .shadow(radius: 1)
+                    
                     Button {
                         VM.addToMyPortfolio()
                     } label: {
-                        Image(systemName: "arrowtriangle.right.fill")
-                    }.padding(20).background(Color.active)
-                        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+                        Text("Añadir")
+                            .frame(maxWidth: .infinity)
+                    }.buttonStyle(LargeButtonStyle(backgroundColor: Color.active,
+                                                   foregroundColor: Color.white,
+                                                   isDisabled: false))
+                    
                 }
-                .padding(EdgeInsets(top: 20, leading: 20, bottom: 10, trailing: 20))
-                HStack(alignment: .bottom) {
-                    Text("$")
-                    TextField(text: $VM.priceText) {
-                        Text("Precio")
-                    }
-                }
-                .padding(EdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20))
-                .font(.system(size: 30))
-                .fontWeight(.bold)
-                .keyboardType(.decimalPad)
-
+                .padding(20)
+                
                 LazyVStack(alignment: .leading, content: {
                     ForEach(VM.cryptosPortfolio) { portfolio in
                         HStack(spacing: 10) {
@@ -71,7 +96,7 @@ struct CryptoDetailView: View {
                                     .background(Color.red)
                                     .clipShape(Circle())
                             }
-
+                            
                         }
                         .padding(.vertical, 10)
                         .padding(.horizontal, 20)
@@ -79,15 +104,24 @@ struct CryptoDetailView: View {
                 })
                 Spacer()
             }.padding(.top, 40)
-        }.background(Color.background)
-            .foregroundColor(.primary)
-            .navigationTitle("\(VM.crypto.name)")
-            .accentColor(.black)
-            .task {
-                await VM.load()
-            }
+        }
+        .background(Color.background)
+        .foregroundColor(.primary)
+        .navigationTitle("\(VM.crypto.name)")
+        .accentColor(.black)
+        .task {
+            await VM.load()
+        }
+        .navigationBarItems(
+            trailing: Button(action: {
+                VM.favOrUnfav()
+            }, label: {
+                Image(systemName: VM.crypto.isFavorite ? "star.fill" : "star")
+                    .foregroundColor(VM.crypto.isFavorite ? .yellow : .black)
+            })
+        )
     }
-
+    
     @ViewBuilder
     private func ChartView() -> some View {
         ZStack {
@@ -143,6 +177,7 @@ struct CryptoDetailView: View {
                        changePercent24Hr: 2.0),
         portfolioUseCases: CryptoPortfolioMockUseCases(),
         rateUseCases: RatesMockUseCases(), 
-        cryptoHistoryUseCases: CryptoHistoryMockUseCases()
+        cryptoHistoryUseCases: CryptoHistoryMockUseCases(),
+        cryptoUseCases: CryptoMockUseCases()
     ))
 }
