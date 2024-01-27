@@ -19,11 +19,15 @@ class CryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol {
     }
 
     func addToMyPorfolio(this crypto: String,
-                         symbol: String ,
+                         symbol: String,
+                         rateId: String,
+                         rateUsd: Float,
                          with quantity: Float,
                          and price: Float) async throws {
         try await localDataSource.addToMyPortfolio(this: crypto,
                                                    symbol: symbol,
+                                                   rateId: rateId,
+                                                   rateUsd: rateUsd,
                                                    with: quantity,
                                                    and: price)
     }
@@ -52,10 +56,13 @@ fileprivate extension CryptoPortfolioDBO {
 
 fileprivate extension CryptoPortfolio {
     func toDBO() -> CryptoPortfolioDBO {
-        return CryptoPortfolioDBO(id: id,
-                                  quantity: quantity,
-                                  priceUsd: crypto.priceUsd,
-                                  name: crypto.name,
-                                  symbol: crypto.symbol)
+        return CryptoPortfolioDBO(
+            id: id,
+            quantity: quantity,
+            rateId: currency.identifier,
+            rateUsd: currency.rateUsd,
+            priceUsd: crypto.priceUsd,
+            name: crypto.name,
+            symbol: crypto.symbol)
     }
 }

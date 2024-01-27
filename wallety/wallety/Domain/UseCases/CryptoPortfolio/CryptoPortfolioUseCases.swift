@@ -39,6 +39,8 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
         try await cryptoPortfolioRepository.addToMyPorfolio(
             this: crypto.name,
             symbol: crypto.symbol,
+            rateId: crypto.currency.identifier,
+            rateUsd: crypto.currency.rateUsd,
             with: quantity,
             and: price)
     }

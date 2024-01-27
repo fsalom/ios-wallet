@@ -29,10 +29,14 @@ actor DBCryptoPortfolioDataSource: LocalCryptoPortfolioDataSourceProtocol {
 
     func addToMyPortfolio(this crypto: String,
                           symbol: String,
+                          rateId: String,
+                          rateUsd: Float,
                           with quantity: Float,
                           and price: Float) async throws {
         let cryptoPorfolioDBO = CryptoPortfolioDBO(id: UUID().uuidString,
                                                    quantity: quantity,
+                                                   rateId: rateId,
+                                                   rateUsd: rateUsd,
                                                    priceUsd: price,
                                                    name: crypto,
                                                    symbol: symbol)
