@@ -10,14 +10,18 @@ import Foundation
 class CryptoRepository: CryptoRepositoryProtocol {
     var localDataSource: LocalCryptoDataSourceProtocol
     var remoteDataSource: RemoteCryptoDataSourceProtocol
-    var cacheManager: CacheManagerProtocol
+    var updateInfoManager: UpdateInfoManagerProtocol
+
+    let topKey = "CRYPTO_LAST_UPDATED_TOP"
+    let portfolioKey = "CRYPTO_LAST_UPDATED_PORTFOLIO"
+    let secondsToUpdate = 300
 
     init(localDataSource: LocalCryptoDataSourceProtocol,
          remoteDataSource: RemoteCryptoDataSourceProtocol,
-         cacheManager: CacheManagerProtocol) {
+         updateInfoManager: UpdateInfoManagerProtocol) {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
-        self.cacheManager = cacheManager
+        self.updateInfoManager = updateInfoManager
     }
 
     func getCrypto(with symbol: String) async throws -> Crypto? {
@@ -25,13 +29,15 @@ class CryptoRepository: CryptoRepositoryProtocol {
     }
 
     func getCryptos() async throws -> [Crypto] {
-        let isUpdated = !shouldUpdate(for: .top)
+        let isUpdated = !updateInfoManager.shouldUpdate(this: topKey,
+                                                        after: secondsToUpdate)
         let cryptosDBO = try await localDataSource.getCryptos()
         if cryptosDBO.isEmpty || !isUpdated {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
             try await localDataSource.deleteAll()
             try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
-            setDate(for: .top)
+            updateInfoManager.setDate(for: topKey,
+                                      isResetNeeded: false)
             return try await setFavorites(for: cryptosDTO.map { $0.toDomain() })
         }
         return try await setFavorites(for: cryptosDBO.map { $0.toDomain() })
@@ -55,58 +61,17 @@ class CryptoRepository: CryptoRepositoryProtocol {
 }
 
 extension CryptoRepository {
-    enum LastUpdatedOption {
-        case top
-        case portfolio
-
-        var key: String {
-            switch self {
-            case .top: return "CRYPTO_LAST_UPDATED_TOP"
-            case .portfolio: return "CRYPTO_LAST_UPDATED_PORTFOLIO"
-            }
-        }
-
-        var seconds: Int {
-            switch self {
-            case .top: return 30
-            case .portfolio: return 30
-            }
-        }
-    }
-
     private func setFavorites(for cryptos: [Crypto]) async throws -> [Crypto] {
-        var cryptosWithFavorite = cryptos
-        let favorites = try await localDataSource.getFavorites().flatMap({$0.symbol})
-        for crypto in cryptosWithFavorite {
-            crypto.isFavorite = favorites.contains(crypto.symbol) ? true : false
+        var cryptosWithFavorite = [Crypto]()
+        let favorites = try await localDataSource.getFavorites()
+        let symbols = favorites.map { $0.symbol }
+        for var crypto in cryptos {
+            crypto.isFavorite = symbols.contains(crypto.symbol)
+            cryptosWithFavorite.append(crypto)
         }
         return cryptosWithFavorite
     }
-
-    private func shouldUpdate(for option: LastUpdatedOption) -> Bool {
-        guard let lastUpdated = getDate(for: option) else {
-            return true
-        }
-        let elapsed = Date.now.timeIntervalSince(lastUpdated)
-        return Int(elapsed) > option.seconds ? true : false
-    }
-
-    private func getDate(for option: LastUpdatedOption) -> Date? {
-        let lastUpdatedInfo = cacheManager.retrieve(
-            objectFor: option.key,
-            of: CryptoUpdatedDTO.self
-        )
-        return lastUpdatedInfo?.lastUpdated
-    }
-
-    private func setDate(for option: LastUpdatedOption, isResetNeeded: Bool = false) {
-        let lastUpdatedInfo = CryptoUpdatedDTO(
-            lastUpdated: isResetNeeded ? .distantPast : .now
-        )
-        cacheManager.save(objectFor: option.key, this: lastUpdatedInfo)
-    }
 }
-
 
 fileprivate extension CryptoCoinCapDTO {
     func toDomain() -> Crypto {
@@ -148,12 +113,14 @@ fileprivate extension Crypto {
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        return CryptoPortfolio(crypto: Crypto(
-            symbol: symbol,
-            name: name,
-            priceUsd: priceUsd,
-            marketCapUsd: 0.0,
-            changePercent24Hr: 0.0),
+        return CryptoPortfolio(
+            id: id,
+            crypto: Crypto(
+                symbol: symbol,
+                name: name,
+                priceUsd: priceUsd,
+                marketCapUsd: 0.0,
+                changePercent24Hr: 0.0),
             quantity: quantity)
     }
 }
