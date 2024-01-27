@@ -12,9 +12,10 @@ class CryptoDetailBuilder {
     func build(with crypto: Crypto, and container: ModelContainer) -> CryptoDetailView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
         let localDataSource = DBCryptoDataSource(with: container)
-        let repository = CryptoRepository(localDataSource: localDataSource,
-                                          remoteDataSource: networkDataSource,
-                                          cacheManager: UserDefaultsManager())
+        let repository = CryptoRepository(
+            localDataSource: localDataSource,
+            remoteDataSource: networkDataSource,
+            updateInfoManager: UpdateInfoUDManager(storage: UserDefaultsManager()))
 
         let portfolioLocalDataSource = DBCryptoPortfolioDataSource(
             with: container)
@@ -37,11 +38,14 @@ class CryptoDetailBuilder {
         let localHistoryDataSource = DBCryptoHistoryDataSource(with: container)
         let historyRepository = CryptoHistoryRepository(localDataSource: localHistoryDataSource, remoteDataSource: remoteHistoryDataSource)
         let historyUseCases = CryptoHistoryUseCase(repository: historyRepository)
+        
+        let cryptoUseCases = CryptoUseCases(repository: repository)
 
         let viewModel = CryptoDetailViewModel(crypto: crypto,
                                               portfolioUseCases: portfolioUseCases,
                                               rateUseCases: rateUseCases,
-                                              cryptoHistoryUseCases: historyUseCases)
+                                              cryptoHistoryUseCases: historyUseCases,
+                                              cryptoUseCases: cryptoUseCases)
         let view = CryptoDetailView(VM: viewModel)
         return view
     }

@@ -16,7 +16,7 @@ class OnBoardingBuilder {
         let repository = CryptoRepository(
             localDataSource: localDataSource,
             remoteDataSource: networkDataSource,
-            cacheManager: UserDefaultsManager())
+            updateInfoManager: UpdateInfoUDManager(storage: UserDefaultsManager()))
         let cryptoUseCases = CryptoUseCases(repository: repository)
 
         let ratesLocalDataSource = DBRatesDataSource(with: container)
