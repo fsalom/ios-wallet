@@ -22,6 +22,46 @@ class UserDefaultsManager: CacheManagerProtocol {
         return object
     }
 
+    func set(_ String: String, _ value: Any?) {
+        UserDefaults.standard.set(value, forKey: String)
+    }
+
+    func get(stringFor: String) -> String? {
+        return UserDefaults.standard.string(forKey: stringFor)
+    }
+
+    func get(intFor: String) -> Int {
+        return UserDefaults.standard.integer(forKey: intFor)
+    }
+
+    func get(doubleFor: String) -> Double {
+        return UserDefaults.standard.double(forKey: doubleFor)
+    }
+
+    func get(floatFor: String) -> Float {
+        return UserDefaults.standard.float(forKey: floatFor)
+    }
+
+    func get(boolFor: String) -> Bool {
+        return UserDefaults.standard.bool(forKey: boolFor)
+    }
+
+    func get(arrayFor: String) -> [Any]? {
+        return UserDefaults.standard.array(forKey: arrayFor)
+    }
+
+    func get(anyFor: String) -> Any? {
+        return UserDefaults.standard.object(forKey: anyFor) as Any
+    }
+
+    func get(dictionaryArrayFor: String) -> [String: [Any]]? {
+        return UserDefaults.standard.dictionary(forKey: dictionaryArrayFor) as? [String: [Any]]
+    }
+
+    func get(dictionaryFor: String) -> [String: Any]? {
+        return UserDefaults.standard.dictionary(forKey: dictionaryFor)
+    }
+
     func clear() {
         let domain = Bundle.main.bundleIdentifier!
         UserDefaults.standard.removePersistentDomain(forName: domain)

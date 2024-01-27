@@ -94,6 +94,8 @@
 		C17917032B27281E00C7798A /* CryptoPortfolioUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917022B27281E00C7798A /* CryptoPortfolioUseCases.swift */; };
 		C17917052B27364B00C7798A /* RatesMockUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917042B27364B00C7798A /* RatesMockUseCases.swift */; };
 		C17917082B273D2F00C7798A /* RateInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17917072B273D2F00C7798A /* RateInfoDTO.swift */; };
+		C194F8882B656F7F00885D0A /* UpdateInfoUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194F8872B656F7F00885D0A /* UpdateInfoUDManager.swift */; };
+		C194F88A2B6576E300885D0A /* UpdateInfoManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194F8892B6576E300885D0A /* UpdateInfoManagerProtocol.swift */; };
 		C197169B2B3C2F8B0079A7B7 /* ButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C197169A2B3C2F8B0079A7B7 /* ButtonStyle.swift */; };
 		C19716A32B3C55600079A7B7 /* FavoriteCryptoDBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */; };
 		C1DFE3482B3CCAC500F4086F /* UserUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DFE3472B3CCAC500F4086F /* UserUseCases.swift */; };
@@ -198,6 +200,8 @@
 		C17917022B27281E00C7798A /* CryptoPortfolioUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPortfolioUseCases.swift; sourceTree = "<group>"; };
 		C17917042B27364B00C7798A /* RatesMockUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatesMockUseCases.swift; sourceTree = "<group>"; };
 		C17917072B273D2F00C7798A /* RateInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateInfoDTO.swift; sourceTree = "<group>"; };
+		C194F8872B656F7F00885D0A /* UpdateInfoUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateInfoUDManager.swift; sourceTree = "<group>"; };
+		C194F8892B6576E300885D0A /* UpdateInfoManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateInfoManagerProtocol.swift; sourceTree = "<group>"; };
 		C197169A2B3C2F8B0079A7B7 /* ButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyle.swift; sourceTree = "<group>"; };
 		C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCryptoDBO.swift; sourceTree = "<group>"; };
 		C1DFE3472B3CCAC500F4086F /* UserUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCases.swift; sourceTree = "<group>"; };
@@ -401,6 +405,7 @@
 		C10EAC252B1DDE2D006C1A0D /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				C194F8862B656F6800885D0A /* UpdateInfoManager */,
 				C17916CF2B2270BF00C7798A /* CacheManager */,
 				C10EAC572B1F5D1C006C1A0D /* DBManager */,
 				C10EAC262B1DDE38006C1A0D /* RemoteManager */,
@@ -862,6 +867,23 @@
 			path = CryptoPortfolio;
 			sourceTree = "<group>";
 		};
+		C194F8862B656F6800885D0A /* UpdateInfoManager */ = {
+			isa = PBXGroup;
+			children = (
+				C194F88B2B65772500885D0A /* UserDefaults */,
+				C194F8892B6576E300885D0A /* UpdateInfoManagerProtocol.swift */,
+			);
+			path = UpdateInfoManager;
+			sourceTree = "<group>";
+		};
+		C194F88B2B65772500885D0A /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				C194F8872B656F7F00885D0A /* UpdateInfoUDManager.swift */,
+			);
+			path = UserDefaults;
+			sourceTree = "<group>";
+		};
 		C19716982B3C2F740079A7B7 /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -1027,6 +1049,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C19716A32B3C55600079A7B7 /* FavoriteCryptoDBO.swift in Sources */,
+				C194F8882B656F7F00885D0A /* UpdateInfoUDManager.swift in Sources */,
 				C10EAC4E2B1E0164006C1A0D /* CryptoMockUseCases.swift in Sources */,
 				C10302802B3227A0005E8C54 /* CryptoPortfolioMockUseCases.swift in Sources */,
 				C165CE4B2B3DB9C30009F873 /* Screen.swift in Sources */,
@@ -1071,6 +1094,7 @@
 				C10EAC5E2B1FBC4F006C1A0D /* Container.swift in Sources */,
 				C165CE442B3DB3330009F873 /* SplashBuilder.swift in Sources */,
 				C17916DC2B24C51F00C7798A /* ProfileView.swift in Sources */,
+				C194F88A2B6576E300885D0A /* UpdateInfoManagerProtocol.swift in Sources */,
 				C165CE472B3DB3420009F873 /* SplashView.swift in Sources */,
 				C10EAC372B1DE028006C1A0D /* CryptoRepository.swift in Sources */,
 				C17916D12B2270CF00C7798A /* CacheManagerProtocol.swift in Sources */,
