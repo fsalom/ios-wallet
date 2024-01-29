@@ -22,8 +22,12 @@ struct SplashView: View {
                 MainTabbedView()
             case .none:
                 ZStack {
-                    Color.background
-                    Text("🚀").font(.largeTitle)
+                    Color.white
+                    Image(.logo)
+                        .resizable()
+                        .frame(width: 350, height: 350)
+                        .aspectRatio(contentMode: .fit)
+
                 }.ignoresSafeArea()
             }
         }
