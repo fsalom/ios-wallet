@@ -138,7 +138,7 @@ struct OnBoardingView: View {
                         CryptoRow(with: crypto)
                     }
                 })
-            }.searchable(text: $VM.searchText)
+            }.searchable(text: $VM.searchText, prompt: "Búsqueda")
                 .padding(20)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 20))

@@ -30,7 +30,7 @@ struct MyPortfolioView: View {
             }
             .padding(.horizontal, 20)
         }.background(Color.background)
-            .searchable(text: $VM.searchText)
+            .searchable(text: $VM.searchText, prompt: "Búsqueda")
     }
 
     @ViewBuilder
