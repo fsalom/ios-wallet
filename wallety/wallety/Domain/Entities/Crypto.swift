@@ -31,6 +31,10 @@ struct Crypto: Identifiable {
         return "\(currency.currencySymbol)\(formatter.string(from: number) ?? "-")"
     }
 
+    var priceForCurrency: Float {
+        return priceUsd / currency.rateUsd
+    }
+
     var changePercent24HrFormatted: String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal

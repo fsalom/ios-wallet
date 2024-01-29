@@ -10,7 +10,7 @@ import Charts
 
 struct CryptoDetailView: View {
     @ObservedObject var VM: CryptoDetailViewModel
-    
+    @State var showAddPricePurchase: Bool = false
     var body: some View {
         ScrollView {
             VStack{
@@ -46,26 +46,37 @@ struct CryptoDetailView: View {
                     .shadow(radius: 1)
                     
                     Divider()
-                    Text("Precio de compra (si deseas calcular rentabilidad)")
-                        .font(.footnote)
+
                     
-                    HStack(alignment: .bottom, spacing: 10) {
-                        Text(VM.crypto.currency.symbol)
+                    if (showAddPricePurchase) {
+                        Text("Añade tu precio aproximado de compra")
+                            .font(.footnote)
+                        HStack(alignment: .bottom, spacing: 10) {
+                            Text(VM.crypto.currency.symbol)
+                                .font(.system(size: 30))
+                                .fontWeight(.bold)
+                                .frame(width: 100)
+                            Divider()
+                            TextField(text: $VM.priceText) {
+                                Text("Precio")
+                            }
                             .font(.system(size: 30))
-                            .fontWeight(.bold)
-                            .frame(width: 100)
-                        Divider()
-                        TextField(text: $VM.priceText) {
-                            Text("Precio")
+                            .keyboardType(.decimalPad)
                         }
-                        .font(.system(size: 30))
-                        .keyboardType(.decimalPad)
+                        .padding(10)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                        .shadow(radius: 1)
+                    } else {
+                        Button {
+                            showAddPricePurchase = true
+                        } label: {
+                            Text("¿Calcular rentabilidad aproximada?")
+                                .frame(maxWidth: .infinity)
+                        }.buttonStyle(LargeButtonStyle(backgroundColor: Color.secondary,
+                                                       foregroundColor: Color.white,
+                                                       isDisabled: false))
                     }
-                    .padding(10)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .shadow(radius: 1)
-                    
                     Button {
                         VM.addToMyPortfolio()
                     } label: {
@@ -77,31 +88,7 @@ struct CryptoDetailView: View {
                     
                 }
                 .padding(20)
-                
-                LazyVStack(alignment: .leading, content: {
-                    ForEach(VM.cryptosPortfolio) { portfolio in
-                        HStack(spacing: 10) {
-                            Text("\(portfolio.quantityFormatted) \(portfolio.crypto.symbol)")
-                            Spacer()
-                            Text("\(portfolio.crypto.price)")
-                                .fontWeight(.bold)
-                            Button {
-                                VM.delete(this: portfolio)
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .resizable()
-                                    .padding(5)
-                                    .foregroundStyle(Color.white)
-                                    .frame(width: 20, height: 20)
-                                    .background(Color.red)
-                                    .clipShape(Circle())
-                            }
-                            
-                        }
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, 20)
-                    }
-                })
+                ListOfCryptoInPortfolio()
                 Spacer()
             }.padding(.top, 40)
         }
@@ -122,6 +109,34 @@ struct CryptoDetailView: View {
         )
     }
     
+    @ViewBuilder
+    private func ListOfCryptoInPortfolio() -> some View {
+        LazyVStack(alignment: .leading, content: {
+            ForEach(VM.cryptosPortfolio) { portfolio in
+                HStack(spacing: 10) {
+                    Text("\(portfolio.quantityFormatted) \(portfolio.crypto.symbol)")
+                    Spacer()
+                    Text("\(portfolio.purchasePriceFormatted)")
+                        .fontWeight(.bold)
+                    Button {
+                        VM.delete(this: portfolio)
+                    } label: {
+                        Image(systemName: "xmark")
+                            .resizable()
+                            .padding(5)
+                            .foregroundStyle(Color.white)
+                            .frame(width: 20, height: 20)
+                            .background(Color.red)
+                            .clipShape(Circle())
+                    }
+
+                }
+                .padding(.vertical, 10)
+                .padding(.horizontal, 20)
+            }
+        })
+    }
+
     @ViewBuilder
     private func ChartView() -> some View {
         ZStack {

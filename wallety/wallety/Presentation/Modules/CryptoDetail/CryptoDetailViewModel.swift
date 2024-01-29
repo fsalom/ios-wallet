@@ -59,19 +59,35 @@ class CryptoDetailViewModel: ObservableObject {
         self.rateUseCases = rateUseCases
         self.cryptoHistoryUseCases = cryptoHistoryUseCases
         self.cryptoUseCases = cryptoUseCases
-        self.priceText = "\(crypto.priceForCurrency)"
     }
 
     func load() async {
         do {
-            let cryptoPortfolios = try await portfolioUseCases.getPortfolios(with: crypto.symbol)
+            guard let cryptoInfo = try await cryptoUseCases.getCrypto(
+                with: crypto.symbol
+            ) else { return }
+            let cryptoPortfolios = try await portfolioUseCases.getPortfolios(
+                with: crypto.symbol
+            )
             let rate = try await rateUseCases.getCurrentCurrency()
-            let updatedCryptoPortfolios = portfolioUseCases.update(these: cryptoPortfolios, with: rate)
-            let cryptoHistoryPrices = try await cryptoHistoryUseCases.get24HoursHistory(for: self.crypto.name)
-            let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(of: crypto.symbol)
+            let updatedPortfolioWithRate = portfolioUseCases.update(
+                these: cryptoPortfolios,
+                with: rate
+            )
+            let updatedPortfolioWithCrypto = portfolioUseCases.update(
+                these: updatedPortfolioWithRate,
+                with: cryptoInfo
+            )
+            let cryptoHistoryPrices = try await cryptoHistoryUseCases.get24HoursHistory(
+                for: self.crypto.name
+            )
+            let (total, quantity) = try await portfolioUseCases.getTotalAndQuantityFormatted(
+                of: crypto.symbol
+            )
+
             await MainActor.run {
                 self.crypto.currency = rate
-                self.cryptosPortfolio = updatedCryptoPortfolios
+                self.cryptosPortfolio = updatedPortfolioWithCrypto
                 self.cryptoHistoryPrices = Array(cryptoHistoryPrices)
                 self.total = total
                 self.quantity = quantity
@@ -86,12 +102,15 @@ class CryptoDetailViewModel: ObservableObject {
         Task {
             do {
                 if quantityToAdd > 0 {
-                    try await portfolioUseCases.addToMyPorfolio(this: crypto,
-                                                                with: self.quantityToAdd,
-                                                                and: priceToAdd)
+                    try await portfolioUseCases.addToMyPorfolio(
+                        this: crypto,
+                        with: self.quantityToAdd,
+                        and: priceToAdd)
                     await load()
                     await MainActor.run {
-                        self.priceText = "\(crypto.priceForCurrency)"
+                        self.quantityText = ""
+                        self.priceToAdd = 0.0
+                        self.priceText = ""
                     }
                 }
             } catch {
