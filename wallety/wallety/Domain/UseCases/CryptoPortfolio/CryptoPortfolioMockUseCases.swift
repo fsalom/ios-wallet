@@ -42,6 +42,10 @@ class CryptoPortfolioMockUseCases: CryptoPortfolioUseCasesProtocol {
         cryptos
     }
 
+    func update(these cryptos: [CryptoPortfolio], with crypto: Crypto) -> [CryptoPortfolio] {
+        []
+    }
+
     func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio] {
         return cryptos
     }

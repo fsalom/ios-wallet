@@ -16,5 +16,6 @@ protocol CryptoPortfolioUseCasesProtocol {
     func getTotalFormattedWithCurrentCurrency(of totalUsd: Float) async throws -> String
     func delete(this portfolio: CryptoPortfolio) async throws
     func update(these cryptos: [CryptoPortfolio], with currency: Rate) -> [CryptoPortfolio]
+    func update(these cryptos: [CryptoPortfolio], with crypto: Crypto) -> [CryptoPortfolio]
     func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio]
 }

@@ -82,6 +82,15 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
         return updatedCryptos
     }
 
+    func update(these cryptos: [CryptoPortfolio], with crypto: Crypto) -> [CryptoPortfolio] {
+        var updatedCryptos: [CryptoPortfolio] = []
+        cryptos.forEach { cryptoPortfolio in
+            cryptoPortfolio.crypto = crypto
+            updatedCryptos.append(cryptoPortfolio)
+        }
+        return updatedCryptos
+    }
+
     func filter(these cryptos: [CryptoPortfolio], with text: String) -> [CryptoPortfolio] {
         return cryptos.filter({$0.crypto.name.lowercased().contains(text.lowercased())})
     }
