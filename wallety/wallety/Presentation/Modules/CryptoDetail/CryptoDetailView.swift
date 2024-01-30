@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import Kingfisher
 
 struct CryptoDetailView: View {
     @ObservedObject var VM: CryptoDetailViewModel
@@ -90,6 +91,7 @@ struct CryptoDetailView: View {
                 .padding(20)
                 ListOfCryptoInPortfolio()
                 Spacer()
+
             }.padding(.top, 40)
         }
         .background(Color.background)
@@ -99,6 +101,7 @@ struct CryptoDetailView: View {
         .task {
             await VM.load()
         }
+        .padding(0)
         .navigationBarItems(
             trailing: Button(action: {
                 VM.favOrUnfav()
@@ -107,6 +110,21 @@ struct CryptoDetailView: View {
                     .foregroundColor(VM.crypto.isFavorite ? .yellow : .black)
             })
         )
+        Divider()
+        HStack {
+            KFAnimatedImage(VM.crypto.imageUrl)
+                .frame(width: 30, height: 30)
+                .background(Color.white)
+                .clipShape(Circle())
+            Text("Bitcoin")
+                .fontWeight(.bold)
+            Spacer()
+            Text("10,00 BTC")
+            Image(systemName: "arrowtriangle.right.fill")
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 10)
+        .padding(.bottom, 60)
     }
     
     @ViewBuilder

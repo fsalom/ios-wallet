@@ -33,7 +33,8 @@ class MyPortfolioViewModel: ObservableObject {
         Task {
             do {
                 let data = try await loadData()
-                let total = try await self.portfolioUseCases.getTotal(of: data.cryptosPorfolio)
+                let totalUsd = try await self.portfolioUseCases.getTotalPriceUsd()
+                let total = try await self.portfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd)
                 await MainActor.run {
                     self.cryptos = data.cryptosPorfolio
                     self.total = total

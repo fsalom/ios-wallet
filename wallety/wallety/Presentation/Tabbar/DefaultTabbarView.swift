@@ -10,18 +10,13 @@ import SwiftUI
 
 
 struct DefaultTabbarView: View {
-    
     @State var selectedIndex = 0
     @State var presented = false
     @Environment(\.modelContext) private var context
     let icons = ["house", "hands.sparkles", "plus", "person", "person"]
-    
-    
-    
+
     var body: some View {
-        
         VStack{
-            
             Spacer().fullScreenCover(isPresented: $presented, content: {
                 Text("Create Post Here")
                 Button(action: {
@@ -32,7 +27,6 @@ struct DefaultTabbarView: View {
             })
             
             switch selectedIndex{
-                
             case 0:
                 HomeBuilder().build(with: context.container)
             case 1:
@@ -41,17 +35,12 @@ struct DefaultTabbarView: View {
                 MyPortfolioBuilder().build(with: context.container)
             case 3:
                 TopCryptosBuilder().build(with: context.container)
-                
             default:
                 HomeBuilder().build(with: context.container)
             }
-            
-            
-            
-            
+
             HStack{
                 ForEach(0..<5, id: \.self){number in
-                    
                     Spacer()
                     Button(action: {
                         
@@ -79,7 +68,6 @@ struct DefaultTabbarView: View {
                 }
             }
         }
-        
     }
 }
 
