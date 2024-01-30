@@ -61,12 +61,12 @@ class CryptoMockUseCases: CryptoUseCasesProtocol {
                             marketCapUsd: 0.0,
                             changePercent24Hr: 0.0)
 
-        return [CryptoPortfolio(crypto: crypto, quantity: 1.2),
-                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
-                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
-                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
-                 CryptoPortfolio(crypto: crypto, quantity: 1.2),
-                 CryptoPortfolio(crypto: crypto, quantity: 1.2)]
+        return [CryptoPortfolio(
+            id: UUID().uuidString,
+            crypto: crypto,
+            quantity: 1.2,
+            purchasePrice: 0.0,
+            purchaseCurrency: "EUR")]
     }
 
     func addToMyPorfolio(this crypto: Crypto, with quantity: Float, and price: Float) {

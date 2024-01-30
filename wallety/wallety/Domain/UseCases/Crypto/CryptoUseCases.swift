@@ -24,7 +24,7 @@ class CryptoUseCases: CryptoUseCasesProtocol {
 
     func update(these cryptos: [Crypto], with currency: Rate) -> [Crypto] {
         var updatedCryptos: [Crypto] = []
-        cryptos.forEach { crypto in
+        for var crypto in cryptos {
             crypto.currency = currency
             updatedCryptos.append(crypto)
         }
