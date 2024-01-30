@@ -121,6 +121,8 @@ fileprivate extension CryptoPortfolioDBO {
                 priceUsd: priceUsd,
                 marketCapUsd: 0.0,
                 changePercent24Hr: 0.0),
-            quantity: quantity)
+            quantity: quantity,
+            purchasePrice: priceUsd,
+            purchaseCurrency: rateId)
     }
 }
