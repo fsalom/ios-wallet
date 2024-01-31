@@ -109,22 +109,7 @@ struct CryptoDetailView: View {
                 Image(systemName: VM.crypto.isFavorite ? "star.fill" : "star")
                     .foregroundColor(VM.crypto.isFavorite ? .yellow : .black)
             })
-        )
-        Divider()
-        HStack {
-            KFAnimatedImage(VM.crypto.imageUrl)
-                .frame(width: 30, height: 30)
-                .background(Color.white)
-                .clipShape(Circle())
-            Text("Bitcoin")
-                .fontWeight(.bold)
-            Spacer()
-            Text("10,00 BTC")
-            Image(systemName: "arrowtriangle.right.fill")
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .padding(.bottom, 60)
+        )        
     }
     
     @ViewBuilder

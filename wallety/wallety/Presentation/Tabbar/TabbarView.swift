@@ -38,7 +38,6 @@ struct MainTabbedView: View {
     @State var selectedTab = 0
 
     var body: some View {
-
         ZStack(alignment: .bottom){
             switch selectedTab {
             case 0:
@@ -83,6 +82,7 @@ struct MainTabbedView: View {
             .cornerRadius(30)
             .padding(.horizontal, 26)
             .shadow(radius: 1)
+
         }
     }
 }
