@@ -47,7 +47,7 @@ class CryptoPortfolioRepository: CryptoPortfolioRepositoryProtocol {
 
 fileprivate extension CryptoPortfolioDBO {
     func toDomain() -> CryptoPortfolio {
-        var crypto = Crypto(
+        let crypto = Crypto(
             symbol: symbol,
             name: name,
             priceUsd: 0.0,
