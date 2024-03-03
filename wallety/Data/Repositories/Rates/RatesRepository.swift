@@ -43,7 +43,9 @@ class RatesRepository: RatesRepositoryProtocol {
     }
 
     func save(these currencies: [Rate]) async throws {
-        try await localDataSource.save(these: currencies.map({$0.toDBO()}))
+        Task(priority: .background) {
+            try await localDataSource.save(these: currencies.map({$0.toDBO()}))
+        }
     }
 }
 

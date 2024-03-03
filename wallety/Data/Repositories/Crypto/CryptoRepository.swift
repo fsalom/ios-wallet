@@ -35,16 +35,21 @@ class CryptoRepository: CryptoRepositoryProtocol {
         if cryptosDBO.isEmpty || !isUpdated {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
             try await localDataSource.deleteAll()
-            try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
+            Task(priority: .background) {
+                try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
+            }
             updateInfoManager.setDate(for: topKey,
                                       isResetNeeded: false)
             return try await setFavorites(for: cryptosDTO.map { $0.toDomain() })
         }
+
         return try await setFavorites(for: cryptosDBO.map { $0.toDomain() })
     }
 
     private func save(these cryptosDBO: [CryptoDBO]) async throws {
-        try await localDataSource.save(these: cryptosDBO)
+        Task(priority: .background) {
+            try await localDataSource.save(these: cryptosDBO)
+        }
     }
 
     func favOrUnfav(this symbol: String) async throws {

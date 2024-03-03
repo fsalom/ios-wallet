@@ -219,6 +219,7 @@
 		C194F8A52B6640BC00885D0A /* NavigationBackButtonNoTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBackButtonNoTitle.swift; sourceTree = "<group>"; };
 		C197169A2B3C2F8B0079A7B7 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
 		C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCryptoDBO.swift; sourceTree = "<group>"; };
+		C1DE37AC2B934E5E009F1780 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C1DFE3472B3CCAC500F4086F /* UserUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCases.swift; sourceTree = "<group>"; };
 		C1DFE3492B3CCAD800F4086F /* UserUseCasesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCasesProtocol.swift; sourceTree = "<group>"; };
 		C1DFE34C2B3CCB5E00F4086F /* UserRepositoryProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepositoryProtocol.swift; sourceTree = "<group>"; };
@@ -694,6 +695,7 @@
 		C16D04092B18BFB60014F906 /* wallety */ = {
 			isa = PBXGroup;
 			children = (
+				C1DE37AC2B934E5E009F1780 /* Info.plist */,
 				C194F89F2B65AC4100885D0A /* GoogleService-Info.plist */,
 				C10EAC5C2B1FBC45006C1A0D /* DI */,
 				C10EAC0C2B1B2631006C1A0D /* Data */,
@@ -1369,6 +1371,7 @@
 				DEVELOPMENT_TEAM = 3BJD5A7BSQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = wallety/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1399,6 +1402,7 @@
 				DEVELOPMENT_TEAM = 3BJD5A7BSQ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = wallety/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
