@@ -106,11 +106,15 @@ struct ProfileView: View {
                 }
 
             }
-            Section("Ajustes") {
+            Section {
                 Button(action: {
                 }, label: {
                     Text("Borrar base de datos")
                 })
+            } header: {
+                Text("Ajustes")
+            } footer: {
+                Text("version: " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "--"))
             }
         }
         .task {
