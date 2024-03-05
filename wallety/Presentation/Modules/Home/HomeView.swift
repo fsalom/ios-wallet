@@ -9,11 +9,9 @@ import SwiftUI
 import Charts
 import Kingfisher
 
-struct HomeView: View {    
-    @Environment(\.scenePhase) var scenePhase
+struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
     @State private var showingPopover = false
-
     @State var selectedDate: String? = nil
     let safeArea: EdgeInsets = EdgeInsets()
 
@@ -22,27 +20,29 @@ struct HomeView: View {
             GeometryReader { _ in
                 ScrollView(.vertical) {
                     VStack {
-                        HeaderView()
+                        HeaderView(isLoading: VM.isLoading)
                         ChartView()
                         if !VM.favoriteCryptos.isEmpty {
                             HorizontalListFavoriteAssetsView(favoriteCryptos: VM.favoriteCryptos)
                         }
                         ListCryptoView(cryptos: VM.cryptos).padding(.horizontal, 20)
                     }
-                }.scrollIndicators(.hidden)
-                    .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
-            }
-            .background(Color.background)
-            .onChange(of: scenePhase, initial: true, { oldValue, newValue in
-                if newValue == .active {
+                }
+                .scrollIndicators(.hidden)
+                .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
+                .refreshable {
                     VM.update()
                 }
-            })
+            }
+            .background(Color.background)
         }
+        .onAppear(perform: {
+            VM.update()
+        })
     }
 
     @ViewBuilder
-    func HeaderView() -> some View {
+    func HeaderView(isLoading: Bool) -> some View {
         GeometryReader {
             let size = $0.size
             let minY = $0.frame(in: .scrollView(axis: .vertical)).minY
@@ -54,17 +54,23 @@ struct HomeView: View {
                     GeometryReader { _ in
                         HomeProfileView(progress: progress)
                     }
-                    if progress == 0 {
-                        Text(selectedDate ?? "")
-                            .font(.footnote)
-                            .frame(height: 30)
-                    }
-                    Text(VM.total)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .scaleEffect(1 - (progress * 0.40))
-                        .offset(y: progress)
-                        .padding(.bottom, 15)
+                    VStack(spacing: 0) {
+                        if progress == 0 {
+                            Text(selectedDate ?? "")
+                                .font(.footnote)
+                                .frame(height: 30)
+                        }
+                        if isLoading {
+                            ProgressView()
+                        } else {
+                            Text(VM.total)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .scaleEffect(1 - (progress * 0.40))
+                                .offset(y: progress)
+
+                        }
+                    }.padding(.bottom, 15)
                     Divider()
                         .padding(0)
                         .opacity(progress < 1 ? 0 : 1)
