@@ -109,6 +109,7 @@
 		C194F8A62B6640BC00885D0A /* NavigationBackButtonNoTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194F8A52B6640BC00885D0A /* NavigationBackButtonNoTitle.swift */; };
 		C197169B2B3C2F8B0079A7B7 /* LargeButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C197169A2B3C2F8B0079A7B7 /* LargeButtonStyle.swift */; };
 		C19716A32B3C55600079A7B7 /* FavoriteCryptoDBO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */; };
+		C1D191FA2B975B20002AB872 /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D191F92B975B20002AB872 /* Banner.swift */; };
 		C1DFE3482B3CCAC500F4086F /* UserUseCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DFE3472B3CCAC500F4086F /* UserUseCases.swift */; };
 		C1DFE34A2B3CCAD800F4086F /* UserUseCasesProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DFE3492B3CCAD800F4086F /* UserUseCasesProtocol.swift */; };
 		C1DFE34D2B3CCB5E00F4086F /* UserRepositoryProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1DFE34C2B3CCB5E00F4086F /* UserRepositoryProtocol.swift */; };
@@ -219,6 +220,7 @@
 		C194F8A52B6640BC00885D0A /* NavigationBackButtonNoTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBackButtonNoTitle.swift; sourceTree = "<group>"; };
 		C197169A2B3C2F8B0079A7B7 /* LargeButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LargeButtonStyle.swift; sourceTree = "<group>"; };
 		C19716A22B3C55600079A7B7 /* FavoriteCryptoDBO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteCryptoDBO.swift; sourceTree = "<group>"; };
+		C1D191F92B975B20002AB872 /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		C1DE37AC2B934E5E009F1780 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C1DFE3472B3CCAC500F4086F /* UserUseCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCases.swift; sourceTree = "<group>"; };
 		C1DFE3492B3CCAD800F4086F /* UserUseCasesProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUseCasesProtocol.swift; sourceTree = "<group>"; };
@@ -915,6 +917,7 @@
 		C194F88C2B65A5B900885D0A /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C1D191F82B975B13002AB872 /* Banner */,
 				C194F88D2B65A5C800885D0A /* CacheAsyncImage.swift */,
 				C194F8A52B6640BC00885D0A /* NavigationBackButtonNoTitle.swift */,
 			);
@@ -942,6 +945,14 @@
 				C197169A2B3C2F8B0079A7B7 /* LargeButtonStyle.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		C1D191F82B975B13002AB872 /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				C1D191F92B975B20002AB872 /* Banner.swift */,
+			);
+			path = Banner;
 			sourceTree = "<group>";
 		};
 		C1DFE3462B3CCAB700F4086F /* User */ = {
@@ -1225,6 +1236,7 @@
 				C17916EE2B25B54300C7798A /* RateDTO.swift in Sources */,
 				C10EAC432B1DE1A7006C1A0D /* TopCryptosView.swift in Sources */,
 				C17917082B273D2F00C7798A /* RateInfoDTO.swift in Sources */,
+				C1D191FA2B975B20002AB872 /* Banner.swift in Sources */,
 				C194F88E2B65A5C800885D0A /* CacheAsyncImage.swift in Sources */,
 				C103027B2B32219E005E8C54 /* CryptoPortfolioRepository.swift in Sources */,
 				C10EAC282B1DDE45006C1A0D /* RemoteManagerProtocol.swift in Sources */,
