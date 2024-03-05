@@ -27,8 +27,6 @@ class HomeViewModel: ObservableObject {
     
     struct HomeData {
         var cryptos: [Crypto]
-        var totalUsd: Float
-        var totalFormatted: String
         var portfolios: [CryptoPortfolio]
         var currentCurrency: Rate
         var user: User?
@@ -70,14 +68,16 @@ class HomeViewModel: ObservableObject {
             let favoriteCryptos = try await cryptoUseCases.getFavoriteCryptos(from: data.cryptos)
             let totalsPerDay = try await historyUseCases.getTotalHistory(for: data.portfolios).suffix(30)
             let cryptosWithoutFavorite = try await cryptoUseCases.getCryptosWithoutFavorites(from: data.cryptos)
-            let todayHistory = CryptoHistory(time: Int(Date().timeIntervalSince1970)*1000, priceUsd: data.totalUsd)
+            let totalUsd = try await cryptoPortfolioUseCases.getTotalPriceUsd()
+            let totalFormatted = try await cryptoPortfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd)
+            let todayHistory = CryptoHistory(time: Int(Date().timeIntervalSince1970)*1000, priceUsd: totalUsd)
             
             DispatchQueue.main.async {
                 self.cryptos = self.cryptoUseCases.update(these: cryptosWithoutFavorite,
                                                      with: data.currentCurrency)
                 self.favoriteCryptos = self.cryptoUseCases.update(these: favoriteCryptos,
                                                              with: data.currentCurrency)
-                self.total = data.totalFormatted
+                self.total = totalFormatted
                 self.totalsPerDay = Array(totalsPerDay)
                 self.totalsPerDay.append(todayHistory)
                 self.currentCurrency = data.currentCurrency
@@ -90,14 +90,11 @@ class HomeViewModel: ObservableObject {
     
     func loadData() async throws -> HomeData {
         async let cryptos = cryptoUseCases.getCryptos()
-        async let totalUsd = cryptoPortfolioUseCases.getTotalPriceUsd()
         async let currentCurrency = ratesUseCases.getCurrentCurrency()
         async let portfolios = cryptoPortfolioUseCases.getCryptosPortfolio()
         async let user = userUseCases.getMe()
         return try await HomeData(
             cryptos: cryptos,
-            totalUsd: totalUsd,
-            totalFormatted: cryptoPortfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd),
             portfolios: portfolios,
             currentCurrency: currentCurrency,
             user: user)
