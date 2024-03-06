@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 class ProfileBuilder {
+    @MainActor 
     func build(with container: ModelContainer) -> ProfileView {
 
         let ratesLocalDataSource = DBRatesDataSource(with: container)
@@ -23,7 +24,7 @@ class ProfileBuilder {
         let userRepository = UserRepository(datasource: userCacheDataSource)
         let userUseCases = UserUseCases(repository: userRepository)
 
-        let viewModel = ProfileViewModel(rateUseCases: ratesUseCases, userUseCases: userUseCases)
+        let viewModel = ProfileViewModel(rateUseCases: ratesUseCases, userUseCases: userUseCases, container: container)
 
         let view = ProfileView(VM: viewModel)
         return view

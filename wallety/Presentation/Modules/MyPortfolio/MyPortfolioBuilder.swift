@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 class MyPortfolioBuilder {
+    @MainActor 
     func build(with container: ModelContainer) -> MyPortfolioView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
         let localDataSource = DBCryptoDataSource(with: container)
@@ -27,6 +28,7 @@ class MyPortfolioBuilder {
             remoteDataSource: ratesRemoteDataSource,
             cacheDataSource: ratesCacheDataSource)
 
+        let cryptoUseCases = CryptoUseCases(repository: repository)
         let portfolioUseCases = CryptoPortfolioUseCases(
             cryptoPortfolioRepository: portfolioRepository,
             cryptoRepository: repository, 
@@ -35,7 +37,8 @@ class MyPortfolioBuilder {
         let ratesUseCases = RatesUseCases(repository: ratesRepository)
 
         let viewModel = MyPortfolioViewModel(portfolioUseCases: portfolioUseCases,
-                                             ratesUseCases: ratesUseCases)
+                                             ratesUseCases: ratesUseCases,
+                                             cryptoUseCases: cryptoUseCases)
         let view = MyPortfolioView(VM: viewModel)
         return view
     }

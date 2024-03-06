@@ -9,6 +9,7 @@ import Foundation
 import SwiftData
 
 class HomeBuilder {
+    @MainActor 
     func build(with container: ModelContainer) -> HomeView {
         let networkDataSource = RemoteCryptoCoinCapDataSource(networkManager: NetworkManager())
         let localDataSource = DBCryptoDataSource(with: container)
