@@ -24,9 +24,9 @@ enum TabbedItems: Int, CaseIterable{
         case .home:
             return "house"
         case .favorite:
-            return "bitcoinsign"
+            return "medal"
         case .portfolio:
-            return "chart.line.uptrend.xyaxis"
+            return "bag"
         case .profile:
             return "person"
         }
