@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 class HomeViewModel: ObservableObject {
     @Published var cryptos = [Crypto]()
     @Published var favoriteCryptos = [Crypto]()
@@ -24,14 +25,14 @@ class HomeViewModel: ObservableObject {
     @Published var total: String = "---"
     @Published var error: String = ""
     @Published var isLoading: Bool = false
-    
+
     struct HomeData {
         var cryptos: [Crypto]
         var portfolios: [CryptoPortfolio]
         var currentCurrency: Rate
         var user: User?
     }
-    
+
     private var originalTotal: String = ""
     var cryptoUseCases: CryptoUseCasesProtocol
     var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
@@ -39,7 +40,7 @@ class HomeViewModel: ObservableObject {
     var userUseCases: UserUseCasesProtocol
     var historyUseCases: CryptoHistoryUseCasesProtocol
     private var currentCurrency: Rate
-    
+
     init(cryptoUseCases: CryptoUseCasesProtocol,
          cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol,
          ratesUseCases: RatesUseCasesProtocol,
@@ -52,7 +53,7 @@ class HomeViewModel: ObservableObject {
         self.historyUseCases = historyUseCases
         self.currentCurrency = Rate.default()
     }
-    
+
     @MainActor
     func update() {
         Task {
@@ -71,23 +72,21 @@ class HomeViewModel: ObservableObject {
             let totalUsd = try await cryptoPortfolioUseCases.getTotalPriceUsd()
             let totalFormatted = try await cryptoPortfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd)
             let todayHistory = CryptoHistory(time: Int(Date().timeIntervalSince1970)*1000, priceUsd: totalUsd)
-            
-            DispatchQueue.main.async {
-                self.cryptos = self.cryptoUseCases.update(these: cryptosWithoutFavorite,
-                                                     with: data.currentCurrency)
-                self.favoriteCryptos = self.cryptoUseCases.update(these: favoriteCryptos,
-                                                             with: data.currentCurrency)
-                self.total = totalFormatted
-                self.totalsPerDay = Array(totalsPerDay)
-                self.totalsPerDay.append(todayHistory)
-                self.currentCurrency = data.currentCurrency
-                self.user = data.user
-            }
+
+            self.cryptos = self.cryptoUseCases.update(these: cryptosWithoutFavorite,
+                                                      with: data.currentCurrency)
+            self.favoriteCryptos = self.cryptoUseCases.update(these: favoriteCryptos,
+                                                              with: data.currentCurrency)
+            self.total = totalFormatted
+            self.totalsPerDay = Array(totalsPerDay)
+            self.totalsPerDay.append(todayHistory)
+            self.currentCurrency = data.currentCurrency
+            self.user = data.user
         } catch {
             self.error = "_ERROR_"
         }
     }
-    
+
     func loadData() async throws -> HomeData {
         async let cryptos = cryptoUseCases.getCryptos()
         async let currentCurrency = ratesUseCases.getCurrentCurrency()
@@ -99,7 +98,7 @@ class HomeViewModel: ObservableObject {
             currentCurrency: currentCurrency,
             user: user)
     }
-    
+
     func updateTotal(with date: String) {
         Task {
             guard let totalPerDayWithThisDate = self.totalsPerDay.filter({$0.day == date}).first else {
@@ -109,12 +108,10 @@ class HomeViewModel: ObservableObject {
                 originalTotal = total
             }
             let total = try await ratesUseCases.getFormattedWithCurrentCurrency(this: totalPerDayWithThisDate.priceUsd)
-            await MainActor.run {
-                self.total = total
-            }
+            self.total = total
         }
     }
-    
+
     func setOriginalTotal(){
         total = originalTotal.isEmpty ? total : originalTotal
     }
