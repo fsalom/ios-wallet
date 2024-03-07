@@ -60,5 +60,6 @@ struct MyPortfolioView: View {
 
 #Preview {
     MyPortfolioView(VM: MyPortfolioViewModel(portfolioUseCases: CryptoPortfolioMockUseCases(),
-                                             ratesUseCases: RatesMockUseCases()))
+                                             ratesUseCases: RatesMockUseCases(),
+                                             cryptoUseCases: CryptoMockUseCases()))
 }

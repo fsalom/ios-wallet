@@ -7,6 +7,18 @@
 
 import Foundation
 
+enum MyPortfolioError: Error {
+    case failedToGetUpdatedPrice
+
+    var localizedDescription: String {
+        switch self {
+        case .failedToGetUpdatedPrice:
+            return "No se pudieron actualizar los precios"
+        }
+    }
+}
+
+@MainActor
 class MyPortfolioViewModel: ObservableObject {
     @Published var cryptos: [CryptoPortfolio] = []
     @Published var total: String = ""
@@ -23,10 +35,14 @@ class MyPortfolioViewModel: ObservableObject {
     var originalCryptos: [CryptoPortfolio] = []
     var portfolioUseCases: CryptoPortfolioUseCasesProtocol
     var ratesUseCases: RatesUseCasesProtocol
+    var cryptoUseCases: CryptoUseCasesProtocol
 
-    init(portfolioUseCases: CryptoPortfolioUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol) {
+    init(portfolioUseCases: CryptoPortfolioUseCasesProtocol,
+         ratesUseCases: RatesUseCasesProtocol,
+         cryptoUseCases: CryptoUseCasesProtocol) {
         self.portfolioUseCases = portfolioUseCases
         self.ratesUseCases = ratesUseCases
+        self.cryptoUseCases = cryptoUseCases
     }
 
     func load() {
@@ -35,14 +51,27 @@ class MyPortfolioViewModel: ObservableObject {
                 let data = try await loadData()
                 let totalUsd = try await self.portfolioUseCases.getTotalPriceUsd()
                 let total = try await self.portfolioUseCases.getTotalFormattedWithCurrentCurrency(of: totalUsd)
-                await MainActor.run {
-                    self.cryptos = data.cryptosPorfolio
-                    self.total = total
-                    self.originalCryptos = data.cryptosPorfolio
-                }
+
+                self.cryptos = try await updateCryptosPrice(for: data.cryptosPorfolio)
+                self.total = total
+                self.originalCryptos = data.cryptosPorfolio
             } catch {
                 self.error = "_ERROR_"
             }
+        }
+    }
+
+    private func updateCryptosPrice(for assets: [CryptoPortfolio]) async throws -> [CryptoPortfolio] {
+        do {
+            for asset in assets {
+                guard let crypto = try await cryptoUseCases.getCrypto(with: asset.crypto.symbol) else {
+                    continue
+                }
+                asset.crypto = crypto
+            }
+            return assets
+        } catch {
+            throw MyPortfolioError.failedToGetUpdatedPrice
         }
     }
 
