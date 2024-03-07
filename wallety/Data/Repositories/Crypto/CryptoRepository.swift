@@ -34,8 +34,8 @@ class CryptoRepository: CryptoRepositoryProtocol {
         let cryptosDBO = try await localDataSource.getCryptos()
         if cryptosDBO.isEmpty || !isUpdated {
             let cryptosDTO = try await remoteDataSource.getTopCryptos()
-            try await localDataSource.deleteAll()
             Task(priority: .background) {
+                try await localDataSource.deleteAll()
                 try await localDataSource.save(these: cryptosDTO.map({$0.toDBO()}))
             }
             updateInfoManager.setDate(for: topKey,
