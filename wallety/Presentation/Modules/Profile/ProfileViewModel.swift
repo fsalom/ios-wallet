@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SwiftUI
+import SwiftData
 
 struct ProfileData {
     var currencies: [Rate]
@@ -15,13 +16,21 @@ struct ProfileData {
     var user: User?
 }
 
+@MainActor
 class ProfileViewModel: ObservableObject {
     
     var rateUseCases: RatesUseCasesProtocol
     var userUseCases: UserUseCasesProtocol
+    var container: ModelContainer?
+
     @Published var currentCurrency: Rate = Rate.default()
     @Published var currencies: [Rate] = []
-    @Published var errorMessage: String = ""
+    @Published var errorMessage: String = "" {
+        didSet {
+            showBanner = !errorMessage.isEmpty
+            bannerData = BannerModifier.BannerData.init(title: "Se ha producido un error", detail: errorMessage, type: BannerModifier.BannerType.Error)
+        }
+    }
     @Published var image: Data?
     @Published var avatarImage: Image?
     @Published var name: String = "" {
@@ -29,10 +38,13 @@ class ProfileViewModel: ObservableObject {
             save(this: name)
         }
     }
-    
-    init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
+    @Published var showBanner: Bool = false
+    @Published var bannerData: BannerModifier.BannerData = BannerModifier.BannerData.init(title: "", detail: "", type: BannerModifier.BannerType.Error)
+
+    init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol, container: ModelContainer? = nil) {
         self.rateUseCases = rateUseCases
         self.userUseCases = userUseCases        
+        self.container = container
     }
     
     func load() async {
@@ -45,7 +57,7 @@ class ProfileViewModel: ObservableObject {
                 self.image = data.user?.image
             }
         } catch {
-            self.errorMessage = "_ERROR_"
+            self.errorMessage = "La carga de información ha fallado"
         }
     }
     
@@ -69,7 +81,7 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.userUseCases.save(name: name)
             } catch {
-                self.errorMessage = "_ERROR_"
+                self.errorMessage = "No se ha podido guardar el nombre"
             }
         }
     }
@@ -83,7 +95,7 @@ class ProfileViewModel: ObservableObject {
                     self.avatarImage = nil
                 }
             } catch {
-                self.errorMessage = "_ERROR_"
+                self.errorMessage = "No se ha podido borrar la imagen"
             }
         }
     }
@@ -93,7 +105,7 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.userUseCases.save(this: image)
             } catch {
-                self.errorMessage = "_ERROR_"
+                self.errorMessage = "No se ha podido guardar la imagen"
             }
         }
     }
@@ -103,14 +115,23 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.rateUseCases.select(this: currency)
             } catch {
-                self.errorMessage = "_ERROR_"
+                self.errorMessage = "No se ha podido guardar la moneda"
             }
         }
     }
-    
+
     func clearDB() {
         Task {
-            
+            guard let container else { return }
+            do {
+                let context = ModelContext(container)
+                try context.delete(model: CryptoDBO.self)
+                try context.delete(model: CryptoPortfolioDBO.self)
+                try context.delete(model: RateDBO.self)
+                try context.delete(model: FavoriteCryptoDBO.self)
+            } catch {
+                self.errorMessage = "Se ha producido un error borrando la base de datos"
+            }
         }
     }
 }

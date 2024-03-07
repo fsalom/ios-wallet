@@ -7,13 +7,18 @@
 
 import SwiftUI
 import PhotosUI
+import SwiftData
 
 struct ProfileView: View {
     @Environment(\.modelContext) private var context
-    @State private var avatarItem: PhotosPickerItem?    
+    @State private var avatarItem: PhotosPickerItem?
     @ObservedObject var VM: ProfileViewModel
+    @State private var isConfirming = false
 
     var body: some View {
+        if !VM.errorMessage.isEmpty {
+            
+        }
         List {
             Section("Configuración de usuario") {
                 NavigationLink {
@@ -108,8 +113,17 @@ struct ProfileView: View {
             }
             Section {
                 Button(action: {
+                    isConfirming = true
                 }, label: {
                     Text("Borrar base de datos")
+                })
+                .confirmationDialog("Estás seguro de que deseas borrar la base de datps?",
+                                    isPresented: $isConfirming,
+                                    actions: {
+                    Button("Eliminar", role: .destructive) {
+                        VM.clearDB()
+                    }
+                    Button("Cancel", role: .cancel) { }
                 })
             } header: {
                 Text("Ajustes")
@@ -117,6 +131,7 @@ struct ProfileView: View {
                 Text("version: " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "--"))
             }
         }
+        .banner(data: $VM.bannerData, show: $VM.showBanner)
         .task {
             await VM.load()
             setProfileImage()
