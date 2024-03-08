@@ -14,6 +14,7 @@ class Container {
     private var homeView: HomeView?
     private var topCryptosView: TopCryptosView?
 
+    @MainActor 
     func getHomeView(with container: ModelContainer) -> HomeView {
         guard let homeView else {
             let homeView = HomeBuilder().build(with: container)
