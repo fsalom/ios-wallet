@@ -31,14 +31,16 @@ struct HomeView: View {
                 .scrollIndicators(.hidden)
                 .padding(EdgeInsets(top: 5, leading: 0, bottom: 0, trailing: 0))
                 .refreshable {
-                    VM.update()
+                    Task {
+                        await VM.update()
+                    }
                 }
             }
             .background(Color.background)
         }
-        .onAppear(perform: {
-            VM.update()
-        })
+        .task({
+            await VM.update()
+        })        
     }
 
     @ViewBuilder

@@ -55,12 +55,10 @@ class HomeViewModel: ObservableObject {
     }
 
     @MainActor
-    func update() {
-        Task {
-            isLoading = true
-            await load()
-            isLoading = false
-        }
+    func update() async {
+        isLoading = true
+        await load()
+        isLoading = false
     }
 
     func load() async {
