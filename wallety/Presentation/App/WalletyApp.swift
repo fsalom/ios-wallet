@@ -40,12 +40,23 @@ struct WalletyApp: App {
 
 extension UIApplication {
     func addTapGestureRecognizer() {
-        guard let window = windows.first else { return }
+        guard let window = UIApplication.keyWindow else { return }
         let tapGesture = UITapGestureRecognizer(target: window, action: #selector(UIView.endEditing))
         tapGesture.requiresExclusiveTouchType = false
         tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         window.addGestureRecognizer(tapGesture)
+    }
+
+    static var keyWindow: UIWindow? {
+      let allScenes = UIApplication.shared.connectedScenes
+      for scene in allScenes {
+        guard let windowScene = scene as? UIWindowScene else { continue }
+        for window in windowScene.windows where window.isKeyWindow {
+           return window
+         }
+       }
+        return nil
     }
 }
 
