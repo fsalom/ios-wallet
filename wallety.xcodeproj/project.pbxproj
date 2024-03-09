@@ -1140,6 +1140,7 @@
 		};
 		C1A1A9932B99AFD6009DEB99 /* dSYMs */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
