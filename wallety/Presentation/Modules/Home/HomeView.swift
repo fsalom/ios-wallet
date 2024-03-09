@@ -40,7 +40,7 @@ struct HomeView: View {
         }
         .task({
             await VM.update()
-        })        
+        })
     }
 
     @ViewBuilder
@@ -151,7 +151,8 @@ struct HomeView: View {
                         .gesture(
                             DragGesture()
                                 .onChanged { value in
-                                    let origin = geometry[proxy.plotAreaFrame].origin
+                                    guard let plotFrame = proxy.plotFrame else { return }
+                                    let origin = geometry[plotFrame].origin
                                     let location = CGPoint(
                                         x: value.location.x - origin.x,
                                         y: value.location.y - origin.y
@@ -180,7 +181,6 @@ struct HomeView: View {
                                 let lineX = startPositionX1 + geo[plotFrame].origin.x
                                 let lineHeight = geo[plotFrame].maxY
                                 let fullWidth = geo[plotFrame].maxX
-                                let boxWidth: CGFloat = 100
                                 HStack(spacing: 0) {
                                     Rectangle()
                                         .fill(.active)

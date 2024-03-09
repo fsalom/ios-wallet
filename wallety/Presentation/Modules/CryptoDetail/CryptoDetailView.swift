@@ -74,7 +74,7 @@ struct CryptoDetailView: View {
                         } label: {
                             Text("¿Calcular rentabilidad aproximada?")
                                 .frame(maxWidth: .infinity)
-                        }.buttonStyle(LargeButtonStyle(backgroundColor: Color.secondary,
+                        }.buttonStyle(LargeButtonStyle(backgroundColor: Color.customYellow,
                                                        foregroundColor: Color.white,
                                                        isDisabled: false))
                     }
@@ -163,16 +163,7 @@ struct CryptoDetailView: View {
                     Rectangle().fill(.clear).contentShape(Rectangle())
                         .gesture(
                             DragGesture()
-                                .onChanged { value in
-                                    let origin = geometry[proxy.plotAreaFrame].origin
-                                    let location = CGPoint(
-                                        x: value.location.x - origin.x,
-                                        y: value.location.y - origin.y
-                                    )
-                                    guard let date = proxy.value(atX: location.x, as: String.self) else {
-                                        return
-                                    }
-                                    //VM.updateTotal(with: date)
+                                .onChanged { _ in                                 
                                 }
                                 .onEnded({ _ in
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
