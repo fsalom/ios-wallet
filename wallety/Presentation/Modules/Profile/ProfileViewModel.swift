@@ -25,10 +25,11 @@ class ProfileViewModel: ObservableObject {
 
     @Published var currentCurrency: Rate = Rate.default()
     @Published var currencies: [Rate] = []
-    @Published var errorMessage: String = "" {
+    @Published var error: AppError? = nil {
         didSet {
-            showBanner = !errorMessage.isEmpty
-            bannerData = BannerModifier.BannerData.init(title: "Se ha producido un error", detail: errorMessage, type: BannerModifier.BannerType.Error)
+            showBanner = error != nil ? true : false
+            guard let (title, description) = error?.getTitleAndDescription() else { return }
+            bannerData = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
         }
     }
     @Published var image: Data?
@@ -57,7 +58,7 @@ class ProfileViewModel: ObservableObject {
                 self.image = data.user?.image
             }
         } catch {
-            self.errorMessage = "La carga de información ha fallado"
+            self.error = .custom("Se ha producido un error", "La carga de información ha fallado")
         }
     }
     
@@ -81,7 +82,7 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.userUseCases.save(name: name)
             } catch {
-                self.errorMessage = "No se ha podido guardar el nombre"
+                self.error = .custom("Se ha producido un error", "No se ha podido guardar el nombre")
             }
         }
     }
@@ -95,7 +96,7 @@ class ProfileViewModel: ObservableObject {
                     self.avatarImage = nil
                 }
             } catch {
-                self.errorMessage = "No se ha podido borrar la imagen"
+                self.error = .custom("Se ha producido un error", "No se ha podido borrar la imagen")
             }
         }
     }
@@ -105,7 +106,7 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.userUseCases.save(this: image)
             } catch {
-                self.errorMessage = "No se ha podido guardar la imagen"
+                self.error = .custom("Se ha producido un error", "No se ha podido guardar la imagen")
             }
         }
     }
@@ -115,7 +116,7 @@ class ProfileViewModel: ObservableObject {
             do {
                 try await self.rateUseCases.select(this: currency)
             } catch {
-                self.errorMessage = "No se ha podido guardar la moneda"
+                self.error = .custom("Se ha producido un error", "No se ha podido guardar la moneda")
             }
         }
     }
@@ -130,7 +131,8 @@ class ProfileViewModel: ObservableObject {
                 try context.delete(model: RateDBO.self)
                 try context.delete(model: FavoriteCryptoDBO.self)
             } catch {
-                self.errorMessage = "Se ha producido un error borrando la base de datos"
+                self.error = .custom("Se ha producido un error",
+                                     "Se ha producido un error borrando la base de datos: \(error.localizedDescription)")
             }
         }
     }
