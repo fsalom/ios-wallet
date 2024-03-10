@@ -16,9 +16,6 @@ struct ProfileView: View {
     @State private var isConfirming = false
 
     var body: some View {
-        if !VM.errorMessage.isEmpty {
-            
-        }
         List {
             Section("Configuración de usuario") {
                 NavigationLink {
