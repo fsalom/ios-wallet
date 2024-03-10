@@ -54,7 +54,7 @@ class CryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol {
             throw CryptoPortfolioError.notFound
         }
         let cryptoPortfolio = try await getPortfolios(with: symbol)
-        var quantity: Float = cryptoPortfolio.compactMap({$0.quantity}).reduce(0, +)
+        let quantity: Float = cryptoPortfolio.compactMap({$0.quantity}).reduce(0, +)
         let totalUsd = quantity * crypto.priceUsd
         let totalFormatted = try await getTotalFormattedWithCurrentCurrency(of: totalUsd)
         let quantityFormatted = "\(quantity)"
