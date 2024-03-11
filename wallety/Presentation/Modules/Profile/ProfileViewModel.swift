@@ -18,11 +18,10 @@ struct ProfileData {
 
 @MainActor
 class ProfileViewModel: ObservableObject {
-    
-    var rateUseCases: RatesUseCasesProtocol
-    var userUseCases: UserUseCasesProtocol
-    var container: ModelContainer?
-    var error: AppError? = nil {
+    private var rateUseCases: RatesUseCasesProtocol
+    private var userUseCases: UserUseCasesProtocol
+    private var container: ModelContainer?
+    private var error: AppError? = nil {
         didSet {
             var bannerUI = BannerUI(show: error != nil ? true : false,
                                     data: BannerModifier.BannerData.init())
@@ -64,7 +63,7 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
-    func loadData() async throws -> ProfileData {
+    private func loadData() async throws -> ProfileData {
         async let currencies = try await rateUseCases.getFilteredCurrenciesRates()
         async let currentCurrency = try await rateUseCases.getCurrentCurrency()
         async let user = try await userUseCases.getMe()
