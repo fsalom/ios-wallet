@@ -28,6 +28,7 @@ struct TopCryptosView: View {
             .padding(.horizontal, 20)
         }.background(Color.background)
             .searchable(text: $VM.searchText, prompt: "Búsqueda")
+            .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
     }
 
     @ViewBuilder

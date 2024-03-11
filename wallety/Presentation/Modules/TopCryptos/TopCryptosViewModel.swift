@@ -8,21 +8,31 @@
 import Foundation
 
 class TopCryptosViewModel: ObservableObject {
-    struct TopCryptoData {
-        var cryptos: [Crypto]
-    }
-
     @Published var cryptos: [Crypto] = []
-    @Published var error: String = ""
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var searchText: String = "" {
         didSet {
             filter(with: searchText)
         }
     }
 
-    var originalCryptos: [Crypto] = []
-    var cryptoUseCases: CryptoUseCasesProtocol
-    var ratesUseCases: RatesUseCasesProtocol
+    fileprivate struct TopCryptoData {
+        var cryptos: [Crypto]
+    }
+
+    private var originalCryptos: [Crypto] = []
+    private var cryptoUseCases: CryptoUseCasesProtocol
+    private var ratesUseCases: RatesUseCasesProtocol
+    private var error: AppError? = nil {
+        didSet {
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
+        }
+    }
 
     init(cryptoUseCases: CryptoUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol) {
         self.cryptoUseCases = cryptoUseCases
@@ -37,7 +47,7 @@ class TopCryptosViewModel: ObservableObject {
                 self.originalCryptos = data.cryptos
             }
         } catch {
-            self.error = "_ERROR_"
+            self.error = .custom("Error", "Se ha producido un error cargando la información. Más detalle: \(error.localizedDescription)")
         }
     }
 
