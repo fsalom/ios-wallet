@@ -12,6 +12,12 @@ import SwiftUI
 class HomeViewModel: ObservableObject {
     @Published var cryptos = [Crypto]()
     @Published var favoriteCryptos = [Crypto]()
+    @Published var minValueForChart: Float = 0.0
+    @Published var maxValueForChart: Float = 0.0
+    @Published var user: User?
+    @Published var total: String = "---"
+    @Published var isLoading: Bool = false
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var totalsPerDay: [CryptoHistory] = [] {
         didSet {
             let sortedtotalsPerDay = totalsPerDay.sorted(by: {$0.priceUsd < $1.priceUsd})
@@ -19,12 +25,6 @@ class HomeViewModel: ObservableObject {
             minValueForChart = sortedtotalsPerDay.first?.priceUsd ?? 0.0
         }
     }
-    @Published var minValueForChart: Float = 0.0
-    @Published var maxValueForChart: Float = 0.0
-    @Published var user: User?
-    @Published var total: String = "---"
-    @Published var error: String = ""
-    @Published var isLoading: Bool = false
 
     struct HomeData {
         var cryptos: [Crypto]
@@ -34,12 +34,22 @@ class HomeViewModel: ObservableObject {
     }
 
     private var originalTotal: String = ""
-    var cryptoUseCases: CryptoUseCasesProtocol
-    var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
-    var ratesUseCases: RatesUseCasesProtocol
-    var userUseCases: UserUseCasesProtocol
-    var historyUseCases: CryptoHistoryUseCasesProtocol
+    private var cryptoUseCases: CryptoUseCasesProtocol
+    private var cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol
+    private var ratesUseCases: RatesUseCasesProtocol
+    private var userUseCases: UserUseCasesProtocol
+    private var historyUseCases: CryptoHistoryUseCasesProtocol
     private var currentCurrency: Rate
+    private var error: AppError? = nil {
+        didSet {
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
+        }
+    }
 
     init(cryptoUseCases: CryptoUseCasesProtocol,
          cryptoPortfolioUseCases: CryptoPortfolioUseCasesProtocol,
@@ -81,7 +91,7 @@ class HomeViewModel: ObservableObject {
             self.currentCurrency = data.currentCurrency
             self.user = data.user
         } catch {
-            self.error = "_ERROR_"
+            self.error = .custom("Error", "Se ha producido un error cargando la información. Más detalle: \(error.localizedDescription)")
         }
     }
 

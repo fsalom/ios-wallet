@@ -37,6 +37,7 @@ struct HomeView: View {
                 }
             }
             .background(Color.background)
+            .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
         }
         .task({
             await VM.update()
