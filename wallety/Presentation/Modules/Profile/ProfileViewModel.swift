@@ -22,25 +22,27 @@ class ProfileViewModel: ObservableObject {
     var rateUseCases: RatesUseCasesProtocol
     var userUseCases: UserUseCasesProtocol
     var container: ModelContainer?
-
-    @Published var currentCurrency: Rate = Rate.default()
-    @Published var currencies: [Rate] = []
-    @Published var error: AppError? = nil {
+    var error: AppError? = nil {
         didSet {
-            showBanner = error != nil ? true : false
-            guard let (title, description) = error?.getTitleAndDescription() else { return }
-            bannerData = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
         }
     }
+
     @Published var image: Data?
     @Published var avatarImage: Image?
+    @Published var currentCurrency: Rate = Rate.default()
+    @Published var currencies: [Rate] = []
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var name: String = "" {
         didSet {
             save(this: name)
         }
     }
-    @Published var showBanner: Bool = false
-    @Published var bannerData: BannerModifier.BannerData = BannerModifier.BannerData.init(title: "", detail: "", type: BannerModifier.BannerType.Error)
 
     init(rateUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol, container: ModelContainer? = nil) {
         self.rateUseCases = rateUseCases

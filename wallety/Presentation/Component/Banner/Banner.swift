@@ -1,12 +1,28 @@
 import Foundation
 import SwiftUI
 
-struct BannerModifier: ViewModifier {
+struct BannerUI {
+    var show: Bool
+    var data: BannerModifier.BannerData
+}
 
+struct BannerModifier: ViewModifier {
     struct BannerData {
         var title:String
         var detail:String
         var type: BannerType
+
+        init(title: String, detail: String, type: BannerType) {
+            self.title = title
+            self.detail = detail
+            self.type = type
+        }
+
+        init() {
+            self.title = ""
+            self.detail = ""
+            self.type = .Error
+        }
     }
 
     enum BannerType {

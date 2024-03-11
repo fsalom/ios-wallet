@@ -128,7 +128,7 @@ struct ProfileView: View {
                 Text("version: " + (Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "--"))
             }
         }
-        .banner(data: $VM.bannerData, show: $VM.showBanner)
+        .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
         .task {
             await VM.load()
             setProfileImage()
