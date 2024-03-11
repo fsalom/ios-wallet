@@ -10,14 +10,25 @@ import UIKit
 import SwiftUI
 import SwiftData
 
-struct ProfileData {
-    var currencies: [Rate]
-    var currentCurrency: Rate
-    var user: User?
-}
-
 @MainActor
 class ProfileViewModel: ObservableObject {
+    @Published var image: Data?
+    @Published var avatarImage: Image?
+    @Published var currentCurrency: Rate = Rate.default()
+    @Published var currencies: [Rate] = []
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
+    @Published var name: String = "" {
+        didSet {
+            save(this: name)
+        }
+    }
+
+    fileprivate struct ProfileData {
+        var currencies: [Rate]
+        var currentCurrency: Rate
+        var user: User?
+    }
+
     private var rateUseCases: RatesUseCasesProtocol
     private var userUseCases: UserUseCasesProtocol
     private var container: ModelContainer?
@@ -29,17 +40,6 @@ class ProfileViewModel: ObservableObject {
                 bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
             }
             self.bannerUI = bannerUI
-        }
-    }
-
-    @Published var image: Data?
-    @Published var avatarImage: Image?
-    @Published var currentCurrency: Rate = Rate.default()
-    @Published var currencies: [Rate] = []
-    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
-    @Published var name: String = "" {
-        didSet {
-            save(this: name)
         }
     }
 

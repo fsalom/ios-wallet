@@ -26,7 +26,7 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    struct HomeData {
+    fileprivate struct HomeData {
         var cryptos: [Crypto]
         var portfolios: [CryptoPortfolio]
         var currentCurrency: Rate
@@ -95,7 +95,7 @@ class HomeViewModel: ObservableObject {
         }
     }
 
-    func loadData() async throws -> HomeData {
+    private func loadData() async throws -> HomeData {
         async let cryptos = cryptoUseCases.getCryptos()
         async let currentCurrency = ratesUseCases.getCurrentCurrency()
         async let portfolios = cryptoPortfolioUseCases.getCryptosPortfolio()
