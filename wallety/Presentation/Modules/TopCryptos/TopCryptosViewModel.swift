@@ -47,7 +47,7 @@ class TopCryptosViewModel: ObservableObject {
                 self.originalCryptos = data.cryptos
             }
         } catch {
-            self.error = .custom("Error", "Se ha producido un error cargando la información. Más detalle: \(error.localizedDescription)")
+            self.error = .generic(error.localizedDescription)
         }
     }
 
