@@ -14,6 +14,7 @@ class CryptoDetailViewModel: ObservableObject {
     @Published var minValueForChart: Float = 0.0
     @Published var maxValueForChart: Float = 0.0
     @Published var price: Float = 0.0
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var cryptosPortfolio: [CryptoPortfolio] = []
     @Published var cryptoHistoryPrices: [CryptoHistory] = [] {
         didSet {
@@ -22,7 +23,6 @@ class CryptoDetailViewModel: ObservableObject {
             minValueForChart = sortedCryptoHistoryPrices.first?.priceUsd ?? 0.0
         }
     }
-    @Published var error: String = ""
     @Published var quantityText: String = "" {
         didSet {
             let quantityFormatted = quantityText.replacingOccurrences(of: ",", with: ".")
@@ -43,11 +43,20 @@ class CryptoDetailViewModel: ObservableObject {
     private var priceToAdd: Float = 0.0
     private var quantityToAdd: Float = 0.0
     private var originalPrice: Float = 0.0
-
-    var portfolioUseCases: CryptoPortfolioUseCasesProtocol
-    var rateUseCases: RatesUseCasesProtocol
-    var cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol
-    var cryptoUseCases: CryptoUseCasesProtocol
+    private var portfolioUseCases: CryptoPortfolioUseCasesProtocol
+    private var rateUseCases: RatesUseCasesProtocol
+    private var cryptoHistoryUseCases: CryptoHistoryUseCasesProtocol
+    private var cryptoUseCases: CryptoUseCasesProtocol
+    private var error: AppError? = nil {
+        didSet {
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
+        }
+    }
 
     init(crypto: Crypto,
          portfolioUseCases: CryptoPortfolioUseCasesProtocol,
@@ -94,7 +103,7 @@ class CryptoDetailViewModel: ObservableObject {
                 self.originalPrice = crypto.priceUsd
             }
         } catch {
-            self.error = "_ERROR_"
+            self.error = .generic(error.localizedDescription)
         }
     }
 
@@ -114,7 +123,7 @@ class CryptoDetailViewModel: ObservableObject {
                     }
                 }
             } catch {
-                self.error = "_ERROR_"
+                self.error = .generic(error.localizedDescription)
             }
         }
     }

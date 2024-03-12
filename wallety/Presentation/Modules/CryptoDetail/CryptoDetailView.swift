@@ -94,6 +94,7 @@ struct CryptoDetailView: View {
 
             }.padding(.top, 40)
         }
+        .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
         .background(Color.background)
         .foregroundColor(.primary)
         .navigationTitle("\(VM.crypto.name)")
