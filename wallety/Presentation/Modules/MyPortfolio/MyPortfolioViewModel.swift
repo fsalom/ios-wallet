@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MyPortfolioError: Error {
+fileprivate enum MyPortfolioError: Error {
     case failedToGetUpdatedPrice
 
     var localizedDescription: String {
@@ -22,20 +22,30 @@ enum MyPortfolioError: Error {
 class MyPortfolioViewModel: ObservableObject {
     @Published var cryptos: [CryptoPortfolio] = []
     @Published var total: String = ""
-    @Published var error: String = ""
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var searchText: String = "" {
         didSet{
             filter(with: searchText)
         }
     }
 
-    struct PortfolioData {
+    fileprivate struct PortfolioData {
         var cryptosPorfolio: [CryptoPortfolio]
     }
-    var originalCryptos: [CryptoPortfolio] = []
-    var portfolioUseCases: CryptoPortfolioUseCasesProtocol
-    var ratesUseCases: RatesUseCasesProtocol
-    var cryptoUseCases: CryptoUseCasesProtocol
+    private var originalCryptos: [CryptoPortfolio] = []
+    private var portfolioUseCases: CryptoPortfolioUseCasesProtocol
+    private var ratesUseCases: RatesUseCasesProtocol
+    private var cryptoUseCases: CryptoUseCasesProtocol
+    private var error: AppError? = nil {
+        didSet {
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
+        }
+    }
 
     init(portfolioUseCases: CryptoPortfolioUseCasesProtocol,
          ratesUseCases: RatesUseCasesProtocol,
@@ -56,7 +66,7 @@ class MyPortfolioViewModel: ObservableObject {
                 self.total = total
                 self.originalCryptos = data.cryptosPorfolio
             } catch {
-                self.error = "_ERROR_"
+                self.error = .generic(error.localizedDescription)
             }
         }
     }

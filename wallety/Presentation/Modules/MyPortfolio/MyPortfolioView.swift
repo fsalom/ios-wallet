@@ -29,8 +29,10 @@ struct MyPortfolioView: View {
                 VM.load()
             }
             .padding(.horizontal, 20)
-        }.background(Color.background)
-            .searchable(text: $VM.searchText, prompt: "Búsqueda")
+        }
+        .background(Color.background)
+        .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
+        .searchable(text: $VM.searchText, prompt: "Búsqueda")
     }
 
     @ViewBuilder
