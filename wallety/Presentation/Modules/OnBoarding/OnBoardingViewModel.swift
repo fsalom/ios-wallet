@@ -8,28 +8,30 @@
 import Foundation
 
 class OnBoardingViewModel: ObservableObject {
-    struct Currency: Identifiable {
-        var id: String = UUID().uuidString
-        var icon: String
-        var name: String
-        var symbol: String
-        var selected: Bool = false
-    }
-
     @Published var cryptos: [Crypto] = []
     @Published var currencies: [Currency] = []
     @Published var rates: [Rate] = []
-    @Published var error: String = ""
+    @Published var bannerUI: BannerUI = BannerUI(show: false, data: BannerModifier.BannerData())
     @Published var searchText: String = "" {
         didSet {
             filter(with: searchText)
         }
     }
 
-    var originalCryptos: [Crypto] = []
-    var cryptoUseCases: CryptoUseCasesProtocol
-    var ratesUseCases: RatesUseCasesProtocol
-    var userUseCases: UserUseCasesProtocol
+    private var originalCryptos: [Crypto] = []
+    private var cryptoUseCases: CryptoUseCasesProtocol
+    private var ratesUseCases: RatesUseCasesProtocol
+    private var userUseCases: UserUseCasesProtocol
+    private var error: AppError? = nil {
+        didSet {
+            var bannerUI = BannerUI(show: error != nil ? true : false,
+                                    data: BannerModifier.BannerData.init())
+            if let (title, description) = error?.getTitleAndDescription() {
+                bannerUI.data = BannerModifier.BannerData.init(title: title, detail: description, type: .Error)
+            }
+            self.bannerUI = bannerUI
+        }
+    }
 
     init(cryptoUseCases: CryptoUseCasesProtocol, ratesUseCases: RatesUseCasesProtocol, userUseCases: UserUseCasesProtocol) {
         self.cryptoUseCases = cryptoUseCases
@@ -50,7 +52,7 @@ class OnBoardingViewModel: ObservableObject {
                     self.rates = rates
                 }
             } catch {
-                self.error = "_ERROR_"
+                self.error = .generic(error.localizedDescription)
             }
         }
     }
@@ -60,7 +62,7 @@ class OnBoardingViewModel: ObservableObject {
             do {
                 try await self.userUseCases.save(name: name)
             } catch {
-                self.error = "_ERROR_"
+                self.error = .generic(error.localizedDescription)
             }
         }
     }

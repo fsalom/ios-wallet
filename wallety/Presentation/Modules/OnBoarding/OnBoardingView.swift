@@ -25,6 +25,7 @@ struct OnBoardingView: View {
         .onAppear(perform: {
             VM.load()
         })
+        .banner(data: $VM.bannerUI.data, show: $VM.bannerUI.show)
     }
 
     @ViewBuilder
