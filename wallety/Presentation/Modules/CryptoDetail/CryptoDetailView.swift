@@ -48,7 +48,7 @@ struct CryptoDetailView: View {
                     
                     Divider()
 
-                    
+                    /*
                     if (showAddPricePurchase) {
                         Text("Añade tu precio aproximado de compra")
                             .font(.footnote)
@@ -77,7 +77,7 @@ struct CryptoDetailView: View {
                         }.buttonStyle(LargeButtonStyle(backgroundColor: Color.customYellow,
                                                        foregroundColor: Color.white,
                                                        isDisabled: false))
-                    }
+                    }*/
                     Button {
                         VM.addToMyPortfolio()
                     } label: {
