@@ -225,24 +225,27 @@ struct HorizontalListFavoriteAssetsView: View {
 
     @ViewBuilder
     func FavoriteCryptoRow(with crypto: Crypto) -> some View {
-        VStack(alignment: .trailing, content: {
+        VStack(alignment: .leading, content: {
             HStack{
-                Image(systemName: "star.fill").foregroundColor(.yellow)
+                KFAnimatedImage(crypto.imageUrl)
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
+
+                VStack(alignment: .leading) {
+                    Text(crypto.name).fontWeight(.bold)
+                    Text(crypto.price).font(.footnote)
+                }
                 Spacer()
+                Image(systemName: "star.fill").foregroundColor(.yellow)
             }
-            Spacer()
-            KFAnimatedImage(crypto.imageUrl)
-                .frame(width: 40, height: 40)
-                .background(Color.white)
-                .clipShape(Circle())
-            Text(crypto.name).fontWeight(.bold)
-            Text(crypto.price)
         })
-        .padding(20)
-        .frame(width: 150, height: 200)
+        .padding(10)
+        .frame(width: 200, height: 60)
         .background(Color.white)
         .clipShape(
-            RoundedRectangle(cornerSize: CGSize(width: 20, height: 10)))
+            RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+
         .shadow(radius: 1)
     }
 }
@@ -265,27 +268,30 @@ struct ListCryptoView: View {
 
     @ViewBuilder
     func CryptoRow(with crypto: Crypto) -> some View {
-        HStack {
-            KFAnimatedImage(crypto.imageUrl)
-                .frame(width: 50, height: 50)
-                .background(Color.white)
-                .clipShape(Circle())
+        VStack(spacing: 0) {
+            HStack {
+                KFAnimatedImage(crypto.imageUrl)
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
 
-            VStack(alignment: .leading, content: {
-                Text(crypto.name)
-                    .fontWeight(.bold)
-                Text(crypto.symbol)
-            })
-            Spacer()
-            VStack(alignment: .trailing, content: {
-                Text("\(crypto.price)")
-                    .fontWeight(.bold)
-                Text("\(crypto.changePercent24HrFormatted)%")
-            })
+                VStack(alignment: .leading, content: {
+                    Text(crypto.name)
+                        .fontWeight(.bold)
+                    Text(crypto.symbol).font(.footnote)
+                })
+                Spacer()
+                VStack(alignment: .trailing, content: {
+                    Text("\(crypto.price)")
+                        .fontWeight(.bold)
+                    Text("\(crypto.changePercent24HrFormatted)%").font(.footnote)
+                })
+            }
+            .padding(10)
+            .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
+            .foregroundColor(.primary)
+            Divider()
         }
-        .padding(10)
-        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
-        .foregroundColor(.primary)
     }
 }
 

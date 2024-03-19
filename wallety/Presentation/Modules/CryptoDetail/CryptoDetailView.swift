@@ -77,7 +77,7 @@ struct CryptoDetailView: View {
                         }.buttonStyle(LargeButtonStyle(backgroundColor: Color.customYellow,
                                                        foregroundColor: Color.white,
                                                        isDisabled: false))
-                    }*/
+                    }*/ 
                     Button {
                         VM.addToMyPortfolio()
                     } label: {
