@@ -281,10 +281,19 @@ struct ListCryptoView: View {
                     Text(crypto.symbol).font(.footnote)
                 })
                 Spacer()
-                VStack(alignment: .trailing, content: {
+                VStack(alignment: .trailing, spacing: 0, content: {
                     Text("\(crypto.price)")
                         .fontWeight(.bold)
-                    Text("\(crypto.changePercent24HrFormatted)%").font(.footnote)
+                    Text("\(crypto.changePercent24HrFormatted)%")
+                        .foregroundStyle(crypto.changePercent24Hr > 0
+                                         ? .green : .red)
+                        .fontWeight(.bold)
+                        .font(.footnote)
+                        .padding(4)
+                        .background(crypto.changePercent24Hr > 0 ?
+                                    Color.flagGreenBackground :
+                                    Color.flagRedBackground)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
                 })
             }
             .padding(10)
