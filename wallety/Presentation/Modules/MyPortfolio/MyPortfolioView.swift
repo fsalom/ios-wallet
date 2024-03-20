@@ -37,26 +37,30 @@ struct MyPortfolioView: View {
 
     @ViewBuilder
     func CryptoRow(with portfolio: CryptoPortfolio) -> some View {
-        HStack {
-            KFAnimatedImage(portfolio.crypto.imageUrl)
-                .frame(width: 40, height: 40)
-                .background(Color.white)
-                .clipShape(Circle())
+        VStack(spacing: 0) {
+            HStack(spacing: 10) {
+                KFAnimatedImage(portfolio.crypto.imageUrl)
+                    .frame(width: 40, height: 40)
+                    .background(Color.white)
+                    .clipShape(Circle())
 
-            VStack(alignment: .leading, content: {
-                Text(portfolio.crypto.name)
-                    .fontWeight(.bold)
-                Text(portfolio.crypto.symbol)
-            })
-            Spacer()
-            VStack(alignment: .trailing, content: {
-                Text(portfolio.valuePerQuantity)
-                    .fontWeight(.bold)
-                Text(portfolio.quantityFormatted + " \(portfolio.crypto.symbol)")
-            })
+                VStack(alignment: .leading, content: {
+                    Text(portfolio.crypto.name)
+                        .fontWeight(.bold)
+                    Text(portfolio.crypto.symbol)
+                        .font(.footnote)
+                })
+                Spacer()
+                VStack(alignment: .trailing, content: {
+                    Text(portfolio.valuePerQuantity)
+                        .fontWeight(.bold)
+                    Text(portfolio.quantityFormatted + " \(portfolio.crypto.symbol)")
+                        .font(.footnote)
+                })
+            }
+            .padding(10)
+            Divider()
         }
-        .padding(10)
-        .clipShape(RoundedRectangle(cornerSize: CGSize(width: 10, height: 10)))
     }
 }
 
