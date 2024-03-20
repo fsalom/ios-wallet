@@ -123,6 +123,7 @@
 		C1F8260D2B29AFE3007AE951 /* UDRatesDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8260C2B29AFE3007AE951 /* UDRatesDataSource.swift */; };
 		C1F826102B29B108007AE951 /* CacheRatesDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F8260F2B29B108007AE951 /* CacheRatesDataSourceProtocol.swift */; };
 		C1F826132B29B14C007AE951 /* CacheRateDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F826122B29B14C007AE951 /* CacheRateDTO.swift */; };
+		C1FD96502BAB1DA90075975D /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = C1FD964F2BAB1DA90075975D /* Shimmer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -248,6 +249,7 @@
 				C194F89A2B65AB7A00885D0A /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				C194F8942B65AB7A00885D0A /* FirebaseAnalytics in Frameworks */,
 				C194F8A42B663A5900885D0A /* FirebaseCrashlytics in Frameworks */,
+				C1FD96502BAB1DA90075975D /* Shimmer in Frameworks */,
 				C194F8962B65AB7A00885D0A /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 				C194F89C2B65AB7A00885D0A /* FirebaseAppCheck in Frameworks */,
 				C194F8912B65A95F00885D0A /* Kingfisher in Frameworks */,
@@ -1065,6 +1067,7 @@
 				C194F8992B65AB7A00885D0A /* FirebaseAnalyticsWithoutAdIdSupport */,
 				C194F89B2B65AB7A00885D0A /* FirebaseAppCheck */,
 				C194F8A32B663A5900885D0A /* FirebaseCrashlytics */,
+				C1FD964F2BAB1DA90075975D /* Shimmer */,
 			);
 			productName = wallety;
 			productReference = C16D04072B18BFB60014F906 /* wallety.app */;
@@ -1097,6 +1100,7 @@
 			packageReferences = (
 				C194F88F2B65A95F00885D0A /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				C194F8922B65AB7A00885D0A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C1FD964E2BAB1DA90075975D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
 			);
 			productRefGroup = C16D04082B18BFB60014F906 /* Products */;
 			projectDirPath = "";
@@ -1511,6 +1515,14 @@
 				minimumVersion = 10.20.0;
 			};
 		};
+		C1FD964E2BAB1DA90075975D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/markiv/SwiftUI-Shimmer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1548,6 +1560,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C194F8922B65AB7A00885D0A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		C1FD964F2BAB1DA90075975D /* Shimmer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1FD964E2BAB1DA90075975D /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
+			productName = Shimmer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
