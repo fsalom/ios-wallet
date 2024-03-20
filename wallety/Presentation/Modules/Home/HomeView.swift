@@ -8,6 +8,7 @@
 import SwiftUI
 import Charts
 import Kingfisher
+import Shimmer
 
 struct HomeView: View {
     @ObservedObject var VM: HomeViewModel
@@ -54,25 +55,18 @@ struct HomeView: View {
             ZStack {
                 Rectangle().fill(Color.background)
                 VStack(spacing: 0, content: {
-                    GeometryReader { _ in
-                        HomeProfileView(progress: progress)
-                    }
                     VStack(spacing: 0) {
                         if progress == 0 {
                             Text(selectedDate ?? "")
                                 .font(.footnote)
                                 .frame(height: 30)
                         }
-                        if isLoading {
-                            ProgressView()
-                        } else {
-                            Text(VM.total)
-                                .font(.largeTitle)
-                                .fontWeight(.bold)
-                                .scaleEffect(1 - (progress * 0.40))
-                                .offset(y: progress)
-
-                        }
+                        Text(VM.total)
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .scaleEffect(1 - (progress * 0.40))
+                            .offset(y: progress)
+                            .shimmering(active: isLoading)
                     }.padding(.bottom, 15)
                     Divider()
                         .padding(0)
@@ -292,7 +286,7 @@ struct ListCryptoView: View {
                         .padding(4)
                         .background(crypto.changePercent24Hr > 0 ?
                                     Color.flagGreenBackground :
-                                    Color.flagRedBackground)
+                                        Color.flagRedBackground)
                         .clipShape(RoundedRectangle(cornerRadius: 4))
                 })
             }
